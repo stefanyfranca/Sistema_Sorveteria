@@ -1,0 +1,21 @@
+<?php
+    $id_equipamento = $_POST['id_equipamento'];
+    $nome   = $_POST['nome'];
+    $descricao  = $_POST['descricao'];
+    $data_aquisicao  = $_POST['data_aquisicao'];
+    $status  = $_POST['status'];
+    $ultima_manutencao  = $_POST['ultima_manutencao'];
+    $id_fornecedor  = $_POST['id_fornecedor'];
+    
+    $conectar  = mysql_connect('localhost','root','');
+    $db        = mysql_select_db('frangelato');
+    $sql       = "insert into equipamento (id_equipamento,nome,descricao,data_aquisicao,status,ultima_manutencao,id_fornecedor) values ('$id_equipamento','$nome','$descricao','$data_aquisicao','$status','$ultima_manutencao','$id_fornecedor')";
+    $resultado = mysql_query($sql);
+?>
+
+<script>
+	alert('Adicionado com Sucesso!');
+	<?php
+		echo "location.href='main_equipamento.php'";
+	?>
+</script>
