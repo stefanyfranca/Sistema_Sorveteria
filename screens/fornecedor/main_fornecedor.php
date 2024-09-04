@@ -127,11 +127,10 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_fornecedor.php" method="POST">
-                        <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="cnpj" name="cnpj" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="endereco" name="endereco" required placeholder="Custo unitário">
-                        <input type="text" id="cidade" name="cidade" required placeholder="Data de validade">
+                        <input type="text" id="cnpj" name="cnpj" required placeholder="cnpj">
+                        <input type="text" id="endereco" name="endereco" required placeholder="endereco">
+                        <input type="text" id="cidade" name="cidade" required placeholder="cidade">
                         <input type="text" id="estado" name="estado" required placeholder="estado">
                         <input type="text" id="pais" name="pais" required placeholder="pais">
                         <input type="text" id="telefone" name="telefone" required placeholder="telefone">
@@ -158,9 +157,9 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="alterar_fornecedor.php" method="POST">
                         <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="cnpj" name="cnpj" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="endereco" name="endereco" required placeholder="Custo unitário">
-                        <input type="text" id="cidade" name="cidade" required placeholder="Data de validade">
+                        <input type="text" id="cnpj" name="cnpj" required placeholder="cnpj">
+                        <input type="text" id="endereco" name="endereco" required placeholder="endereco">
+                        <input type="text" id="cidade" name="cidade" required placeholder="cidade">
                         <input type="text" id="estado" name="estado" required placeholder="estado">
                         <input type="text" id="pais" name="pais" required placeholder="pais">
                         <input type="text" id="telefone" name="telefone" required placeholder="telefone">
@@ -216,12 +215,14 @@ $db = mysql_select_db('frangelato');
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Receita</th>
-                <th>Insumo</th>
-                <th>Quantidade</th>
-                <th>Custo de fabricação</th>
-                <th>Unidade de medida</th>
-                <th>Observações</th>
+                <th>Cpnj</th>
+                <th>Endereco</th>
+                <th>Cidade</th>
+                <th>Estado</th>
+                <th>Pais</th>
+                <th>Telefone</th>
+                <th>Email</th>
+                <th>Observacoes</th>
                 <th>Operação</th>
             </tr>
             <?php

@@ -1,5 +1,4 @@
 <?php
-    $id_fornecedor = $_POST['id_fornecedor'];
     $nome   = $_POST['nome'];
     $cnpj  = $_POST['cnpj'];
     $endereco  = $_POST['endereco'];
@@ -12,7 +11,7 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "insert into fornecedor (id_fornecedor,nome,cnpj,endereco,endereco,cidade,estado, pais, telefone, email, observacoes) values ('$id_fornecedor','$nome','$cnpj','$endereco','$endereco','$cidade','$estado','$pais','$telefone','$email','$observacoes')";
+    $sql       = "insert into fornecedor (nome,cnpj,endereco,cidade,estado, pais, telefone, email, observacoes) values ('$nome','$cnpj','$endereco','$cidade','$estado','$pais','$telefone','$email','$observacoes')";
     $resultado = mysql_query($sql);
 ?>
 

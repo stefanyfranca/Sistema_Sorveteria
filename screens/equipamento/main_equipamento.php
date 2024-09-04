@@ -124,11 +124,10 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_equipamento.php" method="POST">
-                        <input type="text" id="id_equipamento" name="id_equipamento" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="Custo unitário">
-                        <input type="text" id="status" name="status" required placeholder="Data de validade">
+                        <input type="text" id="descricao" name="descricao" required placeholder="Descricao">
+                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
+                        <input type="text" id="status" name="status" required placeholder="status">
                         <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
                         <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="id_fornecedor">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
@@ -152,9 +151,9 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="alterar_equipamento.php" method="POST">
                         <input type="text" id="id_equipamento" name="id_equipamento" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="Custo unitário">
-                        <input type="text" id="status" name="status" required placeholder="Data de validade">
+                        <input type="text" id="descricao" name="descricao" required placeholder="descricao">
+                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
+                        <input type="text" id="status" name="status" required placeholder="status">
                         <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
                         <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="id_fornecedor">
                         <button type="submit" class="btn" name="alterar">Alterar</button>
@@ -222,7 +221,6 @@ $db = mysql_select_db('frangelato');
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_equipamento'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['data_aquisicao'] . "*" . $dados['status'] . "*" . $dados['ultima_manutencao'] . "*" . $dados['id_fornecedor'] . "*" . $dados['observacoes'];
                     ?>
                     <tr>
                         <td><?php echo $dados['id_equipamento']; ?></td>
@@ -232,7 +230,6 @@ $db = mysql_select_db('frangelato');
                         <td><?php echo $dados['status']; ?></td>
                         <td><?php echo $dados['ultima_manutencao']; ?></td>
                         <td><?php echo $dados['id_fornecedor']; ?></td>
-                        <td><?php echo $dados['observacoes']; ?></td>
                         <td class="table-btn">
                             <a href="excluir_equipamento.php?id_equipamento=<?php echo $dados['id_equipamento']; ?>" class="btn btn-danger">Excluir</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>

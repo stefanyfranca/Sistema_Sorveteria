@@ -12,13 +12,13 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "update fornecedor set nome = '$nome', cnpj = '$cnpj', endereco = '$endereco', cidade = '$cidade', estado = '$estado', pais = '$pais', telefone = '$telefone, email = '$email', observacoes = '$observacoes'
-    where id_fornecedor = '$id_fornecedor';";
+    $sql       = "update fornecedor set nome = '$nome', cnpj = '$cnpj', endereco = '$endereco', cidade = '$cidade', estado = '$estado', pais = '$pais', telefone = '$telefone', email = '$email', observacoes = '$observacoes' where id_fornecedor = '$id_fornecedor';";
+    
     $resultado = mysql_query($sql);
 ?>
 
 <script>
-	alert('Adicionado com Sucesso!');
+	alert('Alterado com Sucesso!');
 	<?php
 		echo "location.href='main_fornecedor.php'";
 	?>
