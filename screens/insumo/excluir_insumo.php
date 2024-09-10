@@ -1,10 +1,10 @@
 <?php
-    $codigo = $_GET['codigo'];
+    $id_insumo = $_GET['id_insumo'];
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
     $sql       = "delete from insumo WHERE
-    codigo = '$codigo';";
+    id_insumo = '$id_insumo';";
     $resultado = mysql_query($sql);
 ?>
 

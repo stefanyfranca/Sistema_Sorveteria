@@ -1,5 +1,4 @@
 <?php
-    $id_produto = $_POST['id_produto'];
     $nome   = $_POST['nome'];
     $descricao  = $_POST['descricao'];
     $custo_venda  = $_POST['custo_venda'];
@@ -9,7 +8,7 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "insert into produto (id_produto,nome,descricao,custo_venda,quantidade_receita,id_receita_produto,custo_total_produto) values ('$id_produto','$nome','$descricao','$custo_venda','$quantidade_receita','$id_receita_produto','$custo_total_produto')";
+    $sql       = "insert into produto (nome,descricao,custo_venda,quantidade_receita,id_receita_produto,custo_total_produto) values ('$nome','$descricao','$custo_venda','$quantidade_receita','$id_receita_produto','$custo_total_produto')";
     $resultado = mysql_query($sql);
 ?>
 

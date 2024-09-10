@@ -8,7 +8,7 @@ $db = mysql_select_db('frangelato');
 
 <head>
     <meta charset="UTF-8">
-    <title>Pesquisa insumo</title>
+    <title>Pesquisa receita</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
@@ -121,14 +121,12 @@ $db = mysql_select_db('frangelato');
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_insumo.php" method="POST">
-                        <input type="text" id="id_receita" name="id_receita" required placeholder="Código">
+                    <form class="form-group well" action="adicionar_receita.php" method="POST">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
+                        <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
+                        <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
                         <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
-                        <input type="text" id="custo_total_receita" name="custo_total_receita" required placeholder="custo_total_receita">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
@@ -147,14 +145,13 @@ $db = mysql_select_db('frangelato');
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_insumo.php" method="POST">
+                    <form class="form-group well" action="alterar_receita.php" method="POST">
                         <input type="text" id="id_receita" name="id_receita" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
                         <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
                         <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
                         <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
-                        <input type="text" id="custo_total_receita" name="custo_total_receita" required placeholder="custo_total_receita">
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
@@ -173,14 +170,13 @@ $db = mysql_select_db('frangelato');
                     <h1>Excluir Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="excluir_insumo.php" method="GET">
+                    <form class="form-group well" action="excluir_receita.php" method="GET">
                         <input type="text" id="id_receita" name="id_receita" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
                         <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
                         <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
                         <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
-                        <input type="text" id="custo_total_receita" name="custo_total_receita" required placeholder="custo_total_receita">
                         <button type="submit" class="btn" name="excluir">Excluir</button>
                     </form>
                 </div>
@@ -192,8 +188,8 @@ $db = mysql_select_db('frangelato');
     </div>
 
     <div class="container">
-        <h2>Funcionário</h2><br>
-        <form action="tabela_insumo.php" method="POST">
+        <h2>Receita</h2><br>
+        <form action="main_receita.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
             <button type="submit" name="pesquisar" class="btn">Pesquisar</button>
             <button type="button" class="btn" data-toggle="modal" data-target="#myModalCadastrar">Cadastrar</button>
@@ -203,15 +199,14 @@ $db = mysql_select_db('frangelato');
                 <th>Código</th>
                 <th>Nome</th>
                 <th>Descrição</th>
-                <th>Custo de venda</th>
-                <th>Quantidade da receita</th>
-                <th>Receita</th>
+                <th>Tempo de preparo</th>
+                <th>Quantidade</th>
                 <th>Custo total</th>
                 <th>Operação</th>
             </tr>
             <?php
             if ((isset($_POST['pesquisar'])) or isset($_POST['cadastrar'])) {
-                $consulta = "SELECT * FROM insumo";
+                $consulta = "SELECT * FROM receita";
 
                 if ($_POST['nome'] != '') {
                     $consulta .= " WHERE nome LIKE '%" . $_POST['nome'] . "%'";
@@ -220,19 +215,17 @@ $db = mysql_select_db('frangelato');
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_receita'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['tempo_preparo'] . "*" . $dados['estado'] . "*" . $dados['quantidade_produzida'] . "*" . $dados['custo_total']."*". $dados['custo_total_receita'];
+                    $strdados = $dados['id_receita'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['tempo_preparo'] . "*" . $dados['quantidade_produzida'] . "*" . $dados['custo_total'];
                     ?>
                     <tr>
                         <td><?php echo $dados['id_receita']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>
                         <td><?php echo $dados['descricao']; ?></td>
                         <td><?php echo $dados['tempo_preparo']; ?></td>
-                        <td><?php echo $dados['estado']; ?></td>
                         <td><?php echo $dados['quantidade_produzida']; ?></td>
                         <td><?php echo $dados['custo_total']; ?></td>
-                        <td><?php echo $dados['custo_total_receita']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_insumo.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger">Excluir</a>
+                            <a href="excluir_receita.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger">Excluir</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
                         </td>
                     </tr>

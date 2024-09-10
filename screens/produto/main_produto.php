@@ -8,7 +8,7 @@ $db = mysql_select_db('frangelato');
 
 <head>
     <meta charset="UTF-8">
-    <title>Pesquisa insumo</title>
+    <title>Pesquisa produto</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
@@ -122,8 +122,7 @@ $db = mysql_select_db('frangelato');
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_insumo.php" method="POST">
-                        <input type="text" id="id_produto" name="id_produto" required placeholder="Código">
+                    <form class="form-group well" action="adicionar_produto.php" method="POST">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
                         <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
@@ -148,7 +147,7 @@ $db = mysql_select_db('frangelato');
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_insumo.php" method="POST">
+                    <form class="form-group well" action="alterar_produto.php" method="POST">
                         <input type="text" id="id_produto" name="id_produto" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
@@ -174,7 +173,7 @@ $db = mysql_select_db('frangelato');
                     <h1>Excluir Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="excluir_insumo.php" method="GET">
+                    <form class="form-group well" action="excluir_produto.php" method="GET">
                         <input type="text" id="id_produto" name="id_produto" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
@@ -193,8 +192,8 @@ $db = mysql_select_db('frangelato');
     </div>
 
     <div class="container">
-        <h2>Funcionário</h2><br>
-        <form action="tabela_insumo.php" method="POST">
+        <h2>Produto</h2><br>
+        <form action="main_produto.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
             <button type="submit" name="pesquisar" class="btn">Pesquisar</button>
             <button type="button" class="btn" data-toggle="modal" data-target="#myModalCadastrar">Cadastrar</button>
@@ -212,7 +211,7 @@ $db = mysql_select_db('frangelato');
             </tr>
             <?php
             if ((isset($_POST['pesquisar'])) or isset($_POST['cadastrar'])) {
-                $consulta = "SELECT * FROM insumo";
+                $consulta = "SELECT * FROM produto";
 
                 if ($_POST['nome'] != '') {
                     $consulta .= " WHERE nome LIKE '%" . $_POST['nome'] . "%'";
@@ -221,19 +220,18 @@ $db = mysql_select_db('frangelato');
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_produto'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['custo_venda'] . "*" . $dados['estado'] . "*" . $dados['quantidade_receita'] . "*" . $dados['id_receita_produto']."*". $dados['custo_total_produto'];
+                    $strdados = $dados['id_produto'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['custo_venda'] . "*" . $dados['quantidade_receita'] . "*" . $dados['id_receita_produto']."*". $dados['custo_total_produto'];
                     ?>
                     <tr>
                         <td><?php echo $dados['id_produto']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>
                         <td><?php echo $dados['descricao']; ?></td>
                         <td><?php echo $dados['custo_venda']; ?></td>
-                        <td><?php echo $dados['estado']; ?></td>
                         <td><?php echo $dados['quantidade_receita']; ?></td>
                         <td><?php echo $dados['id_receita_produto']; ?></td>
                         <td><?php echo $dados['custo_total_produto']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_insumo.php?id_produto=<?php echo $dados['id_produto']; ?>" class="btn btn-danger">Excluir</a>
+                            <a href="excluir_produto.php?id_produto=<?php echo $dados['id_produto']; ?>" class="btn btn-danger">Excluir</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
                         </td>
                     </tr>

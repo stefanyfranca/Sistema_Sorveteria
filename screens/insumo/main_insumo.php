@@ -103,9 +103,9 @@ $db = mysql_select_db('frangelato');
     <script>
         function obterDadosModal(valor) {
             var retorno = valor.split("*");
-            document.getElementById('codigo').value = retorno[0];
+            document.getElementById('id_insumo').value = retorno[0];
             document.getElementById('nome').value = retorno[1];
-            document.getElementById('unida_medida').value = retorno[2];
+            document.getElementById('unidade_medida').value = retorno[2];
             document.getElementById('custo_unitario').value = retorno[3];
             document.getElementById('data_validade').value = retorno[4];
             document.getElementById('id_fornecedor_insumo').value = retorno[5];
@@ -123,9 +123,8 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_insumo.php" method="POST">
-                        <input type="text" id="codigo" name="codigo" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unida_medida" name="unida_medida" required placeholder="Ex.: g ou Kg">
+                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
                         <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
                         <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
@@ -148,9 +147,9 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_insumo.php" method="POST">
-                        <input type="text" id="codigo" name="codigo" required placeholder="Código">
+                        <input type="text" id="id_insumo" name="id_insumo" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unida_medida" name="unida_medida" required placeholder="Ex.: g ou Kg">
+                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
                         <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
                         <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
@@ -173,9 +172,9 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="excluir_insumo.php" method="GET">
-                        <input type="text" id="codigo" name="codigo" required placeholder="Código">
+                        <input type="text" id="id_insumo" name="id_insumo" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unida_medida" name="unida_medida" required placeholder="Ex.: g ou Kg">
+                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
                         <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
                         <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
@@ -190,8 +189,8 @@ $db = mysql_select_db('frangelato');
     </div>
 
     <div class="container">
-        <h2>Funcionário</h2><br>
-        <form action="tabela_insumo.php" method="POST">
+        <h2>Insumo</h2><br>
+        <form action="main_insumo.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
             <button type="submit" name="pesquisar" class="btn">Pesquisar</button>
             <button type="button" class="btn" data-toggle="modal" data-target="#myModalCadastrar">Cadastrar</button>
@@ -217,18 +216,17 @@ $db = mysql_select_db('frangelato');
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['codigo'] . "*" . $dados['nome'] . "*" . $dados['unida_medida'] . "*" . $dados['custo_unitario'] . "*" . $dados['estado'] . "*" . $dados['data_validade'] . "*" . $dados['id_fornecedor_insumo'];
+                    $strdados = $dados['id_insumo'] . "*" . $dados['nome'] . "*" . $dados['unidade_medida'] . "*" . $dados['custo_unitario'] . "*" . $dados['data_validade'] . "*" . $dados['id_fornecedor_insumo'];
                     ?>
                     <tr>
-                        <td><?php echo $dados['codigo']; ?></td>
+                        <td><?php echo $dados['id_insumo']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>
-                        <td><?php echo $dados['unida_medida']; ?></td>
+                        <td><?php echo $dados['unidade_medida']; ?></td>
                         <td><?php echo $dados['custo_unitario']; ?></td>
-                        <td><?php echo $dados['estado']; ?></td>
                         <td><?php echo $dados['data_validade']; ?></td>
                         <td><?php echo $dados['id_fornecedor_insumo']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_insumo.php?codigo=<?php echo $dados['codigo']; ?>" class="btn btn-danger">Excluir</a>
+                            <a href="excluir_insumo.php?id_insumo=<?php echo $dados['id_insumo']; ?>" class="btn btn-danger">Excluir</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
                         </td>
                     </tr>

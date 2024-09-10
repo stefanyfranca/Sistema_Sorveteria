@@ -9,8 +9,8 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "update produto set nome = '$nome', endereco = '$endereco', cidade = '$cidade', estado = '$estado', pais = '$pais', nacionalidade = '$nacionalidade'
-    where codigo = '$codigo';";
+    $sql       = "update produto set nome = '$nome', descricao = '$descricao', custo_venda = '$custo_venda', quantidade_receita = '$quantidade_receita', id_receita_produto = '$id_receita_produto', custo_total_produto = '$custo_total_produto'
+    where id_produto = '$id_produto';";
     $resultado = mysql_query($sql);
 ?>
 
