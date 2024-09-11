@@ -1,10 +1,10 @@
 <?php
-    $codigo = $_GET['codigo'];
+    $id_ingrediente = $_GET['id_ingrediente'];
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
     $sql       = "delete from ingrediente_receita WHERE
-    codigo = '$codigo';";
+    id_ingrediente = '$id_ingrediente';";
     $resultado = mysql_query($sql);
 ?>
 

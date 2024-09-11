@@ -125,11 +125,11 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_ingrediente.php" method="POST">
-                        <input type="text" id="id_ingrediente" name="id_ingrediente" required placeholder="Código">
+                        
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="Data de validade">
+                        <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="id_receita_receita">
+                        <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Id_insumo_receita">
+                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="quantidade_necessaria">
                         <input type="text" id="custo_fabricacao" name="custo_fabricacao" required placeholder="custo_fabricacao">
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="unidade_medida">
                         <input type="text" id="observacoes" name="observacoes" required placeholder="observacoes">
@@ -156,7 +156,7 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="Data de validade">
+                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="quantidade_necessaria">
                         <input type="text" id="custo_fabricacao" name="custo_fabricacao" required placeholder="custo_fabricacao">
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="unidade_medida">
                         <input type="text" id="observacoes" name="observacoes" required placeholder="observacoes">
@@ -183,7 +183,7 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="Data de validade">
+                        <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="quantidade_necessaria">
                         <input type="text" id="custo_fabricacao" name="custo_fabricacao" required placeholder="custo_fabricacao">
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="unidade_medida">
                         <input type="text" id="observacoes" name="observacoes" required placeholder="observacoes">

@@ -1,5 +1,4 @@
 <?php
-    $id_ingrediente = $_POST['id_ingrediente'];
     $nome   = $_POST['nome'];
     $id_receita_receita  = $_POST['id_receita_receita'];
     $id_insumo_receita  = $_POST['id_insumo_receita'];
@@ -10,7 +9,7 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "insert into ingrediente_receita (id_ingrediente,nome,id_receita_receita,id_insumo_receita,quantidade_necessaria,custo_fabricacao,unidade_medida, observacoes) values ('$id_ingrediente','$nome','$id_receita_receita','$id_insumo_receita','$quantidade_necessaria','$custo_fabricacao','$unidade_medida','$observacoes')";
+    $sql       = "insert into ingrediente_receita (nome,id_receita_receita,id_insumo_receita,quantidade_necessaria,custo_fabricacao,unidade_medida,observacoes) values ('$nome','$id_receita_receita','$id_insumo_receita','$quantidade_necessaria','$custo_fabricacao','$unidade_medida','$observacoes')";
     $resultado = mysql_query($sql);
 ?>
 

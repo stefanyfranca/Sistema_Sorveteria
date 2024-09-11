@@ -13,17 +13,19 @@ $db = mysql_select_db('frangelato');
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #F4DBB3;
+            background-color: #FFFFFF;
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+            height:100%;
+            width:100%;
         }
 
         .container {
-            background-color: #D2B48C;
+            background-color: #F3F3F3;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width:80%;
+            margin-left:240px;
         }
 
         h2 {
@@ -99,20 +101,62 @@ $db = mysql_select_db('frangelato');
         .table-btn button {
             margin: 5px;
         }
+        .lateral {
+            background-color:#FFFFFF;
+            height:100%;
+            width:220px;
+            position:absolute;
+            box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        .botaoArea{
+            margin-top:150%;
+            height:40px;
+            width:220px;
+        }
+        .botaoArea:hover .opcoes{
+            visibility: visible;
+            width: 200px;
+        }
+        .opcoes{
+            height:40px;
+            width:0px;
+            background-color:#E2E2E2E2;
+            position:absolute;
+            margin-left:220px;
+            margin-top:-40px;
+            visibility:hidden;
+            transition: width 0.5s;
+        }
+        .botao{
+            height:39px;
+            width:199px;
+            background-color:#6B0000; 
+            margin-left:5%;
+            border-radius:15.5px;
+            position: relative;
+        }
+        .paraBotao{
+            position:absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    
     </style>
     <script>
-        function obterDadosModal(valor) {
-            var retorno = valor.split("*");
-            document.getElementById('id_receita').value = retorno[0];
-            document.getElementById('nome').value = retorno[1];
-            document.getElementById('descricao').value = retorno[2];
-            document.getElementById('tempo_preparo').value = retorno[3];
-            document.getElementById('quantidade_produzida').value = retorno[4];
-            document.getElementById('custo_total').value = retorno[5];
+
     </script>
 </head>
 
 <body>
+<div class="lateral">
+<div class="botaoArea">
+    <div class=botao><p class="paraBotao">produtos</p></div>
+    <div class="opcoes">algo algo</div>
+</div>
+
+
+</div>
     <!--Modal Cadastrar-->
     <div class="modal fade" id="myModalCadastrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
