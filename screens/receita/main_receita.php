@@ -11,6 +11,7 @@ $db = mysql_select_db('frangelato');
     <title>Pesquisa receita</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <style>
         body {
             background-color: #FFFFFF;
@@ -108,40 +109,140 @@ $db = mysql_select_db('frangelato');
             position:absolute;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
-        .botaoArea{
-            margin-top:150%;
+        .botaoArea1{
+            margin-top:15%;
             height:40px;
             width:220px;
         }
-        .botaoArea:hover .opcoes{
-            visibility: visible;
-            width: 200px;
+        .botaoArea2{
+            margin-top:15%;
+            height:40px;
+            width:220px;
         }
+
+        .botaoArea1:hover .opcoes{
+            visibility: visible;
+            opacity:100%;
+        }
+
+        .botaoArea1:hover .opcoes2{
+            visibility: visible;
+            opacity:100%;
+        }
+
         .opcoes{
             height:40px;
-            width:0px;
+            width: 260px;
             background-color:#E2E2E2E2;
             position:absolute;
             margin-left:220px;
             margin-top:-40px;
             visibility:hidden;
-            transition: width 0.5s;
+            transition: opacity 0.2s;
+            font-size:15px;
+            padding: 10px;
+            opacity:0%;
         }
-        .botao{
+        .opcoes2{
+            height:40px;
+            width: 350px;
+            background-color:#E2E2E2E2;
+            position:absolute;
+            margin-left:220px;
+            margin-top:-40px;
+            visibility:hidden;
+            transition: opacity 0.2s;
+            font-size:15px;
+            padding: 10px;
+            opacity:0%;
+        }
+        .botaoA{
             height:39px;
-            width:199px;
+            width:185px;
             background-color:#6B0000; 
-            margin-left:5%;
+            margin-left:7.5%;
             border-radius:15.5px;
             position: relative;
         }
-        .paraBotao{
+        .paraBotaoA{
             position:absolute;
             top:50%;
             left: 50%;
             transform: translate(-50%, -50%);
+            color:#FFFFFF;
+            font-size:20px;
         }
-    
+        
+        .botaoB{
+            height:39px;
+            width:185px;
+            background-color:#FFFFFF; 
+            margin-left:7.5%;
+            border-radius:15.5px;
+            position: relative;
+        }
+        .paraBotaoB{
+            position:absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color:#6B0000;
+            font-size:20px;
+        }
+
+        .a1{
+            padding-left:15px;
+            color:black;
+        }
+        .a1:hover{
+            text-decoration:none;
+            color:gray;
+        }
+        #iconeA{
+            color:white;
+            font-size:25px;
+            margin-left:7%;
+            margin-top:4.5%;
+        }
+        #setaA{
+            color:white;
+            font-size:17px;
+            margin-left:70%;
+            
+        }
+
+        #iconeB{
+            color:#6B0000;
+            font-size:25px;
+            margin-left:7%;
+            margin-top:4.5%;
+        }
+        #setaB{
+            color:#6B0000;
+            font-size:17px;
+            margin-left:70%;
+            
+        }
+
+        .txtfrangelato{
+            color:#6B0000;
+            font-size:20px;
+            margin-left:20%;
+            margin-top:10%;
+        }
+        .logout{
+            color:#6B0000;
+            font-size:20px;
+            margin-left:35%;
+            margin-top:15%;
+        }
+        .fa-arrow-right-from-bracket{
+            color:#6B0000;
+            font-size:25px;
+            position:absolute;
+            margin-top:1%;
+            margin-left:18%;
+        }
     </style>
     <script>
 
@@ -150,10 +251,79 @@ $db = mysql_select_db('frangelato');
 
 <body>
 <div class="lateral">
-<div class="botaoArea">
-    <div class=botao><p class="paraBotao">produtos</p></div>
-    <div class="opcoes">algo algo</div>
+<p class="txtfrangelato">FRANGELATO</p> 
+
+<div class="botaoArea2">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Dashboard</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
 </div>
+
+<div class="botaoArea2">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Funcionarios</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
+</div>
+
+<div class="botaoArea2">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Fornecedores</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
+</div>
+
+<div class="botaoArea1">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Fabricacao</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
+    <div class="opcoes2">
+        
+           <a href="main_receita.php" class="a1">Equipamento</a>
+           <a href="main_receita.php" class="a1">Lote-producao</a>
+           <a href="main_receita.php" class="a1">Fabricacao</a>
+        
+    </div>
+</div>
+
+<div class="botaoArea2">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Insumos</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
+</div>
+
+<div class="botaoArea1">
+    <div class=botaoA>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeA"></i>
+            <p class="paraBotaoA">Produtos</p>
+            <i class="fa-solid fa-angle-right" id="setaA"></i>
+    </div>
+    <div class="opcoes">
+        
+           <a href="main_receita.php" class="a1">Receita</a>
+           <a href="main_receita.php" class="a1">Produto</a>
+           <a href="main_receita.php" class="a1">ingrediente</a>
+        
+    </div>
+</div>
+
+<div class="botaoArea2">
+    <div class=botaoB>
+            <i class="fa-solid fa-wine-glass-empty" id="iconeB"></i>
+            <p class="paraBotaoB">Usuarios</p>
+            <i class="fa-solid fa-angle-right" id="setaB"></i>
+    </div>
+</div>
+
+<a href="/SISTEMA_SORVETERIA/login.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><p class="logout">Log Out</p></a>
 
 
 </div>
