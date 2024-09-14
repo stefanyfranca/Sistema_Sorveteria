@@ -2,20 +2,172 @@
 $conectar = mysql_connect('localhost','root','');
 $db       = mysql_select_db('frangelato');
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html">
-    <title>Pesquisa Usuarios </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sidebar Example</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            color: #500000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
 
+        .elementos {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sidebar {
+            color: #500000;
+            width: 250px;
+            height: 100vh;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+            font-weight: 300;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #6B0000;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            width: 90%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            margin-bottom: 10px; /* Espaço entre opções */
+        }
+
+        .sidebar a:hover {
+            background-color: #fff;
+            color: #6B0000;
+            border: 2px solid #6B0000; /* Borda arredondada ao passar o mouse */
+        }
+
+        .sidebar i {
+            margin-right: 15px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+        }
+    </style><style>
+        body {
+            color: #500000;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .elementos {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .sidebar {
+            color: #500000;
+            width: 200px;
+            height: 100vh;
+            background-color: #fff;
+            border-right: 1px solid #ddd;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .sidebar h2 {
+            text-align: center;
+            font-size: 24px;
+            margin-bottom: 30px;
+            font-family: Arial, sans-serif;
+            font-weight: 300;
+        }
+
+        .sidebar a {
+            text-decoration: none;
+            color: #6B0000;
+            display: flex;
+            align-items: center;
+            padding: 10px 15px;
+            font-size: 18px;
+            border-radius: 5px;
+            width: 90%;
+            box-sizing: border-box;
+            transition: background-color 0.3s, color 0.3s;
+            margin-bottom: 5px; /* Espaço entre opções */
+        }
+
+        .sidebar a:hover {
+            background-color: #6B0000;
+            border: 2px solid #6B0000; 
+        }
+
+        .sidebar i {
+            margin-right: 15px;
+            margin-bottom: 5px;
+        }
+
+        .main-content {
+            margin-left: 250px;
+            padding: 20px;
+            flex: 1;
+        }
+    </style>
 </head>
 
 <body>
 
+    <div class="sidebar">
+        <h2>FRANGELATO</h2>
+        <div class="elementos">
+        <a href="#"><i class="fa fa-dashboard"></i> Dashboard > </a>
+        <a href="#"><i class="fa fa-users"></i> Funcionários > </a>
+        <a href="#"><i class="fa fa-truck"></i> Fornecedores > </a>
+        <a href="#"><i class="fa fa-cogs"></i> Fabricação > </a>
+        <a href="#"><i class="fa fa-leaf"></i> Insumos > </a>
+        <a href="#"><i class="fa fa-cube"></i> Produtos > </a>
+        <a href="#"><i class="fa fa-user"></i> Usuários > </a>
+        <a href="#"><i class="fa fa-sign-out"></i> LogOut > </a>
+        </div>
+    </div>
 
+    <div class="main-content">
     <script>
-        
         /*
         Use o poder do jquery! 
         document.getElementById('cpf').value vira simplesmente $("#cpf").val() ;-)
@@ -166,6 +318,23 @@ $db       = mysql_select_db('frangelato');
     <!-- Biblioteca requerida -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>
+
+<?php
+$conectar = mysql_connect('localhost','root','');
+$db       = mysql_select_db('frangelato');
+?>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html">
+    <title>Pesquisa Usuarios </title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
