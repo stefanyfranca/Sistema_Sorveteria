@@ -234,6 +234,7 @@ $db = mysql_select_db('frangelato');
             margin-left:20%;
             margin-top:10%;
         }
+        
         .logout{
             color:#6B0000;
             font-size:20px;
@@ -303,7 +304,7 @@ $db = mysql_select_db('frangelato');
         
            <a href="/SISTEMA_SORVETERIA/screens/equipamento/main_equipamento.php" class="a1">Equipamento</a>
            <a href="/SISTEMA_SORVETERIA/screens/lote_producao/main_lote_producao.php" class="a1">Lote-produção</a>
-           <a href="/SISTEMA_SORVETERIA/screens/peocesso_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
+           <a href="/SISTEMA_SORVETERIA/screens/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
         
     </div>
 </div>

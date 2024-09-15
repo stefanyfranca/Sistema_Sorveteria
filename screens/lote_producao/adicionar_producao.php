@@ -15,6 +15,6 @@
 <script>
 	alert('Adicionado com Sucesso!');
 	<?php
-		echo "location.href='cadastro_lote_producao.php'";
+		echo "location.href='main_lote_producao.php'";
 	?>
 </script>

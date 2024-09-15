@@ -11,6 +11,6 @@
 <script>
 	alert('Excluido com Sucesso!');
 	<?php
-		echo "location.href='cadastro_processo_fabricacao.php'";
+		echo "location.href='main_fabricacao.php'";
 	?>
 </script>
