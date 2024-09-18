@@ -15,6 +15,14 @@ $db = mysql_select_db('frangelato');
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <style>
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
         body {
             background-color: #FFFFFF;
             font-family: Arial, sans-serif;
@@ -358,8 +366,35 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="adicionar_ingrediente.php" method="POST">
                         
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="id_receita_receita">
-                        <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Id_insumo_receita">
+                        
+                        <select name="id_receita_receita" id="id_receita_receita">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
+                        <select name="id_insumo_receita" id="id_insumo_receita">
+                        <option value="" selected="selected">Insumo</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $insumos['id_insumo']?>">                                                     
+                                       <?php echo $insumos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        
                         <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="quantidade_necessaria">
                         <input type="text" id="custo_fabricacao" name="custo_fabricacao" required placeholder="custo_fabricacao">
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="unidade_medida">
@@ -385,8 +420,35 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="alterar_ingrediente.php" method="POST">
                         <input type="text" id="id_ingrediente" name="id_ingrediente" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="id_receita_receita" name="id_receita_receita" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="id_insumo_receita" name="id_insumo_receita" required placeholder="Custo unitário">
+                        
+                        <select name="id_receita_receita" id="id_receita_receita">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                        
+                        
+                        <select name="id_insumo_receita" id="id_insumo_receita">
+                        <option value="" selected="selected">Insumo</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $insumos['id_insumo']?>">                                                     
+                                       <?php echo $insumos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                        
+                        
                         <input type="text" id="quantidade_necessaria" name="quantidade_necessaria" required placeholder="quantidade_necessaria">
                         <input type="text" id="custo_fabricacao" name="custo_fabricacao" required placeholder="custo_fabricacao">
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="unidade_medida">

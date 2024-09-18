@@ -15,6 +15,6 @@
 <script>
 	alert('Adicionado com Sucesso!');
 	<?php
-		echo "location.href='main_ingrediente.php'";
+		echo "location.href='main_insumo.php'";
 	?>
 </script>

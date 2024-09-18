@@ -21,6 +21,14 @@ $db = mysql_select_db('frangelato');
             height:100%;
             width:100%;
         }
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
 
         .container {
             padding: 20px;
@@ -356,15 +364,69 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_fabricacao.php" method="POST">
-                        <input type="text" id="id_receita_processo" name="id_receita_processo" class="span3" value="" required placeholder="id_receita_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
+
+                        <select name="id_receita_processo" id="id_receita_processo">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
                         <input type="text" id="data_fabricacao" name="data_fabricacao" class="span3" value="" required placeholder="data_fabricacao" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="sequencia_processo" name="sequencia_processo" class="span3" value="" required placeholder="sequencia_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="descricao_processo" name="descricao_processo" class="span3" value="" required placeholder="descricao_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="tempo_execucao" name="tempo_execucao" class="span3" value="" required placeholder="tempo_execucao" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="quantidade" name="quantidade" class="span3" value="" required placeholder="quantidade" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="id_equipamento_processo" name="id_equipamento_processo" class="span3" value="" required placeholder="id_equipamento_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="id_funcionario_processo" name="id_funcionario_processo" class="span3" value="" required placeholder="id_funcionario_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="id_produto_processo" name="id_produto_processo" class="span3" value="" required placeholder="id_produto_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
+
+                        <select name="id_equipamento_processo" id="id_equipamento_processo">
+                        <option value="" selected="selected">Equipamento</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_equipamento, nome FROM equipamento");
+                        while($equipamentos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $equipamentos['id_equipamento']?>">                                                     
+                                       <?php echo $equipamentos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
+                        <select name="id_funcionario_processo" id="id_funcionario_processo">
+                        <option value="" selected="selected">Funcionário</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_funcionario, nome FROM funcionario");
+                        while($funcionarios = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $funcionarios['id_funcionario']?>">                                                     
+                                       <?php echo $funcionarios['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                   
+
+                        <select name="id_produto_processo" id="id_produto_processo">
+                        <option value="" selected="selected">Produto</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_produto, nome FROM produto");
+                        while($produtos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $produtos['id_produto']?>">                                                     
+                                       <?php echo $produtos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
                         <button type="submit" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
                     </form>
                 </div>
@@ -386,16 +448,64 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_fabricacao.php" method="POST">
-                        id_processo   <input id="id_processo" type="text" name="id_processo" value="" required>
-                        id_receita_processo   <input id="id_receita_processo" type="text" name="id_receita_processo" value="" required>
-                        data_fabricacao  <input id="data_fabricacao" type="text" name="data_fabricacao" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        sequencia_processo <input id="sequencia_processo" type="text" name="sequencia_processo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        id_processo   <input id="id_processo" type="text" name="id_processo" value="" required placeholder="id_processo">
+                        id_receita_processo  <select name="id_receita_processo" id="id_receita_processo">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        data_fabricacao  <input id="data_fabricacao" type="text" name="data_fabricacao" class="span3" required value="" placeholder="data_fabricação" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        sequencia_processo <input id="sequencia_processo" type="text" name="sequencia_processo" class="span3" required value="" placeholder="sequencia_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         descricao_processo<input type="text" id="descricao_processo" name="descricao_processo" class="span3" value="" required placeholder="descricao_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         tempo_execucao<input type="text" id="tempo_execucao" name="tempo_execucao" class="span3" value="" required placeholder="tempo_execucao" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         quantidade<input type="text" id="quantidade" name="quantidade" class="span3" value="" required placeholder="quantidade" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        id_equipamentos_processo<input type="text" id="id_equipamento_processo" name="id_equipamento_processo" class="span3" value="" required placeholder="id_equipamento_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        id_funcionarios_processo<input type="text" id="id_funcionario_processo" name="id_funcionario_processo" class="span3" value="" required placeholder="id_funcionario_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        id_produto_processo<input type="text" id="id_produto_processo" name="id_produto_processo" class="span3" value="" required placeholder="id_produto_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        id_equipamento_processo  <select name="id_equipamento_processo" id="id_equipamento_processo">
+                        <option value="" selected="selected">Equipamento</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_equipamento, nome FROM equipamento");
+                        while($equipamentos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $equipamentos['id_equipamento']?>">                                                     
+                                       <?php echo $equipamentos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        id_funcionarios_processo  <select name="id_funcionario_processo" id="id_funcionario_processo">
+                        <option value="" selected="selected">Funcionário</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_funcionario, nome FROM funcionario");
+                        while($funcionarios = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $funcionarios['id_funcionario']?>">                                                     
+                                       <?php echo $funcionarios['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        id_produto_processo  <select name="id_produto_processo" id="id_produto_processo">
+                        <option value="" selected="selected">Produto</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_produto, nome FROM produto");
+                        while($produtos = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $produtos['id_produto']?>">                                                     
+                                       <?php echo $produtos['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
                         <button type="submit" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
                     </form>
                 </div>
@@ -444,9 +554,9 @@ $db = mysql_select_db('frangelato');
                 
               	    $consulta = "select * from processo_fabricacao";
               	    
-                   	if ($_POST['id'] != '')
+                   	if ($_POST['nome'] != '')
                    	{
-						$consulta = $consulta." where id_processo like '%".$_POST['id']."%'";
+						$consulta = $consulta." where id_processo like '%".$_POST['nome']."%'";
                     }
 					
 					$resultado = mysql_query($consulta);

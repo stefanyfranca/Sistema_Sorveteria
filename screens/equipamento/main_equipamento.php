@@ -69,6 +69,15 @@ $db = mysql_select_db('frangelato');
             padding: 5px;
         }
 
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
+
         table {
             width: 100%;
             margin-top: 20px;
@@ -361,7 +370,21 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
                         <input type="text" id="status" name="status" required placeholder="status">
                         <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
-                        <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="id_fornecedor">
+                        
+                        <select name="id_fornecedor" id="id_fornecedor">
+                        <option value="" selected="selected">Fornecedor</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
+                        while($fornecedores = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
+                                       <?php echo $fornecedores['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
@@ -387,7 +410,19 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
                         <input type="text" id="status" name="status" required placeholder="status">
                         <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
-                        <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="id_fornecedor">
+                        <select name="id_fornecedor" id="id_fornecedor">
+                        <option value="" selected="selected">Fornecedor</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
+                        while($fornecedores = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
+                                       <?php echo $fornecedores['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>

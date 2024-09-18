@@ -21,7 +21,14 @@ $db = mysql_select_db('frangelato');
             height:100%;
             width:100%;
         }
-
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
         .container {
             padding: 20px;
             width:80%;
@@ -356,8 +363,35 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_producao.php" method="POST">
-                        <input type="text" id="id_receita_lote" name="id_receita_lote" class="span3" value="" required placeholder="id_receita_lote" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="id_funcionario_lote" name="id_funcionario_lote" class="span3" value="" required placeholder="id_funcionario_lote" style=" margin-bottom: -2px; height: 25px;"><br><br>
+
+                        <select name="id_receita_lote" id="id_receita_lote">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                    
+
+                        <select name="id_funcionario_lote" id="id_funcionario_lote">
+                        <option value="" selected="selected">Funcionário</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_funcionario, nome FROM funcionario");
+                        while($funcionarios = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $funcionarios['id_funcionario']?>">                                                     
+                                       <?php echo $funcionarios['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                    
+
                         <input type="text" id="quantidade_produzida" name="quantidade_produzida" class="span3" value="" required placeholder="quantidade_produzida" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="data_validade" name="data_validade" class="span3" value="" required placeholder="data_validade" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="observacoes" name="observacoes" class="span3" value="" required placeholder="observacoes" style=" margin-bottom: -2px; height: 25px;"><br><br>
@@ -382,10 +416,35 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_producao.php" method="POST">
-                        id_lote_producao   <input id="id_lote_producao" type="text" name="id_lote_producao" value="" required>
-                        id_receita_lote   <input id="id_receita_lote" type="text" name="id_receita_lote" value="" required>
-                        id_funcionario_lote  <input id="id_funcionario_lote" type="text" name="id_funcionario_lote" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        quantidade_produzida <input id="quantidade_produzida" type="text" name="quantidade_produzida" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        id_lote_producao   <input id="id_lote_producao" type="text" name="id_lote_producao" value="" required placeholder="id_lote_producao">
+                        receita<select name="id_receita_lote" id="id_receita_lote">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>                    
+
+                        funcionario<select name="id_funcionario_lote" id="id_funcionario_lote">
+                        <option value="" selected="selected">Funcionário</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_funcionario, nome FROM funcionario");
+                        while($funcionarios = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $funcionarios['id_funcionario']?>">                                                     
+                                       <?php echo $funcionarios['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        quantidade_produzida <input id="quantidade_produzida" type="text" name="quantidade_produzida" class="span3" required placeholder="quantidade_produzida" value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         data_validade<input type="text" id="data_validade" name="data_validade" class="span3" value="" required placeholder="data_validade" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         observacoes<input type="text" id="observacoes" name="observacoes" class="span3" value="" required placeholder="observacoes" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <button type="submit" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
@@ -419,6 +478,7 @@ $db = mysql_select_db('frangelato');
             </form>
             <table border="1px" bordercolor="gray" class="table table-stripped">
                 <tr>
+                    <th>id_lote_produção</th>
                     <th>id_receita_lote</th>
                     <th>id_funcionario_lote</th>
                     <th>quantidade_produzida</th>
@@ -432,9 +492,9 @@ $db = mysql_select_db('frangelato');
                 
               	    $consulta = "select * from lote_producao";
               	    
-                   	if ($_POST['id'] != '')
+                   	if ($_POST['nome'] != '')
                    	{
-						$consulta = $consulta." where id_lote_producao like '%".$_POST['id']."%'";
+						$consulta = $consulta." where id_lote_producao like '%".$_POST['nome']."%'";
                     }
 					
 					$resultado = mysql_query($consulta);

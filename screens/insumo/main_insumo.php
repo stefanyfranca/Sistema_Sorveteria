@@ -21,7 +21,15 @@ $db = mysql_select_db('frangelato');
             height:100%;
             width:100%;
         }
-
+        
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
         .container {
             padding: 20px;
             width:80%;
@@ -360,7 +368,21 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
                         <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-                        <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
+
+                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
+                        <option value="" selected="selected">Fornecedor</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
+                        while($fornecedores = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
+                                       <?php echo $fornecedores['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
@@ -385,7 +407,21 @@ $db = mysql_select_db('frangelato');
                         <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
                         <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-                        <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
+                                                
+                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
+                        <option value="" selected="selected">Fornecedor</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
+                        while($fornecedores = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
+                                       <?php echo $fornecedores['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
