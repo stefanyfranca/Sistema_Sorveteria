@@ -261,32 +261,34 @@ $db = mysql_select_db('frangelato');
             position: absolute;
         }
     </style>
+    
     <script>
-        var datasarray = [];
-        var quantidadearray = [];
+        var datasjs = [];
+        var quantidadesjs = [];
     </script>
 
     <?php 
             $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao ORDER BY data_fabricacao";
-            $datas = mysql_query($datasSelect);
+            $data = mysql_query($datasSelect);
+            
             $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao ORDER BY data_fabricacao";
             $quantidade = mysql_query($quantidadeSelect);
             
-            while ($quantidadeW = mysql_fetch_array($quantidade)){
-                echo "
-                        <script>
-                            quantidadearray.push($quantidadeW['quantidade'])                        
-                        </script>
-                    ";
-                }
-            
-            while ($datasW = mysql_fetch_array($datas)){
-                echo "
-                        <script>
-                            datasarray.push($datasW['data_fabricacao'])                        
-                        </script>
-                    ";
-                }
+
+            while ($quantidades = mysql_fetch_array($quantidade)) {
+                $x =  $quantidades['quantidade'];
+                
+                echo "<script>
+                    quantidadesjs.push($x);
+                </script>";
+            }
+
+            while ($datas = mysql_fetch_array($data)) {
+                $y =  $datas['data_fabricacao']; 
+                echo "<script>
+                    datasjs.push('$y');
+                </script>";
+            }
     ?>
 </head>
 
@@ -389,10 +391,10 @@ $db = mysql_select_db('frangelato');
         new Chart(ctx, {
           type: 'bar',
           data: {
-            labels: datasarray,
+            labels: datasjs,
             datasets: [{
               label: 'Quantidade Fabricada',
-              data: quantidadearray,
+              data: quantidadesjs,
               borderWidth: 1,
               backgroundColor: '#6B0000',
             }]
