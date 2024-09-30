@@ -260,6 +260,37 @@ $db = mysql_select_db('frangelato');
             margin-top:5%;
             position: absolute;
         }
+
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 100px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            padding: 5px;
+        }
+
+        .date{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 112px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            padding: 5px;
+        }
+
+        .geradorgraficodiv{
+            margin-top:3%;
+            margin-left:20.2%;
+            width:490px;
+            height:28px;
+            position: absolute;
+            color:#6B0000;
+        }
+
+        .btngerar{
+
+        }
     </style>
     
     <script>
@@ -268,31 +299,300 @@ $db = mysql_select_db('frangelato');
     </script>
 
     <?php 
-            $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao ORDER BY data_fabricacao";
-            $data = mysql_query($datasSelect);
-            
-            $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao ORDER BY data_fabricacao";
-            $quantidade = mysql_query($quantidadeSelect);
-            
 
-            while ($quantidades = mysql_fetch_array($quantidade)) {
-                $x =  $quantidades['quantidade'];
+            if (isset($_POST['Gerar']))
+            {
+                $receita = (empty($_POST['receita']))?'null':$_POST['receita'];
+                $datainicio = (empty($_POST['datainicio']))?'null':$_POST['datainicio'];
+                $datafim = (empty($_POST['datafim']))?'null':$_POST['datafim'];
+
+                if (($receita == 'null') and ($datainicio == 'null')  and ($datafim == 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita <> 'null') and ($datainicio == 'null')  and ($datafim == 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita  ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita  ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+
+                if (($receita <> 'null') and ($datainicio <> 'null')  and ($datafim == 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datainicio' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datainicio'  ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita <> 'null') and ($datainicio <> 'null')  and ($datafim <> 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita <> 'null') and ($datainicio == 'null')  and ($datafim <> 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita == 'null') and ($datainicio <> 'null')  and ($datafim <> 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita == 'null') and ($datainicio == 'null')  and ($datafim <> 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+                if (($receita == 'null') and ($datainicio <> 'null')  and ($datafim == 'null'))
+                {
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE data_fabricacao = '$datainicio' ORDER BY data_fabricacao";
+                    $data = mysql_query($datasSelect);
+                    
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE data_fabricacao = '$datainicio' ORDER BY data_fabricacao";
+                    $quantidade = mysql_query($quantidadeSelect);
+                    
+        
+                    while ($quantidades = mysql_fetch_array($quantidade)) {
+                        $x =  $quantidades['quantidade'];
+                        
+                        echo "<script>
+                            quantidadesjs.push($x);
+                        </script>";
+                    }
+        
+                    while ($datas = mysql_fetch_array($data)) {
+                        $y =  $datas['data_fabricacao']; 
+                        echo "<script>
+                            datasjs.push('$y');
+                        </script>";
+                    }
+                }
+
+            }
+
+            else{
+                $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao ORDER BY data_fabricacao";
+                $data = mysql_query($datasSelect);
                 
-                echo "<script>
-                    quantidadesjs.push($x);
-                </script>";
+                $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao ORDER BY data_fabricacao";
+                $quantidade = mysql_query($quantidadeSelect);
+                
+    
+                while ($quantidades = mysql_fetch_array($quantidade)) {
+                    $x =  $quantidades['quantidade'];
+                    
+                    echo "<script>
+                        quantidadesjs.push($x);
+                    </script>";
+                }
+    
+                while ($datas = mysql_fetch_array($data)) {
+                    $y =  $datas['data_fabricacao']; 
+                    echo "<script>
+                        datasjs.push('$y');
+                    </script>";
+                }
             }
 
-            while ($datas = mysql_fetch_array($data)) {
-                $y =  $datas['data_fabricacao']; 
-                echo "<script>
-                    datasjs.push('$y');
-                </script>";
-            }
+
+
     ?>
 </head>
 
 <body>
+    <div class="geradorgraficodiv">
+    <form name="geradorgrafico" method="post" action="widgets.php">
+    <label for="">Receita: </label>
+        <select name="receita">
+        <option value="" selected="selected">Todas</option>
+
+        <?php
+        $query = mysql_query("SELECT id_receita, nome FROM receita");
+        while($receitas = mysql_fetch_array($query))
+        {
+            ?>
+        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                       <?php echo $receitas['nome']  ?></option>
+        <?php }
+        ?>
+        </select>
+
+    <label for="">De: </label>
+            <input type="date" name="datainicio" class="date">
+    <label for="">A: </label>
+            <input type="date" name="datafim" class="date">
+
+    <input  type="submit" name="Gerar"  id="gerar" value="gerar" class="btngerar">
+
+
+    </form>
+        </div>
+    <!-- Grafico fabricação -->
+    <div class="graficos">
+        <canvas id="graficoFabricacao" width="300px" height="200px" >"</canvas>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <script>
+        const ctx = document.getElementById('graficoFabricacao');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: datasjs,
+            datasets: [{
+              label: 'Quantidade Fabricada',
+              data: quantidadesjs,
+              borderWidth: 1,
+              backgroundColor: '#6B0000',
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      </script>
 <div class="lateral">
 <p class="txtfrangelato">FRANGELATO</p> 
 
@@ -379,34 +679,7 @@ $db = mysql_select_db('frangelato');
 
 <a href="/SISTEMA_SORVETERIA/login.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><p class="logout">Log Out</p></a>
 
-
 </div>
-<!-- Grafico fabricação -->
-    <div class="graficos">
-        <canvas id="graficoFabricacao" width="300px" height="200px" >"</canvas>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-      <script>
-        const ctx = document.getElementById('graficoFabricacao');
-        new Chart(ctx, {
-          type: 'bar',
-          data: {
-            labels: datasjs,
-            datasets: [{
-              label: 'Quantidade Fabricada',
-              data: quantidadesjs,
-              borderWidth: 1,
-              backgroundColor: '#6B0000',
-            }]
-          },
-          options: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
-      </script>
+
     </body>
     </html>
