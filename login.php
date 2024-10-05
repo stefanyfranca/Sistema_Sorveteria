@@ -22,10 +22,10 @@ if (isset($_POST['conectar'])) {
 
     if ($resultado->num_rows == 0) {
         // Se o login falhar, exibe a mensagem de erro
-        $mensagem_erro = "Login ou senha inválido...";
+        $mensagem_erro = "CPF ou senha inválida...";
     } else {
         $_SESSION['cpf'] = $cpf;
-        header("Location: screens/widgets/widgets.php");
+        header("Location: screens/funcionario/main_funcionario.php");
         exit(); // Importante para evitar que o script continue após o redirecionamento
     }
 
