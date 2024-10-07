@@ -255,6 +255,65 @@ $db = mysql_select_db('frangelato');
         }
     </style>
     <script>
+        var contador = 0;
+
+        function excinsumo(a){
+            let numeromenos = 0;
+            let numero = a;
+            let para = 0;
+            let elemento = document.getElementById("insumo"+a+"");
+            elemento.remove();
+            elemento = document.getElementById("quantidade_insumo"+a+"");
+            elemento.remove();
+            elemento = document.getElementById("botaoexc"+a+"");
+            elemento.remove();
+            contador -= 1;
+            while(para != 1){
+                numero += 1;
+                if(document.querySelector("#insumo"+numero+"")){
+                    numeromenos = numero - 1;
+                    elemento = document.querySelector("#insumo"+numero+"")
+                    elemento.setAttribute("name", "insumo"+numeromenos+"");
+                    elemento.setAttribute("id", "insumo"+numeromenos+"");
+
+                    elemento = document.querySelector("#quantidade_insumo"+numero+"")
+                    elemento.setAttribute("name", "quantidade_insumo"+numeromenos+"");
+                    elemento.setAttribute("id", "quantidade_insumo"+numeromenos+"");
+
+                    elemento = document.querySelector("#botaoexc"+numero+"")
+                    elemento.setAttribute("name", "botaoexc"+numeromenos+"");
+                    elemento.setAttribute("id", "botaoexc"+numeromenos+"");
+                    elemento.setAttribute("onclick", "excinsumo("+numeromenos+")");
+                }
+                else{
+                    para = 1;
+                }
+            }
+        }
+
+        function addinsumo(){
+            if(contador<5){
+            contador += 1;
+            let modal = document.querySelector('.modal-body1');
+            let novoselect = `<select id="insumo`+contador+`" name="insumo`+contador+`">
+                        <option value="" selected="selected">Todos</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumo = mysql_fetch_array($query))
+                        {
+                        ?>
+                        <option value="<?php echo $insumo["id_insumo"]?>">                                                     
+                        <?php echo $insumo["nome"]  ?></option>
+                        <?php }
+                        ?>
+                        </select>
+                        <input type="text" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
+                        <button id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
+            
+            modal.insertAdjacentHTML('beforeend', novoselect);
+                        }
+        }
 
     </script>
 </head>
@@ -355,10 +414,26 @@ $db = mysql_select_db('frangelato');
                 <div class="modal-header">
                     <h1>Adicionar um registro ...</h1>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body1">
                     <form class="form-group well" action="adicionar_receita.php" method="POST">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
+                        
+                        <select name="insumo0">
+                        <option value="" selected="selected">Todos</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumo = mysql_fetch_array($query))
+                        {
+                        ?>
+                        <option value="<?php echo $insumo['id_insumo']?>">                                                     
+                        <?php echo $insumo['nome']  ?></option>
+                        <?php }
+                        ?>
+                        </select>
+                        <input type="text" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
+                        <button onclick="addinsumo()">Insumo+</button>
                         <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
                         <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
                         <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">

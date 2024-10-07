@@ -333,10 +333,10 @@ $db = mysql_select_db('frangelato');
 
                 if (($receita <> 'null') and ($datainicio == 'null')  and ($datafim == 'null'))
                 {
-                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita  ORDER BY data_fabricacao";
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_produto_processo = $receita  ORDER BY data_fabricacao";
                     $data = mysql_query($datasSelect);
                     
-                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita  ORDER BY data_fabricacao";
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_produto_processo = $receita  ORDER BY data_fabricacao";
                     $quantidade = mysql_query($quantidadeSelect);
                     
         
@@ -359,10 +359,10 @@ $db = mysql_select_db('frangelato');
 
                 if (($receita <> 'null') and ($datainicio <> 'null')  and ($datafim == 'null'))
                 {
-                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datainicio' ORDER BY data_fabricacao";
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao = '$datainicio' ORDER BY data_fabricacao";
                     $data = mysql_query($datasSelect);
                     
-                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datainicio'  ORDER BY data_fabricacao";
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao = '$datainicio'  ORDER BY data_fabricacao";
                     $quantidade = mysql_query($quantidadeSelect);
                     
         
@@ -384,10 +384,10 @@ $db = mysql_select_db('frangelato');
 
                 if (($receita <> 'null') and ($datainicio <> 'null')  and ($datafim <> 'null'))
                 {
-                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
                     $data = mysql_query($datasSelect);
                     
-                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao >= '$datainicio' AND data_fabricacao <= '$datafim' ORDER BY data_fabricacao";
                     $quantidade = mysql_query($quantidadeSelect);
                     
         
@@ -409,10 +409,10 @@ $db = mysql_select_db('frangelato');
 
                 if (($receita <> 'null') and ($datainicio == 'null')  and ($datafim <> 'null'))
                 {
-                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $datasSelect = "SELECT data_fabricacao FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
                     $data = mysql_query($datasSelect);
                     
-                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_receita_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
+                    $quantidadeSelect = "SELECT quantidade FROM processo_fabricacao WHERE id_produto_processo = $receita AND data_fabricacao = '$datafim' ORDER BY data_fabricacao";
                     $quantidade = mysql_query($quantidadeSelect);
                     
         
@@ -541,16 +541,16 @@ $db = mysql_select_db('frangelato');
 <body>
     <div class="geradorgraficodiv">
     <form name="geradorgrafico" method="post" action="widgets.php">
-    <label for="">Receita: </label>
+    <label for="">Produto: </label>
         <select name="receita">
-        <option value="" selected="selected">Todas</option>
+        <option value="" selected="selected">Todos</option>
 
         <?php
-        $query = mysql_query("SELECT id_receita, nome FROM receita");
+        $query = mysql_query("SELECT id_produto, nome FROM produto");
         while($receitas = mysql_fetch_array($query))
         {
             ?>
-        <option value="<?php echo $receitas['id_receita']?>">                                                     
+        <option value="<?php echo $receitas['id_produto']?>">                                                     
                        <?php echo $receitas['nome']  ?></option>
         <?php }
         ?>
