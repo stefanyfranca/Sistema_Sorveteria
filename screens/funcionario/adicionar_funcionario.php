@@ -1,12 +1,11 @@
 <?php
     $cpf = $_POST['cpf'];
     $nome   = $_POST['nome'];
-    $salario  = $_POST['salario'];
     $tipo  = $_POST['tipo'];
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "insert into funcionario (cpf,nome,salario,tipo) values ('$cpf','$nome','$salario','$tipo')";
+    $sql       = "insert into funcionario (cpf,nome,tipo) values ('$cpf','$nome','$tipo')";
     $resultado = mysql_query($sql);
 ?>
 

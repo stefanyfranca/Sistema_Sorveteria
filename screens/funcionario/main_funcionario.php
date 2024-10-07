@@ -381,7 +381,6 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="alterar_funcionario.php" method="POST">
                         cpf   <input id="cpf" type="text" name="cpf" value="" required>
                         nome  <input id="nome" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        salario <input id="salario" type="text" name="salario" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;">
                         tipo <input id="tipo" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <button type="submit" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
                     </form>
@@ -405,7 +404,6 @@ $db = mysql_select_db('frangelato');
                     <form class="form-group well" action="excluir_funcionario.php" method="GET">
                         cpf <input id="cpf" type="text" name="cpf" value="" required>
                         nome <input id="nome" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        salario <input id="salario" type="text" name="salario" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;">
                         tipo <input id="tipo" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <button type="submit" class="btn btn-success btn-large" name="excluir" style="height: 35px">Excluir</button>
                     </form>
@@ -438,7 +436,6 @@ $db = mysql_select_db('frangelato');
                 <tr>
                     <th>cpf</th>
                     <th>nome</th>
-                    <th>salário</th>
                     <th>tipo</th>
                     <th>Operação</th>
                 </tr>
@@ -457,12 +454,11 @@ $db = mysql_select_db('frangelato');
 
 					while ($dados = mysql_fetch_array($resultado))
                     {
-						$strdados = $dados['cpf']."*".$dados['nome']."*".$dados['salario']."*".$dados['tipo'];
+						$strdados = $dados['cpf']."*".$dados['nome']."*".$dados['tipo'];
 				    ?>
                     <tr>
                         <td><?php echo $dados['cpf']; ?></td>
-                        <td><?php echo $dados['nome']; ?></td>
-                        <td><?php echo $dados['salario']; ?></td>
+                        <td><?php echo $dados['nome']; ?></td>  
                         <td><?php echo $dados['tipo']; ?></td>
                         <td>
 							<?php 

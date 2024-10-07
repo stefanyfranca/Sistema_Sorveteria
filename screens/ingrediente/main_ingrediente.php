@@ -104,10 +104,11 @@ $db = mysql_select_db('frangelato');
         .table-btn {
             display: flex;
             justify-content: center;
+            padding-left: 5px;
         }
 
         .table-btn button {
-            margin: 5px;
+            
         }
         .lateral {
             background-color:#FFFFFF;
@@ -540,9 +541,9 @@ $db = mysql_select_db('frangelato');
                         <td><?php echo $dados['unidade_medida']; ?></td>
                         <td><?php echo $dados['observacoes']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_ingrediente.php?id_ingrediente=<?php echo $dados['id_ingrediente']; ?>" class="btn btn-danger">Excluir</a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
-                        </td>
+                        <a href="excluir_ingrediente.php?id_ingrediente=<?php echo $dados['id_ingrediente']; ?>" class="btn btn-danger" style="margin-right: 10px;">Excluir</a>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
+
                     </tr>
                     <?php
                 }
