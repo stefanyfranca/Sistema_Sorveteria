@@ -60,7 +60,7 @@ $db = mysql_select_db('frangelato');
             color: #fff;
         }
 
-        .form-group input[type="text"] {
+        .textoForm{   
             margin-bottom: 10px;
             height: 28px;
             border-radius: 5px;
@@ -253,6 +253,50 @@ $db = mysql_select_db('frangelato');
             margin-top: 5px;
             margin-left: 3px;
         }
+
+        .selectInsumo{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 265px;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+
+        .textInsumo{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 265px;
+            border-radius: 5px;
+            border: 1px solid #333;
+        }
+        
+        .btnInsumo{
+            background-color:#6B0000;
+            border: none;
+            color:white;
+            border-radius:4px;
+        }
+
+        .divinsumos{
+            width: 600px;
+        }
+        
+        .btnAdicionar{
+            background-color:green;
+            margin-bottom:10px;
+            border:none;
+            border-radius:4px;
+            color:white;
+        }
+
+        .alerta{
+            height:500px;
+            width:500px;
+            background-color:red;
+            color:white;
+            border-radius:5px;
+
+        }
     </style>
     <script>
         var contador = 0;
@@ -292,10 +336,10 @@ $db = mysql_select_db('frangelato');
         }
 
         function addinsumo(){
-            if(contador<5){
+            if(contador<30){
             contador += 1;
-            let modal = document.querySelector('.modal-body1');
-            let novoselect = `<select id="insumo`+contador+`" name="insumo`+contador+`">
+            let modal = document.querySelector('.divinsumos');
+            let novoselect = `<select id="insumo`+contador+`" class="selectInsumo" name="insumo`+contador+`">
                         <option value="" selected="selected">Todos</option>
 
                         <?php
@@ -308,11 +352,16 @@ $db = mysql_select_db('frangelato');
                         <?php }
                         ?>
                         </select>
-                        <input type="text" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
-                        <button id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
+                        <input type="text" class="textInsumo" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
+                        <button class="btnInsumo" id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
             
             modal.insertAdjacentHTML('beforeend', novoselect);
                         }
+            else{
+                let local = document.querySelector('#myModalCadastrar');
+                let aviso = `<div class="alerta">Numero maximo de insumos atingido!</div>`; 
+                local.insertAdjacentHTML('beforebegin', aviso);
+            }
         }
 
     </script>
@@ -416,10 +465,10 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body1">
                     <form class="form-group well" action="adicionar_receita.php" method="POST">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
                         
-                        <select name="insumo0">
+                        <select name="insumo0" class="selectInsumo">
                         <option value="" selected="selected">Todos</option>
 
                         <?php
@@ -432,11 +481,12 @@ $db = mysql_select_db('frangelato');
                         <?php }
                         ?>
                         </select>
-                        <input type="text" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
-                        <button onclick="addinsumo()">Insumo+</button>
-                        <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
-                        <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
-                        <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
+                        <input type="text" class="textInsumo" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
+                        <div class="divinsumos"></div>
+                        <button class="btnAdicionar" onclick="addinsumo()">Insumo +</button>
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
+                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                         <button type="submit" class="btn" name="exportar">Exportar</button>
                     </form>
@@ -457,12 +507,12 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_receita.php" method="POST">
-                        <input type="text" id="id_receita" name="id_receita" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
-                        <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
+                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
+                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
@@ -482,12 +532,12 @@ $db = mysql_select_db('frangelato');
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="excluir_receita.php" method="GET">
-                        <input type="text" id="id_receita" name="id_receita" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
-                        <input type="text" id="custo_total" name="custo_total" required placeholder="custo_total">
+                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
+                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="excluir">Excluir</button>
                     </form>
                 </div>
