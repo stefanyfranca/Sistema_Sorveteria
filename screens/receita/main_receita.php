@@ -486,7 +486,6 @@ $db = mysql_select_db('frangelato');
                         <button class="btnAdicionar" onclick="addinsumo()">Insumo +</button>
                         <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
                         <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
-                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                         <button type="submit" class="btn" name="exportar">Exportar</button>
                     </form>
