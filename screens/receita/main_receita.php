@@ -76,22 +76,18 @@ $db = mysql_select_db('frangelato');
             border-collapse: collapse;
         }
 
-        table,
-        th,
+
         td {
             border: 1px solid #B7B7B7;
-        }
-
-        th,
-        td {
-            padding: 10px;
+            height: 50px;
             text-align: left;
+            vertical-align: center;
         }
 
         th {
-            background-color: #fff;
-            color: #B7B7B7;
+            height:20px;
         }
+
 
         .table-btn {
             display: flex;
@@ -101,6 +97,7 @@ $db = mysql_select_db('frangelato');
         .table-btn button {
             margin: 5px;
         }
+
         .lateral {
             background-color:#FFFFFF;
             height:100%;
@@ -108,6 +105,7 @@ $db = mysql_select_db('frangelato');
             position:absolute;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
+
         .botaoArea1{
             margin-top:15%;
             height:40px;
@@ -282,7 +280,7 @@ $db = mysql_select_db('frangelato');
         }
         
         .btnAdicionar{
-            background-color:green;
+            background-color:#6B0000;
             margin-bottom:10px;
             border:none;
             border-radius:4px;
@@ -290,16 +288,37 @@ $db = mysql_select_db('frangelato');
         }
 
         .alerta{
-            height:100px;
-            width:599px;
-            background-color:red;
-            color:white;
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
             border-radius:5px;
-            margin-left:27.5%;
+            border-width:2px;
+            margin-left:38%;
             position: fixed;
             z-index: 100;
+            margin-top:20%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnalerta{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
         }
         
+        .textoAlerta{
+            margin-left:30px;
+            margin-top:45px;
+            height:10px;
+            
+        }
+
     </style>
     <script>
         var contador = 0;
@@ -339,11 +358,11 @@ $db = mysql_select_db('frangelato');
         }
 
         function addinsumo(){
-            if(contador<3){
+            if(contador<30){
             contador += 1;
             let modal = document.querySelector('.divinsumos');
             let novoselect = `<select id="insumo`+contador+`" class="selectInsumo" name="insumo`+contador+`">
-                        <option value="" selected="selected">Todos</option>
+                        <option value="" selected="selected">Selecione...</option>
 
                         <?php
                         $query = mysql_query("SELECT id_insumo, nome FROM insumo");
@@ -363,7 +382,7 @@ $db = mysql_select_db('frangelato');
             else{
                 if(document.querySelector("#alerta") == null){
                     let local = document.querySelector('#myModalCadastrar');
-                    let aviso = `<div class="alerta" id="alerta">Numero maximo de insumos atingido! <button class="btnalerta" onclick="deletarAlerta()">X</button></div>`; 
+                    let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">Numero maximo de insumos atingido!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
                     local.insertAdjacentHTML('afterbegin', aviso);
                 }
             }
@@ -476,7 +495,7 @@ $db = mysql_select_db('frangelato');
                         <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
                         
                         <select name="insumo0" class="selectInsumo">
-                        <option value="" selected="selected">Todos</option>
+                        <option value="" selected="selected">Selecione...</option>
 
                         <?php
                         $query = mysql_query("SELECT id_insumo, nome FROM insumo");
@@ -596,12 +615,12 @@ $db = mysql_select_db('frangelato');
                     $strdados = $dados['id_receita'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['tempo_preparo'] . "*" . $dados['quantidade_produzida'] . "*" . $dados['custo_total'];
                     ?>
                     <tr>
-                        <td><?php echo $dados['id_receita']; ?></td>
-                        <td><?php echo $dados['nome']; ?></td>
-                        <td><?php echo $dados['descricao']; ?></td>
-                        <td><?php echo $dados['tempo_preparo']; ?></td>
-                        <td><?php echo $dados['quantidade_produzida']; ?></td>
-                        <td><?php echo $dados['custo_total']; ?></td>
+                        <td ><?php echo $dados['id_receita']; ?></td>
+                        <td ><?php echo $dados['nome']; ?></td>
+                        <td ><?php echo $dados['descricao']; ?></td>
+                        <td ><?php echo $dados['tempo_preparo']; ?></td>
+                        <td ><?php echo $dados['quantidade_produzida']; ?></td>
+                        <td ><?php echo $dados['custo_total']; ?></td>
                         <td class="table-btn">
                             <a href="excluir_receita.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger">Excluir</a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
