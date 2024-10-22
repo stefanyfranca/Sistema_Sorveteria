@@ -131,7 +131,7 @@ $db = mysql_select_db('frangelato');
 
         .opcoes{
             height:40px;
-            width: 260px;
+            width: 180px;
             background-color:#F7F7F7;
             position:absolute;
             margin-left:220px;
@@ -144,7 +144,7 @@ $db = mysql_select_db('frangelato');
         }
         .opcoes2{
             height:40px;
-            width: 350px;
+            width: 240px;
             background-color:#F7F7F7;
             position:absolute;
             margin-left:220px;
@@ -303,7 +303,6 @@ $db = mysql_select_db('frangelato');
     <div class="opcoes2">
         
            <a href="/SISTEMA_SORVETERIA/screens/equipamento/main_equipamento.php" class="a1">Equipamento</a>
-           <a href="/SISTEMA_SORVETERIA/screens/lote_producao/main_lote_producao.php" class="a1">Lote-produção</a>
            <a href="/SISTEMA_SORVETERIA/screens/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
         
     </div>
@@ -329,7 +328,6 @@ $db = mysql_select_db('frangelato');
         
            <a href="/SISTEMA_SORVETERIA/screens/receita/main_receita.php" class="a1">Receita</a>
            <a href="/SISTEMA_SORVETERIA/screens/produto/main_produto.php" class="a1">Produto</a>
-           <a href="/SISTEMA_SORVETERIA/screens/ingrediente/main_ingrediente.php" class="a1">Ingrediente</a>
         
     </div>
 </div>

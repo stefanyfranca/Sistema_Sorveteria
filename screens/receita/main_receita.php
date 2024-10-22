@@ -131,7 +131,7 @@ $db = mysql_select_db('frangelato');
 
         .opcoes{
             height:40px;
-            width: 260px;
+            width: 180px;
             background-color:#F7F7F7;
             position:absolute;
             margin-left:220px;
@@ -144,7 +144,7 @@ $db = mysql_select_db('frangelato');
         }
         .opcoes2{
             height:40px;
-            width: 350px;
+            width: 240px;
             background-color:#F7F7F7;
             position:absolute;
             margin-left:220px;
@@ -290,13 +290,16 @@ $db = mysql_select_db('frangelato');
         }
 
         .alerta{
-            height:500px;
-            width:500px;
+            height:100px;
+            width:599px;
             background-color:red;
             color:white;
             border-radius:5px;
-
+            margin-left:27.5%;
+            position: fixed;
+            z-index: 100;
         }
+        
     </style>
     <script>
         var contador = 0;
@@ -336,7 +339,7 @@ $db = mysql_select_db('frangelato');
         }
 
         function addinsumo(){
-            if(contador<30){
+            if(contador<3){
             contador += 1;
             let modal = document.querySelector('.divinsumos');
             let novoselect = `<select id="insumo`+contador+`" class="selectInsumo" name="insumo`+contador+`">
@@ -358,12 +361,18 @@ $db = mysql_select_db('frangelato');
             modal.insertAdjacentHTML('beforeend', novoselect);
                         }
             else{
-                let local = document.querySelector('#myModalCadastrar');
-                let aviso = `<div class="alerta">Numero maximo de insumos atingido!</div>`; 
-                local.insertAdjacentHTML('beforebegin', aviso);
+                if(document.querySelector("#alerta") == null){
+                    let local = document.querySelector('#myModalCadastrar');
+                    let aviso = `<div class="alerta" id="alerta">Numero maximo de insumos atingido! <button class="btnalerta" onclick="deletarAlerta()">X</button></div>`; 
+                    local.insertAdjacentHTML('afterbegin', aviso);
+                }
             }
         }
 
+        function deletarAlerta(){
+            let alerta = document.getElementById("alerta");
+            alerta.remove();
+        }
     </script>
 </head>
 
@@ -411,7 +420,6 @@ $db = mysql_select_db('frangelato');
     <div class="opcoes2">
         
            <a href="/SISTEMA_SORVETERIA/screens/equipamento/main_equipamento.php" class="a1">Equipamento</a>
-           <a href="/SISTEMA_SORVETERIA/screens/lote_producao/main_lote_producao.php" class="a1">Lote-produção</a>
            <a href="/SISTEMA_SORVETERIA/screens/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
         
     </div>
@@ -437,7 +445,6 @@ $db = mysql_select_db('frangelato');
         
            <a href="/SISTEMA_SORVETERIA/screens/receita/main_receita.php" class="a1">Receita</a>
            <a href="/SISTEMA_SORVETERIA/screens/produto/main_produto.php" class="a1">Produto</a>
-           <a href="/SISTEMA_SORVETERIA/screens/ingrediente/main_ingrediente.php" class="a1">Ingrediente</a>
         
     </div>
 </div>
@@ -496,7 +503,7 @@ $db = mysql_select_db('frangelato');
             </div>
         </div>
     </div>
-
+    
     <!--Modal Alterar-->
     <div class="modal fade" id="myModalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
