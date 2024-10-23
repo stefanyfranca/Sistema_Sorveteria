@@ -105,7 +105,7 @@ $db = mysql_select_db('frangelato');
             background-color:#FFFFFF;
             height:100%;
             width:220px;
-            position:absolute;
+            position:fixed;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
         .botaoArea1{
@@ -254,8 +254,19 @@ $db = mysql_select_db('frangelato');
             margin-left: 3px;
         }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
+        function gerarPDF(){
+            const tabela = document.querySelector('#teste');
 
+            const options = {
+                margin: [10,10,10,10],
+                filename: "Relatório Usuário.pdf",
+                html2Canvas: {scale: 2},
+                jsPDF: {unit:"mm", format:"a4", orientation:"portrait"},
+            };
+            html2pdf().set(options).from(tabela).save();
+        }
     </script>
 </head>
 
@@ -428,11 +439,11 @@ $db = mysql_select_db('frangelato');
     </button>
 
     <!-- Botão "Exportar" com ícone de exportação -->
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModalExportar">
+    <button type="button" class="btn" data-toggle="modal" data-target="#myModalExportar" onclick="gerarPDF()">
         <i class="fas fa-file-export"></i> Exportar
     </button>
             </form>
-            <table class="table table-stripped">
+            <table id= "teste" class="table table-stripped">
                 <tr>
                     <th>cpf</th>
                     <th>nome</th>

@@ -22,6 +22,10 @@ $db = mysql_select_db('frangelato');
             width:100%;
         }
 
+        .titulo{
+            align: 'center'
+        }
+
         .container {
             padding: 20px;
             width:80%;
@@ -539,6 +543,7 @@ $db = mysql_select_db('frangelato');
 </head>
 
 <body>
+<h2>USUÁRIOS </h2><br>
     <div class="geradorgraficodiv">
     <form name="geradorgrafico" method="post" action="widgets.php">
     <label for="">Produto: </label>
