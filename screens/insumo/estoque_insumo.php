@@ -8,7 +8,7 @@ $db = mysql_select_db('frangelato');
 
 <head>
     <meta charset="UTF-8">
-    <title>Pesquisa receita</title>
+    <title>Estoque insumo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -359,7 +359,7 @@ $db = mysql_select_db('frangelato');
         }
         
         .textoAlerta{
-            margin-left:30px;
+            margin-left:55px;
             margin-top:45px;
             height:10px;
             
@@ -370,79 +370,70 @@ $db = mysql_select_db('frangelato');
         }
 
     </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        var contador = 0;
+            function modalidAdicionar(id){
+                $('#myModalAlterar').modal('show');
+                
+                let local = document.querySelector('#formAdicionar');
+                    let escondido = `<input type="hidden" name="id_insumo" id="escondido" value="`+id+`" />`; 
+                    local.insertAdjacentHTML('afterbegin', escondido);
+            }
+            
+            $(document).ready(function(){
+                $('#myModalAlterar').on('hidden.bs.modal', function () {
 
-        function excinsumo(a){
-            let numeromenos = 0;
-            let numero = a;
-            let para = 0;
-            let elemento = document.getElementById("insumo"+a+"");
-            elemento.remove();
-            elemento = document.getElementById("quantidade_insumo"+a+"");
-            elemento.remove();
-            elemento = document.getElementById("botaoexc"+a+"");
-            elemento.remove();
-            contador -= 1;
-            while(para != 1){
-                numero += 1;
-                if(document.querySelector("#insumo"+numero+"")){
-                    numeromenos = numero - 1;
-                    elemento = document.querySelector("#insumo"+numero+"")
-                    elemento.setAttribute("name", "insumo"+numeromenos+"");
-                    elemento.setAttribute("id", "insumo"+numeromenos+"");
+                let escondido = document.getElementById("escondido");
+                escondido.remove();
+                
+                });
+                $('#myModalExcluir').on('hidden.bs.modal', function () {
 
-                    elemento = document.querySelector("#quantidade_insumo"+numero+"")
-                    elemento.setAttribute("name", "quantidade_insumo"+numeromenos+"");
-                    elemento.setAttribute("id", "quantidade_insumo"+numeromenos+"");
+                let escondido = document.getElementById("escondido");
+                escondido.remove();
+                let btnRetirar = document.getElementById("btnRetirar");
+                btnRetirar.remove();
 
-                    elemento = document.querySelector("#botaoexc"+numero+"")
-                    elemento.setAttribute("name", "botaoexc"+numeromenos+"");
-                    elemento.setAttribute("id", "botaoexc"+numeromenos+"");
-                    elemento.setAttribute("onclick", "excinsumo("+numeromenos+")");
+                }); 
+            });
+
+            function modalidRetirar(id, quantidade){
+                $('#myModalExcluir').modal('show');
+                
+                let local = document.querySelector('#formRetirar');
+                    let escondido = `<input type="hidden" name="id_insumo" id="escondido" value="`+id+`" />`; 
+                    local.insertAdjacentHTML('afterbegin', escondido);
+                
+                    local = document.querySelector('#formRetirar');
+                    let submit = `<button type="button" id="btnRetirar" class="btn" name="retirar" onclick="submitCondicionado(`+quantidade+`)">retirar</button>`; 
+                    local.insertAdjacentHTML('afterend', submit);
+                    
+            }
+
+            function submitCondicionado(quantidade){
+                
+                let quantidadeRetirar = document.getElementById('quantidade_retirar').value;
+
+                if (quantidadeRetirar <= quantidade){
+                document.getElementById("formRetirar").submit();
                 }
                 else{
-                    para = 1;
-                }
-            }
-        }
-
-        function addinsumo(){
-            if(contador<30){
-            contador += 1;
-            let modal = document.querySelector('.divinsumos');
-            let novoselect = `<select id="insumo`+contador+`" class="selectInsumo" name="insumo`+contador+`">
-                        <option value="" selected="selected">Selecione...</option>
-
-                        <?php
-                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
-                        while($insumo = mysql_fetch_array($query))
-                        {
-                        ?>
-                        <option value="<?php echo $insumo["id_insumo"]?>">                                                     
-                        <?php echo $insumo["nome"]  ?></option>
-                        <?php }
-                        ?>
-                        </select>
-                        <input type="text" class="textInsumo" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
-                        <button class="btnInsumo" id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
-            
-            modal.insertAdjacentHTML('beforeend', novoselect);
-                        }
-            else{
-                if(document.querySelector("#alerta") == null){
-                    let local = document.querySelector('#myModalCadastrar');
-                    let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">Numero maximo de insumos atingido!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
+                    if(document.querySelector("#alerta") == null){
+                    let local = document.querySelector('#myModalExcluir');
+                    let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">Quantidade supera o estoque!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
                     local.insertAdjacentHTML('afterbegin', aviso);
                 }
+                }
             }
-        }
 
-        function deletarAlerta(){
+            function deletarAlerta(){
             let alerta = document.getElementById("alerta");
             alerta.remove();
-        }
+            }
+            
     </script>
+
 </head>
 
 <body>
@@ -496,19 +487,19 @@ $db = mysql_select_db('frangelato');
 
 <a href="/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php">
 <div class="botaoArea2">
-    <div class=botaoB>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M221-120q-27 0-48-16.5T144-179L42-549q-5-19 6.5-35T80-600h190l176-262q5-8 14-13t19-5q10 0 19 5t14 13l176 262h192q20 0 31.5 16t6.5 35L816-179q-8 26-29 42.5T739-120H221Zm-1-80h520l88-320H132l88 320Zm260-80q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM367-600h225L479-768 367-600Zm113 240Z"/></svg>
-            <p class="paraBotaoB">Insumos</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+    <div class=botaoA>
+    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#fff"><path d="M221-120q-27 0-48-16.5T144-179L42-549q-5-19 6.5-35T80-600h190l176-262q5-8 14-13t19-5q10 0 19 5t14 13l176 262h192q20 0 31.5 16t6.5 35L816-179q-8 26-29 42.5T739-120H221Zm-1-80h520l88-320H132l88 320Zm260-80q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM367-600h225L479-768 367-600Zm113 240Z"/></svg>
+            <p class="paraBotaoA">Insumos</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fff" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
     </div>
 </div>
 </a>
 
 <div class="botaoArea1">
-    <div class=botaoA>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#fff"><path d="M482-40 294-400q-71 3-122.5-41T120-560q0-51 29.5-92t74.5-58q18-91 89.5-150.5T480-920q95 0 166.5 59.5T736-710q45 17 74.5 58t29.5 92q0 75-53 119t-119 41L482-40ZM280-480q15 0 29.5-5t26.5-17l22-22 26 16q21 14 45.5 21t50.5 7q26 0 50.5-7t45.5-21l26-16 22 22q12 12 26.5 17t29.5 5q33 0 56.5-23.5T760-560q0-30-19-52.5T692-640l-30-4-2-32q-5-69-57-116.5T480-840q-71 0-123 47.5T300-676l-2 32-30 6q-30 6-49 27t-19 51q0 33 23.5 56.5T280-480Zm202 266 108-210q-24 12-52 18t-58 6q-27 0-54.5-6T372-424l110 210Zm-2-446Z"/></svg>
-            <p class="paraBotaoA">Produtos</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fff" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+    <div class=botaoB>
+    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M482-40 294-400q-71 3-122.5-41T120-560q0-51 29.5-92t74.5-58q18-91 89.5-150.5T480-920q95 0 166.5 59.5T736-710q45 17 74.5 58t29.5 92q0 75-53 119t-119 41L482-40ZM280-480q15 0 29.5-5t26.5-17l22-22 26 16q21 14 45.5 21t50.5 7q26 0 50.5-7t45.5-21l26-16 22 22q12 12 26.5 17t29.5 5q33 0 56.5-23.5T760-560q0-30-19-52.5T692-640l-30-4-2-32q-5-69-57-116.5T480-840q-71 0-123 47.5T300-676l-2 32-30 6q-30 6-49 27t-19 51q0 33 23.5 56.5T280-480Zm202 266 108-210q-24 12-52 18t-58 6q-27 0-54.5-6T372-424l110 210Zm-2-446Z"/></svg>
+            <p class="paraBotaoB">Produtos</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
     </div>
     <div class="opcoes">
         
@@ -532,62 +523,18 @@ $db = mysql_select_db('frangelato');
 
 
 </div>
-    <!--Modal Cadastrar-->
-    <div class="modal fade" id="myModalCadastrar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1>Adicionar um registro ...</h1>
-                </div>
-                <div class="modal-body1">
-                    <form class="form-group well" action="adicionar_receita.php" method="POST">
-                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
-                        
-                        <select name="insumo0" class="selectInsumo">
-                        <option value="" selected="selected">Selecione...</option>
-
-                        <?php
-                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
-                        while($insumo = mysql_fetch_array($query))
-                        {
-                        ?>
-                        <option value="<?php echo $insumo['id_insumo']?>">                                                     
-                        <?php echo $insumo['nome']  ?></option>
-                        <?php }
-                        ?>
-                        </select>
-                        <input type="text" class="textInsumo" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
-                        <div class="divinsumos"></div>
-                        <button class="btnAdicionar" onclick="addinsumo()">Insumo +</button>
-                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
-                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn" data-dismiss="modal">Fechar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
     <!--Modal Alterar-->
     <div class="modal fade" id="myModalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Alterar Registro...</h1>
+                    <h1>Adicionar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_receita.php" method="POST">
-                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
-                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
-                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
-                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
-                        <button type="submit" class="btn" name="alterar">Alterar</button>
+                    <form id="formAdicionar" class="form-group well" action="adicionar_estoque_insumo.php" method="POST">
+                        <input type="text" class="textoForm" id="quantidade_adicionar" name="quantidade_adicionar" required placeholder="...g,ml">
+
+                        <button type="submit" class="btn" name="adicionar">adicionar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -602,17 +549,13 @@ $db = mysql_select_db('frangelato');
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Excluir Registro...</h1>
+                    <h1>Retirar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="excluir_receita.php" method="GET">
-                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
-                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
-                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
-                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
-                        <button type="submit" class="btn" name="excluir">Excluir</button>
+                    <form id="formRetirar" class="form-group well" action="retirar_estoque_insumo.php" method="POST">
+                    <input type="text" class="textoForm" id="quantidade_retirar" name="quantidade_retirar" required placeholder="...g,ml">
+
+                    
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -623,17 +566,13 @@ $db = mysql_select_db('frangelato');
     </div>
 
     <div class="container">
-        <h2>RECEITA</h2><br>
-        <form action="main_receita.php" method="POST">
+        <h2>ESTOQUE INSUMOS</h2><br>
+        <form action="estoque_insumo.php" method="POST">
     <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
     
     <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     
     <div class="divFuncoes">
-    <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
-    <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
-        <i class="fas fa-plus"></i> Cadastrar
-    </button>
 
     <!-- Botão "Exportar" com ícone de exportação -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalExportar">
@@ -645,17 +584,13 @@ $db = mysql_select_db('frangelato');
     <div style="overflow-x:auto;">
         <table class="table table-striped">
             <tr>
-                <th>Código</th>
                 <th>Nome</th>
-                <th>Descrição</th>
-                <th>Tempo de preparo</th>
                 <th>Quantidade</th>
-                <th>Custo total</th>
                 <th>Operação</th>
             </tr>
             <?php
             if ((isset($_POST['pesquisar'])) or isset($_POST['cadastrar'])) {
-                $consulta = "SELECT * FROM receita";
+                $consulta = "SELECT  id_insumo,nome, quantidade_estoque FROM insumo";
 
                 if ($_POST['nome'] != '') {
                     $consulta .= " WHERE nome LIKE '%" . $_POST['nome'] . "%'";
@@ -664,22 +599,19 @@ $db = mysql_select_db('frangelato');
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_receita'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['tempo_preparo'] . "*" . $dados['quantidade_produzida'] . "*" . $dados['custo_total'];
+                    $idInsumo = $dados['id_insumo'];
+                    $quantidadeInsumo = $dados['quantidade_estoque'];
                     ?>
+
                     <tr>
-                        <td ><?php echo $dados['id_receita']; ?></td>
                         <td ><?php echo $dados['nome']; ?></td>
-                        <td ><?php echo $dados['descricao']; ?></td>
-                        <td ><?php echo $dados['tempo_preparo']; ?></td>
-                        <td ><?php echo $dados['quantidade_produzida']; ?></td>
-                        <td ><?php echo $dados['custo_total']; ?></td>
+                        <td ><?php echo $dados['quantidade_estoque']; ?></td>
                         <td>
-                            <a href="excluir_receita.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                            <button type="button" class="btn btn-primary" onclick="modalidRetirar('<?php echo $idInsumo; ?>','<?php echo $quantidadeInsumo; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-440v-80h560v80H200Z"/></svg></button>
+                            <button type="button" class="btn btn-primary" onclick="modalidAdicionar('<?php echo $idInsumo; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/></svg></button>
                         </td>
                     </tr>
                     <?php
-                    
                 }
                 mysql_close($conectar);
             }
@@ -688,9 +620,6 @@ $db = mysql_select_db('frangelato');
         </div>
     </div>
 
-    <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>

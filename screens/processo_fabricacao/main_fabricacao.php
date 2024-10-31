@@ -113,7 +113,7 @@ $db = mysql_select_db('frangelato');
             background-color:#FFFFFF;
             height:100%;
             width:220px;
-            position:absolute;
+            position:fixed;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
         .botaoArea1{
@@ -532,6 +532,7 @@ $db = mysql_select_db('frangelato');
         <i class="fas fa-file-export"></i> Exportar
     </button>
             </form>
+        <div style="overflow-x:auto;">
             <table border="1px" bordercolor="gray" class="table table-stripped">
                 <tr>
                     <th>id_processo</th>
@@ -591,6 +592,7 @@ $db = mysql_select_db('frangelato');
                 }
                 ?>
             </table>
+            </div>
         </div>
     </div>
 
