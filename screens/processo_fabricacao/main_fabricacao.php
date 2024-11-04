@@ -13,6 +13,8 @@ $db = mysql_select_db('frangelato');
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <style>
         body {
@@ -261,8 +263,157 @@ $db = mysql_select_db('frangelato');
             margin-top: 5px;
             margin-left: 3px;
         }
+
+        .alerta{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:38%;
+            position: fixed;
+            z-index: 100;
+            margin-top:20%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnalerta{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+        }
+        
+        .textoAlerta{
+            margin-left:30px;
+            margin-top:45px;
+            height:10px;
+            
+        }
+
+        .alertaP{
+            height:120px;
+            width:250px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:73%;
+            position: fixed;
+            z-index: 100;
+            margin-top:10%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnalertaP{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:25px;
+            margin-left:104px;
+            border-style:none;
+            border-radius:4px;
+        }
+        
+        .textoAlertaP{
+            margin-left:35px;
+            margin-top:35px;
+            height:10px;
+            
+        }
     </style>
     <script>
+
+        function decideBTN(data){
+            if(data == 1){
+                botao = document.querySelector("#cadastrar")
+                botao.setAttribute("onclick", "alerta()");
+            }
+
+            else{
+                botao = document.querySelector("#cadastrar")
+                botao.setAttribute("onclick", "enviar()");
+            }
+        }
+
+        function enviar(){
+            document.getElementById("formCadastrar").submit();
+        }
+
+        function alerta(){
+            let local = document.querySelector('#myModalCadastrar');
+            let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">quantidade de insumos insuficiente!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+
+        function deletarAlerta(){
+            let alerta = document.getElementById("alerta");
+            alerta.remove();
+        }
+
+        function deletarAlertaP(numero){
+            let alerta = document.getElementById("alertaP"+numero+"");
+            alerta.remove();
+        }
+
+  $(document).ready(function(){
+     $('#id_produto_processo').change(function(){
+      var idproduto = $('#id_produto_processo').val(); 
+      
+      botao = document.querySelector("#cadastrar")
+      botao.setAttribute("onclick", "");
+
+      $.ajax({
+        type: 'POST',
+        url: 'seleciona_alerta.php',
+        data: {id_produto:idproduto},  
+        success: function(data)  
+         {
+            decideBTN(data);
+         }
+        });
+     });
+
+     $('#myModalCadastrar').on('shown.bs.modal', function () {
+      var idproduto = $('#id_produto_processo').val(); 
+      
+
+      $.ajax({
+        type: 'POST',
+        url: 'gera_aviso.php',  
+        success: function(data)  
+         {
+           const array = data.split(',');
+           array.splice(-1, 1)
+           let numero = 0;
+           for (const i of array){
+            numero += 1;
+            let local = document.querySelector('#myModalCadastrar');
+            let aviso = `<div class="alertaP" id="alertaP`+numero+`"><p class="textoAlertaP">baixa quantidade de `+i+`!</p><button class="btnalertaP" onclick="deletarAlertaP(`+numero+`)">OK</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+
+           }
+
+         }
+        });
+     });
+
+     $('#myModalCadastrar').on('hidden.bs.modal', function () {
+
+        while(document.querySelector(".alertaP")){
+        let escondido = document.querySelector(".alertaP");
+        escondido.remove();
+        }
+
+    });
+
+  });           
 
     </script>
 </head>
@@ -361,21 +512,7 @@ $db = mysql_select_db('frangelato');
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_fabricacao.php" method="POST">
-
-                        <select name="id_receita_processo" id="id_receita_processo">
-                        <option value="" selected="selected">Receita</option>
-
-                        <?php
-                        $query = mysql_query("SELECT id_receita, nome FROM receita");
-                        while($receitas = mysql_fetch_array($query))
-                        {
-                            ?>
-                        <option value="<?php echo $receitas['id_receita']?>">                                                     
-                                       <?php echo $receitas['nome']  ?></option>
-                        <?php }
-                            ?>
-                        </select>
+                    <form id="formCadastrar" class="form-group well" action="adicionar_fabricacao.php" method="POST">
 
                         <input type="text" id="data_fabricacao" name="data_fabricacao" class="span3" value="" required placeholder="data_fabricacao" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="sequencia_processo" name="sequencia_processo" class="span3" value="" required placeholder="sequencia_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
@@ -425,7 +562,7 @@ $db = mysql_select_db('frangelato');
                             ?>
                         </select>
 
-                        <button type="submit" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
+                        <button type="button"  id="cadastrar" onclick="enviar()" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -447,19 +584,7 @@ $db = mysql_select_db('frangelato');
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_fabricacao.php" method="POST">
                         id_processo   <input id="id_processo" type="text" name="id_processo" value="" required placeholder="id_processo">
-                        id_receita_processo  <select name="id_receita_processo" id="id_receita_processo">
-                        <option value="" selected="selected">Receita</option>
 
-                        <?php
-                        $query = mysql_query("SELECT id_receita, nome FROM receita");
-                        while($receitas = mysql_fetch_array($query))
-                        {
-                            ?>
-                        <option value="<?php echo $receitas['id_receita']?>">                                                     
-                                       <?php echo $receitas['nome']  ?></option>
-                        <?php }
-                            ?>
-                        </select>
                         data_fabricacao  <input id="data_fabricacao" type="text" name="data_fabricacao" class="span3" required value="" placeholder="data_fabricação" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         sequencia_processo <input id="sequencia_processo" type="text" name="sequencia_processo" class="span3" required value="" placeholder="sequencia_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         descricao_processo<input type="text" id="descricao_processo" name="descricao_processo" class="span3" value="" required placeholder="descricao_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
@@ -536,7 +661,6 @@ $db = mysql_select_db('frangelato');
             <table border="1px" bordercolor="gray" class="table table-stripped">
                 <tr>
                     <th>id_processo</th>
-                    <th>id_receita_processo</th>
                     <th>data_fabricação</th>
                     <th>sequencia_processo</th>
                     <th>descricao_processo</th>
@@ -562,11 +686,9 @@ $db = mysql_select_db('frangelato');
 
 					while ($dados = mysql_fetch_array($resultado))
                     {
-						$strdados = $dados['id_receita_processo']."*".$dados['data_fabricacao']."*".$dados['sequencia_processo']."*".$dados['descricao_processo']."*".$dados['tempo_execucao'];
 				    ?>
                     <tr>
                         <td><?php echo $dados['id_processo']; ?></td>
-                        <td><?php echo $dados['id_receita_processo']; ?></td>
                         <td><?php echo $dados['data_fabricacao']; ?></td>
                         <td><?php echo $dados['sequencia_processo']; ?></td>
                         <td><?php echo $dados['descricao_processo']; ?></td>

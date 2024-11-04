@@ -1,6 +1,5 @@
 <?php
     $id_processo = $_POST['id_processo'];
-    $id_receita_processo   = $_POST['id_receita_processo'];
     $data_fabricacao  = $_POST['data_fabricacao'];
     $sequencia_processo  = $_POST['sequencia_processo'];
     $descricao_processo  = $_POST['descricao_processo'];
@@ -12,7 +11,7 @@
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "update processo_fabricacao set id_receita_processo = '$id_receita_processo', data_fabricacao = '$data_fabricacao', sequencia_processo = '$sequencia_processo', descricao_processo = '$descricao_processo' , tempo_execucao = '$tempo_execucao', quantidade = '$quantidade', id_equipamento_processo = '$id_equipamento_processo', id_funcionario_processo = '$id_funcionario_processo', id_produto_processo = '$id_produto_processo' where id_processo = '$id_processo';";        
+    $sql       = "update processo_fabricacao set data_fabricacao = '$data_fabricacao', sequencia_processo = '$sequencia_processo', descricao_processo = '$descricao_processo' , tempo_execucao = '$tempo_execucao', quantidade = '$quantidade', id_equipamento_processo = '$id_equipamento_processo', id_funcionario_processo = '$id_funcionario_processo', id_produto_processo = '$id_produto_processo' where id_processo = '$id_processo';";        
     $resultado = mysql_query($sql);
 ?>
 
