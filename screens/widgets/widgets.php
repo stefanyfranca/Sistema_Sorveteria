@@ -543,7 +543,6 @@ $db = mysql_select_db('frangelato');
 </head>
 
 <body>
-<h2>USUÁRIOS </h2><br>
     <div class="geradorgraficodiv">
     <form name="geradorgrafico" method="post" action="widgets.php">
     <label for="">Produto: </label>
