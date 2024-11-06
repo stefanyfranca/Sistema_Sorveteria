@@ -7,6 +7,11 @@
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
 
+    $query = mysql_query("SELECT quantidade FROM processo_fabricacao WHERE id_processo = $id_processo");
+    $fetch = mysql_fetch_array($query);
+
+    $quantidade = $fetch["quantidade"];
+
     $query = mysql_query("SELECT id_produto_processo FROM processo_fabricacao WHERE id_processo = $id_processo");
     $fetch = mysql_fetch_array($query);
 
@@ -29,6 +34,7 @@
     for ($i = 1; $i <= $repeticoes; $i++){
         $id_insumo = $insumos[$indexID];
         $quantidade_retirar = $insumos[$indexQuant];
+        $quantidade_retirar = $quantidade_retirar * $quantidade;
 
         $query = mysql_query("SELECT quantidade_estoque FROM insumo WHERE id_insumo = $id_insumo");
         $fetch = mysql_fetch_array($query);
@@ -42,9 +48,14 @@
 
 
 
-
-
     $sql       = "delete from processo_fabricacao where id_processo = '$id_processo';";        
+    $resultado = mysql_query($sql);
+
+    $query = mysql_query("SELECT quantidade_estoque FROM produto WHERE id_produto = $id_produto_processo");
+    $fetch = mysql_fetch_array($query);
+    $quantidade = $fetch["quantidade_estoque"] - $quantidade;
+
+    $sql       = "update produto set quantidade_estoque = '$quantidade' where id_produto = '$id_produto_processo';";
     $resultado = mysql_query($sql);
 ?>
 

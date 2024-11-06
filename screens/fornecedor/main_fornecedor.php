@@ -129,6 +129,7 @@ function generatePDF() {
             cursor: pointer;
             transition: background-color 0.3s;
             margin: 10px 0;
+            height:30px;
         }
 
         .btn:hover {
@@ -161,29 +162,30 @@ function generatePDF() {
             margin-top: 20px;
             background-color: #FFF;
             border-collapse: collapse;
+            border: 0px solid;
         }
 
-        table,
-        th,
+
         td {
             border: 1px solid #B7B7B7;
+            height: 20px;
+            text-align: left;
+            vertical-align: center;
+            border: 0px solid;
+
         }
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
 
         th {
-            background-color: #fff;
-            color: #B7B7B7;
+            height:20px;
+            color:#6B0000;
         }
 
-        .table-btn {
-            display: flex;
-            justify-content: center;
+        tr:nth-child(even){
+            background-color: #f2f2f2;
         }
+
+
 
         .table-btn button {
             margin: 5px;
@@ -192,7 +194,7 @@ function generatePDF() {
             background-color:#FFFFFF;
             height:100%;
             width:220px;
-            position:absolute;
+            position:fixed;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
         .botaoArea1{
@@ -339,6 +341,49 @@ function generatePDF() {
         .icone{
             margin-top: 5px;
             margin-left: 3px;
+        }
+
+        .btnFuncoes {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .divFuncoes{
+            width:190px;
+            margin-left:850px;
+            margin-top:-33px;
+            position: absolute;
+        }
+
+        .btnFuncoes:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+        .btnPesquisar {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .btnPesquisar:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+        .iconeTabela{
+            margin-top:-7px;
         }
     </style>
     <script>
@@ -522,16 +567,17 @@ function generatePDF() {
         <h2>FORNECEDORES</h2><br>
         <form action="main_fornecedor.php" method="POST">
         <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btn">Pesquisar</button>
+                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+    <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModalCadastrar" style="margin-left: 630px;">
+    <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
         <i class="fas fa-plus"></i> Cadastrar
     </button>
-
     <!-- Botão "Exportar" com ícone de exportação -->
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModalExportar" onclick="generatePDF()">
+    <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalExportar" onclick="generatePDF()">
         <i class="fas fa-file-export"></i> Exportar
     </button>
+    </div>
         </form>
         <table class="table table-striped">
             <tr>
@@ -572,8 +618,9 @@ function generatePDF() {
                         <td><?php echo $dados['email']; ?></td>
                         <td><?php echo $dados['observacoes']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_fornecedor.php?id_fornecedor=<?php echo $dados['id_fornecedor']; ?>" class="btn btn-danger">Excluir</a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')">Alterar</button>
+                            <a href="excluir_fornecedor.php?id_fornecedor=<?php echo $dados['id_fornecedor']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                     <?php

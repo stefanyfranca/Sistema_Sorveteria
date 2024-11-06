@@ -9,7 +9,7 @@ if (!$db) {
     die("Database selection failed: " . mysql_error());
 }
 
-$query = "SELECT id_processo, id_receita_processo, data_fabricacao, tempo_execucao, id_equipamento_processo, id_funcionario_processo, id_produto_processo FROM processo_fabricacao"; // Adapte a consulta conforme necessário
+$query = "SELECT id_processo, data_fabricacao, tempo_execucao, id_equipamento_processo, id_funcionario_processo, id_produto_processo FROM processo_fabricacao"; // Adapte a consulta conforme necessário
 $result = mysql_query($query, $conectar); // Passar a conexão como segundo parâmetro
 
 if (!$result) {
@@ -18,17 +18,17 @@ if (!$result) {
 
 $usuarios = array(); // Corrigido para PHP 5.3
 while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
-    $usuarios[] = array($row['id_processo'], $row['id_receita_processo'], $row['data_fabricacao'], $row['tempo_execucao'], $row['id_equipamento_processo'], $row['id_funcionario_processo'], $row['id_produto_processo']); // Usando array()
+    $usuarios[] = array($row['id_processo'], $row['data_fabricacao'], $row['tempo_execucao'], $row['id_equipamento_processo'], $row['id_funcionario_processo'], $row['id_produto_processo']); // Usando array()
 }
 
-mysql_close($conectar); // Fechar a conexão com mysql_close()
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <title>Pesquisa receita</title>
+    <title>Pesquisa fabricação</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -138,6 +138,7 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
             cursor: pointer;
             transition: background-color 0.3s;
             margin: 10px 0;
+            height:30px;
         }
 
         .btn:hover {
@@ -170,29 +171,30 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
             margin-top: 20px;
             background-color: #FFF;
             border-collapse: collapse;
+            border: 0px solid;
         }
 
-        table,
-        th,
+
         td {
             border: 1px solid #B7B7B7;
+            height: 20px;
+            text-align: left;
+            vertical-align: center;
+            border: 0px solid;
+
         }
 
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
 
         th {
-            background-color: #fff;
-            color: #B7B7B7;
+            height:20px;
+            color:#6B0000;
         }
 
-        .table-btn {
-            display: flex;
-            justify-content: center;
+        tr:nth-child(even){
+            background-color: #f2f2f2;
         }
+
+
 
         .table-btn button {
             margin: 5px;
@@ -413,6 +415,50 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
             height:10px;
             
         }
+
+        .btnFuncoes {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .divFuncoes{
+            width:190px;
+            margin-left:850px;
+            margin-top:-33px;
+            position: absolute;
+        }
+
+        .btnFuncoes:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+        .btnPesquisar {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .btnPesquisar:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+        .iconeTabela{
+            margin-top:-7px;
+        }
+
     </style>
     <script>
 
@@ -451,6 +497,7 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
   $(document).ready(function(){
      $('#id_produto_processo').change(function(){
       var idproduto = $('#id_produto_processo').val(); 
+      var quantidade =  $('#quantidade').val();
       
       botao = document.querySelector("#cadastrar")
       botao.setAttribute("onclick", "");
@@ -458,7 +505,26 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
       $.ajax({
         type: 'POST',
         url: 'seleciona_alerta.php',
-        data: {id_produto:idproduto},  
+        data: {id_produto:idproduto, quantidade:quantidade},  
+        success: function(data)  
+         {
+            decideBTN(data);
+         }
+        });
+     });
+
+
+     $('#quantidade').change(function(){
+      var idproduto = $('#id_produto_processo').val();
+      var quantidade =  $('#quantidade').val();
+      
+      botao = document.querySelector("#cadastrar")
+      botao.setAttribute("onclick", "");
+
+      $.ajax({
+        type: 'POST',
+        url: 'seleciona_alerta.php',
+        data: {id_produto:idproduto, quantidade:quantidade},  
         success: function(data)  
          {
             decideBTN(data);
@@ -733,18 +799,22 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
             <h2>FABRICAÇÃO </h2><br>
             <form action="main_fabricacao.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btn">Pesquisar</button>
+                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+
+    <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModalCadastrar" style="margin-left: 630px;">
+    <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
         <i class="fas fa-plus"></i> Cadastrar
     </button>
     <!-- Botão "Exportar" com ícone de exportação -->
-    <button type="button" class="btn" data-toggle="modal" data-target="#myModalExportar" onclick="generatePDF()">
+    <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalExportar" onclick="generatePDF()">
         <i class="fas fa-file-export"></i> Exportar
     </button>
+    </div>
+
             </form>
         <div style="overflow-x:auto;">
-            <table border="1px" bordercolor="gray" class="table table-stripped">
+            <table class="table table-stripped">
                 <tr>
                     <th>Código</th>
                     <th>Data de fabricação</th>
@@ -784,14 +854,11 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
                         <td><?php echo $dados['id_funcionario_processo']; ?></td>
                         <td><?php echo $dados['id_produto_processo']; ?></td>
                         <td>
-							<?php 
-								echo "<a href='excluir_fabricacao.php?id_processo=".$dados['id_processo']."'><button class='btn btn-danger' type='button' name='excluir'>Excluir</button></a>";
-							?>
 
-                            <a href="#myModalAlterar" 
-                                onclick="obterDadosModal('<?php echo $strdados ?>')">
-                                <button type='button' id='alterar' name='alterar' class='btn btn-primary' data-toggle='modal' data-target='#myModalAlterar'>Alterar</button>
-                            </a>
+                                <a href="excluir_fabricacao.php?id_processo=<?php echo $dados['id_processo']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+							
+
+                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                 <?php
@@ -804,9 +871,7 @@ mysql_close($conectar); // Fechar a conexão com mysql_close()
         </div>
     </div>
 
-    <!-- Biblioteca requerida -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   
 </body>
 
 </html>

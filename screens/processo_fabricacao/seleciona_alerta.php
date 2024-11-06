@@ -3,6 +3,7 @@
     $db        = mysql_select_db('frangelato');
 
     $id_produto = $_POST['id_produto'];
+    $quantidade = $_POST['quantidade'];
 
     $indexID = 0;
     $indexQuant = 1;
@@ -26,7 +27,7 @@
     for ($i = 1; $i <= $repeticoes; $i++){
         $id_insumo = $insumos[$indexID];
         $quantidade_retirar = $insumos[$indexQuant];
-
+        $quantidade_retirar = $quantidade_retirar * $quantidade;
         $query = mysql_query("SELECT quantidade_estoque FROM insumo WHERE id_insumo = $id_insumo");
         $fetch = mysql_fetch_array($query);
         $quantidade_estoque = $fetch["quantidade_estoque"];

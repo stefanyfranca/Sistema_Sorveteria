@@ -31,6 +31,7 @@
     for ($i = 1; $i <= $repeticoes; $i++){
         $id_insumo = $insumos[$indexID];
         $quantidade_retirar = $insumos[$indexQuant];
+        $quantidade_retirar = $quantidade_retirar * $quantidade;
 
         $query = mysql_query("SELECT quantidade_estoque FROM insumo WHERE id_insumo = $id_insumo");
         $fetch = mysql_fetch_array($query);
@@ -42,8 +43,16 @@
         $indexQuant += 2;
     }
 
+    
 
     $sql       = "insert into processo_fabricacao (data_fabricacao,sequencia_processo,descricao_processo,tempo_execucao,quantidade,id_equipamento_processo,id_funcionario_processo,id_produto_processo) values ('$data_fabricacao','$sequencia_processo','$descricao_processo','$tempo_execucao','$quantidade','$id_equipamento_processo','$id_funcionario_processo','$id_produto_processo')";
+    $resultado = mysql_query($sql);
+
+    $query = mysql_query("SELECT quantidade_estoque FROM produto WHERE id_produto = $id_produto_processo");
+    $fetch = mysql_fetch_array($query);
+    $quantidade += $fetch["quantidade_estoque"];
+
+    $sql       = "update produto set quantidade_estoque = '$quantidade' where id_produto = '$id_produto_processo';";
     $resultado = mysql_query($sql);
 ?>
 
