@@ -1,27 +1,30 @@
 <?php
+// Conexão com o banco de dados
 $conectar = mysql_connect('localhost', 'root', '');
 if (!$conectar) {
-    die("Connection failed: " . mysql_error());
+    die("Erro ao conectar ao banco de dados: " . mysql_error());
 }
 
+// Selecionar o banco de dados
 $db = mysql_select_db('frangelato', $conectar);
 if (!$db) {
-    die("Database selection failed: " . mysql_error());
+    die("Erro ao selecionar o banco de dados: " . mysql_error());
 }
 
-$query = "SELECT id_processo, data_fabricacao, tempo_execucao, id_equipamento_processo, id_funcionario_processo, id_produto_processo FROM processo_fabricacao"; // Adapte a consulta conforme necessário
-$result = mysql_query($query, $conectar); // Passar a conexão como segundo parâmetro
+// Consulta ao banco de dados inicial
+$query = "SELECT id_produto, nome, descricao, custo_venda, quantidade_receita, id_receita_produto, custo_total_produto FROM produto";
+$result = mysql_query($query);
 
 if (!$result) {
-    die("Query failed: " . mysql_error()); // Captura erro na consulta
+    die("Erro na consulta: " . mysql_error()); // Exibe o erro da consulta
 }
 
-$usuarios = array(); // Corrigido para PHP 5.3
-while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
-    $usuarios[] = array($row['id_processo'], $row['data_fabricacao'], $row['tempo_execucao'], $row['id_equipamento_processo'], $row['id_funcionario_processo'], $row['id_produto_processo']); // Usando array()
+$usuarios = array();
+while ($row = mysql_fetch_array($result)) {
+    $usuarios[] = array($row['id_produto'], $row['nome'], $row['descricao'], $row['custo_venda'], $row['quantidade_receita'], $row['id_receita_produto'], $row['custo_total_produto']);
 }
 
-
+// Fechar conexão no final do script
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -41,7 +44,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     function generatePDF() {
     var props = {
         outputType: jsPDFInvoiceTemplate.Save,
-        fileName: "Relatório de Usuários", 
+        fileName: "Relatório de Fabricação", 
         onJsPDFDocCreation: function(jsPDFDoc) {
             // Qualquer configuração adicional
         },

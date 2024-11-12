@@ -38,7 +38,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         function generatePDF() {
     var props = {
         outputType: jsPDFInvoiceTemplate.Save,
-        fileName: "Relatório de Receitas", 
+        fileName: "Relatório de Equipamentos", 
         onJsPDFDocCreation: function(jsPDFDoc) {
             // Qualquer configuração adicional
         },
