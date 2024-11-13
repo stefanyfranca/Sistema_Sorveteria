@@ -12,7 +12,7 @@ if (!$db) {
 }
 
 // Consulta ao banco de dados inicial
-$query = "SELECT id_produto, nome, descricao, custo_venda, quantidade_receita, id_receita_produto, custo_total_produto FROM produto";
+$query = "SELECT id_processo, data_fabricacao, tempo_execucao, id_equipamento_processo, id_funcionario_processo, id_produto_processo FROM processo_fabricacao";
 $result = mysql_query($query);
 
 if (!$result) {
@@ -20,8 +20,8 @@ if (!$result) {
 }
 
 $usuarios = array();
-while ($row = mysql_fetch_array($result)) {
-    $usuarios[] = array($row['id_produto'], $row['nome'], $row['descricao'], $row['custo_venda'], $row['quantidade_receita'], $row['id_receita_produto'], $row['custo_total_produto']);
+while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
+    $usuarios[] = array($row['id_processo'], $row['data_fabricacao'], $row['tempo_execucao'], $row['id_equipamento_processo'], $row['id_funcionario_processo'], $row['id_produto_processo']); // Usando array()
 }
 
 // Fechar conexão no final do script
@@ -62,7 +62,7 @@ while ($row = mysql_fetch_array($result)) {
             type: 'JPG',
             width: 20,
             height: 20,
-            margin: { top: 0, left: 0 }
+            margin: { top: 0, left: 0 },
         },
         business: {
             name: "Frangelato",
@@ -84,14 +84,13 @@ while ($row = mysql_fetch_array($result)) {
             tableBodyBorder: false,
             header: [
                 { title: "Código", style: { width: 15 } },
-                { title: "Receita", style: { width: 15 } },
                 { title: "Data de fabricação", style: { width: 35 } },
                 { title: "Tempo de Execução", style: { width: 40 } },
                 { title: "Equipamento", style: { width: 25 } },
                 { title: "Funcionário", style: { width: 25 } },
                 { title: "Produto", style: { width: 15 } },
             ],
-            table: <?php echo json_encode(array_map(function($usuario, $index) { return array($usuario[0], $usuario[1], $usuario[2], $usuario[3], $usuario[4], $usuario[5], $usuario[6]); }, $usuarios, array_keys($usuarios))); ?>, // Incluindo o índice
+            table: <?php echo json_encode(array_map(function($usuario, $index) { return array($usuario[0], $usuario[1], $usuario[2], $usuario[3], $usuario[4], $usuario[5]); }, $usuarios, array_keys($usuarios))); ?>, // Incluindo o índice
             additionalRows: [], 
         },
         footer: {
