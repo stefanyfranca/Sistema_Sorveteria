@@ -678,7 +678,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <option value="" selected="selected">Equipamento</option>
 
                         <?php
-                        $query = mysql_query("SELECT id_equipamento, nome FROM equipamento");
+                        $query = mysql_query("SELECT id_equipamento, nome FROM equipamento WHERE status = 'ativo'");
                         while($equipamentos = mysql_fetch_array($query))
                         {
                             ?>
@@ -837,7 +837,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
               	    
                    	if ($_POST['nome'] != '')
                    	{
-						$consulta = $consulta." where id_processo like '%".$_POST['nome']."%'";
+						$consulta = $consulta." where descricao_processo like '%".$_POST['nome']."%'";
                     }
 					
 					$resultado = mysql_query($consulta);

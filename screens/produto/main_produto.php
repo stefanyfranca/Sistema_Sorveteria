@@ -494,7 +494,7 @@ while ($row = mysql_fetch_array($result)) {
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
                         <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="Data de validade">
+                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="quantidade da receita">
                         <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="id_receita_produto">
                         <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo_total_produto">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>

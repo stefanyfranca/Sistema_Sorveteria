@@ -14,9 +14,3 @@
     $resultado = mysql_query($sql);
 ?>
 
-<script>
-	alert('Adicionado com Sucesso!');
-	<?php
-		echo "location.href='main_equipamento.php'";
-	?>
-</script>

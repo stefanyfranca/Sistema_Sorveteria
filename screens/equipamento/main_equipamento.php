@@ -34,6 +34,8 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         function generatePDF() {
     var props = {
@@ -395,8 +397,132 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             margin-top:-7px;
         }
 
+        .confirma{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:25%;
+            position: fixed;
+            z-index: 100;
+            margin-top:15%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnConfirma1{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+            
+        }
+        
+        .btnConfirma2{
+            width:70px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:50px;
+            border-style:none;
+            border-radius:4px;
+            position: absolute;
+        }
+
+        .textoConfirma{
+            margin-left:80px;
+            margin-top:45px;
+            height:10px;
+        }
+
     </style>
     <script>
+        $(document).ready(function(){ 
+            $('#cadastrar').on( "click", function(){
+                let nomelet = document.getElementById("nome").value;
+                let descricaolet = document.getElementById("descricao").value;
+                let data_aquisicaolet = document.getElementById("data_aquisicao").value;
+                let statuslet = document.getElementById("status").value;
+                let ultima_manutencaolet = document.getElementById("ultima_manutencao").value;
+                let id_fornecedorlet = document.getElementById("id_fornecedor").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_equipamento.php',
+                data: {nome: nomelet, descricao: descricaolet, data_aquisicao: data_aquisicaolet, status: statuslet, ultima_manutencao: ultima_manutencaolet, id_fornecedor: id_fornecedorlet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+            $('#alterar').on( "click", function(){
+                let id_equipamentolet = document.getElementById("id_equipamentoA").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let descricaolet = document.getElementById("descricaoA").value;
+                let data_aquisicaolet = document.getElementById("data_aquisicaoA").value;
+                let statuslet = document.getElementById("statusA").value;
+                let ultima_manutencaolet = document.getElementById("ultima_manutencaoA").value;
+                let id_fornecedorlet = document.getElementById("id_fornecedorA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_equipamento.php',
+                data: {id_equipamento: id_equipamentolet, nome: nomelet, descricao: descricaolet, data_aquisicao: data_aquisicaolet, status: statuslet, ultima_manutencao: ultima_manutencaolet, id_fornecedor: id_fornecedorlet},  
+                success: function(data)  
+                {
+                    alert('Alterado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+        })
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_equipamento.php',
+                data: {id_equipamento: id},
+                success: function(data)
+                {
+                    alert('Excluido com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir(`+id+`)">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
+
+        function infoAlterar(id,nome,descricao,data,status,manutencao,fornecedor){
+            document.getElementById("id_equipamentoA").value = id;
+            document.getElementById("nomeA").value = nome;
+            document.getElementById("descricaoA").value = descricao;
+            document.getElementById("data_aquisicaoA").value = data;
+            document.getElementById("statusA").value = status;
+            document.getElementById("ultima_manutencaoA").value = manutencao;
+            document.getElementById("id_fornecedorA").value = fornecedor;
+        }
 
     </script>
 </head>
@@ -497,10 +623,15 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_equipamento.php" method="POST">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descricao">
-                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
-                        <input type="text" id="status" name="status" required placeholder="status">
-                        <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
+                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data de aquisição - AAAA/MM/DD">
+                        
+                        <select id="status" name="status">
+                            <option value="ativo">ativo</option>
+                            <option value="inativo">inativo</option>
+                        </select>
+
+                        <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima manutenção - AAAA/MM/DD">
                         
                         <select name="id_fornecedor" id="id_fornecedor">
                         <option value="" selected="selected">Fornecedor</option>
@@ -516,7 +647,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                             ?>
                         </select>
 
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
+                        <button type="button" id="cadastrar" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -535,13 +666,18 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_equipamento.php" method="POST">
-                        <input type="text" id="id_equipamento" name="id_equipamento" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="descricao">
-                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data_aquisicao">
-                        <input type="text" id="status" name="status" required placeholder="status">
-                        <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima_manutencao">
-                        <select name="id_fornecedor" id="id_fornecedor">
+                        <input type="text" id="id_equipamentoA" name="id_equipamento" required placeholder="Código">
+                        <input type="text" id="nomeA" name="nome" required placeholder="Nome">
+                        <input type="text" id="descricaoA" name="descricao" required placeholder="descrição">
+                        <input type="text" id="data_aquisicaoA" name="data_aquisicao" required placeholder="data de aquisição">
+                        
+                        <select id="statusA" name="status">
+                            <option value="ativo">ativo</option>
+                            <option value="inativo">inativo</option>
+                        </select>
+
+                        <input type="text" id="ultima_manutencaoA" name="ultima_manutencao" required placeholder="ultima manutenção">
+                        <select name="id_fornecedor" id="id_fornecedorA">
                         <option value="" selected="selected">Fornecedor</option>
 
                         <?php
@@ -554,7 +690,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <?php }
                             ?>
                         </select>
-                        <button type="submit" class="btn" name="alterar">Alterar</button>
+                        <button type="button" id="alterar" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -594,7 +730,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         <h2>EQUIPAMENTO</h2><br>
         <form action="main_equipamento.php" method="POST">
         <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
         <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
@@ -639,9 +775,9 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <td><?php echo $dados['ultima_manutencao']; ?></td>
                         <td><?php echo $dados['id_fornecedor']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_equipamento.php?id_equipamento=<?php echo $dados['id_equipamento']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                            <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_equipamento']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['id_equipamento']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['descricao']; ?>','<?php echo $dados['data_aquisicao']; ?>','<?php echo $dados['status']; ?>','<?php echo $dados['ultima_manutencao']; ?>','<?php echo $dados['id_fornecedor']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                     <?php
@@ -652,9 +788,8 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         </table>
     </div>
 
-    <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+
 </body>
 
 </html>
