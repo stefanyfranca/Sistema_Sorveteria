@@ -58,7 +58,7 @@ $db = mysql_select_db('frangelato');
             cursor: pointer;
             transition: background-color 0.3s;
             height:33px;
-            margin-left:5px;
+            margin-left:100px;
         }
 
         .divFuncoes{
@@ -112,7 +112,7 @@ $db = mysql_select_db('frangelato');
 
         table {
             width: 100%;
-            margin-top: 20px;
+            margin-top: 1px;
             background-color: #FFF;
             border-collapse: collapse;
             border: 0px solid;
@@ -153,12 +153,12 @@ $db = mysql_select_db('frangelato');
         }
 
         .botaoArea1{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }
         .botaoArea2{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }
@@ -369,6 +369,31 @@ $db = mysql_select_db('frangelato');
             margin-top:-7px;
         }
 
+    .divFuncoesBotoes {
+    margin-top: 20px;
+    display: flex;
+    gap: 0; 
+}
+
+.botaoTelasativa {
+    background-color: #6B0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
+.botaoTelasinativa {
+    background-color: #fff;
+    color: #6B0000;
+    border: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
+
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -566,7 +591,7 @@ $db = mysql_select_db('frangelato');
     </div>
 
     <div class="container">
-        <h2>ESTOQUE INSUMOS</h2><br>
+        <h2>ESTOQUE DE INSUMOS</h2><br>
         <form action="estoque_insumo.php" method="POST">
     <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
     
@@ -579,6 +604,19 @@ $db = mysql_select_db('frangelato');
         <i class="fas fa-file-export"></i> Exportar
     </button>
     </div>
+
+    <div class="divFuncoesBotoes">
+            <!-- Botão "Cadastrar" -->
+            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
+                insumos
+            </button>
+
+            <!-- Botão "Exportar" -->
+            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/estoque_insumo.php'">
+                Estoque
+            </button>
+
+        </div>
 
 </form>
     <div style="overflow-x:auto;">

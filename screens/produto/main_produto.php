@@ -162,7 +162,6 @@ while ($row = mysql_fetch_array($result)) {
 
         table {
             width: 100%;
-            margin-top: 20px;
             background-color: #FFF;
             border-collapse: collapse;
             border: 0px solid;
@@ -390,6 +389,31 @@ while ($row = mysql_fetch_array($result)) {
         .iconeTabela{
             margin-top:-7px;
         }
+
+        .divFuncoesBotoes {
+    margin-top: 20px;
+    display: flex;
+    gap: 0; 
+}
+
+.botaoTelasativa {
+    background-color: #6B0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
+.botaoTelasinativa {
+    background-color: #fff;
+    color: #6B0000;
+    border: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
     </style>
     <script>
 
@@ -576,6 +600,18 @@ while ($row = mysql_fetch_array($result)) {
     </button>
     </div>
 
+    <div class="divFuncoesBotoes">
+            <!-- Botão "Cadastrar" -->
+            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
+                insumos
+            </button>
+
+            <!-- Botão "Exportar" -->
+            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/estoque_insumo.php'">
+                Estoque
+            </button>
+
+        </div>
         </form>
         <table class="table table-striped">
     <tr>

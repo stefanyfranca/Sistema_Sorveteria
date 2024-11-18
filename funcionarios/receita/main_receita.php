@@ -1,24 +1,27 @@
 <?php
+// Conexão com o banco de dados
 $conectar = mysql_connect('localhost', 'root', '');
 if (!$conectar) {
-    die("Connection failed: " . mysql_error());
+    die("Erro ao conectar ao banco de dados: " . mysql_error());
 }
 
+// Selecionar o banco de dados
 $db = mysql_select_db('frangelato', $conectar);
 if (!$db) {
-    die("Database selection failed: " . mysql_error());
+    die("Erro ao selecionar o banco de dados: " . mysql_error());
 }
 
-$query = "SELECT id_insumo, nome, unidade_medida, custo_unitario, id_fornecedor_insumo FROM insumo"; // Adapte a consulta conforme necessário
-$result = mysql_query($query, $conectar); // Passar a conexão como segundo parâmetro
+// Consulta ao banco de dados
+$query = "SELECT id_receita, nome, descricao, tempo_preparo, quantidade_produzida, custo_total FROM receita"; // Adapte a consulta conforme necessário
+$result = mysql_query($query);
 
 if (!$result) {
-    die("Query failed: " . mysql_error()); // Captura erro na consulta
+    die("Erro na consulta: " . mysql_error()); // Exibe o erro da consulta
 }
 
-$usuarios = array(); // Corrigido para PHP 5.3
-while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
-    $usuarios[] = array($row['id_insumo'], $row['nome'], $row['unidade_medida'],$row['custo_unitario'],$row['id_fornecedor_insumo']); // Usando array()
+$usuarios = array();
+while ($row = mysql_fetch_array($result)) {
+    $usuarios[] = array($row['id_receita'], $row['nome'], $row['descricao'], $row['tempo_preparo'], $row['quantidade_produzida'], $row['custo_total']);
 }
 
 ?>
@@ -38,7 +41,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     function generatePDF() {
     var props = {
         outputType: jsPDFInvoiceTemplate.Save,
-        fileName: "Relatório de Insumos", 
+        fileName: "Relatório de Receita", 
         onJsPDFDocCreation: function(jsPDFDoc) {
             // Qualquer configuração adicional
         },
@@ -78,12 +81,13 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             tableBodyBorder: false,
             header: [
                 { title: "Código", style: { width: 15 } },
-                { title: "Nome", style: { width: 40 } },
-                { title: "Unidade de medida", style: { width: 40 } },
-                { title: "Custo unitário", style: { width: 30 } },
-                { title: "Código do fornecedor", style: { width: 15 } },
+                { title: "Nome", style: { width: 25 } },
+                { title: "Descrição", style: { width: 45 } },
+                { title: "Tempo de preparo", style: { width: 40 } },
+                { title: "Quantidade produzida", style: { width: 40 } },
+                { title: "Custo total", style: { width: 20 } },
             ],
-            table: <?php echo json_encode(array_map(function($usuario, $index) { return array($usuario[0], $usuario[1], $usuario[2], $usuario[3], $usuario[4]); }, $usuarios, array_keys($usuarios))); ?>, // Incluindo o índice
+            table: <?php echo json_encode(array_map(function($usuario, $index) { return array($usuario[0], $usuario[1], $usuario[2], $usuario[3], $usuario[4], $usuario[5]); }, $usuarios, array_keys($usuarios))); ?>, // Incluindo o índice
             additionalRows: [], 
         },
         footer: {
@@ -104,15 +108,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             height:100%;
             width:100%;
         }
-        
-        select{
-            margin-bottom: 10px;
-            height: 28px;
-            border-radius: 5px;
-            border: 1px solid #333;
-            width: 100%;
-            padding: 5px;
-        }
+
         .container {
             padding: 20px;
             width:80%;
@@ -141,6 +137,46 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             color: #fff;
         }
 
+        .btnFuncoes {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .divFuncoes{
+            width:190px;
+            margin-left:850px;
+            margin-top:-33px;
+            position: absolute;
+        }
+
+        .btnFuncoes:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+        .btnPesquisar {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height:33px;
+            margin-left:5px;
+        }
+
+        .btnPesquisar:hover {
+            background-color: #450101;
+            color: #fff;
+        }
+
+
         .modal-header,
         .modal-footer {
             background-color: #450101;
@@ -152,7 +188,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             color: #fff;
         }
 
-        .form-group input[type="text"] {
+        .textoForm{   
             margin-bottom: 10px;
             height: 28px;
             border-radius: 5px;
@@ -163,11 +199,11 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
         table {
             width: 100%;
+            margin-top: 20px;
             background-color: #FFF;
             border-collapse: collapse;
             border: 0px solid;
         }
-
 
 
         td {
@@ -202,13 +238,14 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             position:fixed;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
+
         .botaoArea1{
-            margin-top:12%;
+            margin-top:15%;
             height:40px;
             width:220px;
         }
         .botaoArea2{
-            margin-top:12%;
+            margin-top:15%;
             height:40px;
             width:220px;
         }
@@ -333,7 +370,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             color:#6B0000;
             font-size:20px;
             margin-left:35%;
-            margin-top:15%;
+            margin-top:90%;
             text-decoration: none;
         }
         .fa-arrow-right-from-bracket{
@@ -348,101 +385,158 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             margin-left: 3px;
         }
 
-        .btnFuncoes {
-            background-color: #6B0000;
-            color: #fff;
-            border: none;
+        .selectInsumo{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 265px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            height:33px;
-            margin-left:5px;
+            border: 1px solid #333;
         }
 
-        .divFuncoes{
-            width:190px;
-            margin-left:850px;
-            margin-top:-33px;
-            position: absolute;
-        }
-
-        .btnFuncoes:hover {
-            background-color: #450101;
-            color: #fff;
-        }
-
-        .btnPesquisar {
-            background-color: #6B0000;
-            color: #fff;
-            border: none;
+        .textInsumo{
+            margin-bottom: 10px;
+            height: 28px;
+            width: 265px;
             border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            height:33px;
-            margin-left:5px;
+            border: 1px solid #333;
+        }
+        
+        .btnInsumo{
+            background-color:#6B0000;
+            border: none;
+            color:white;
+            border-radius:4px;
         }
 
-        .btnPesquisar:hover {
-            background-color: #450101;
-            color: #fff;
+        .divinsumos{
+            width: 600px;
+        }
+        
+        .btnAdicionar{
+            background-color:#6B0000;
+            margin-bottom:10px;
+            border:none;
+            border-radius:4px;
+            color:white;
+        }
+
+        .alerta{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:38%;
+            position: fixed;
+            z-index: 100;
+            margin-top:20%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnalerta{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+        }
+        
+        .textoAlerta{
+            margin-left:30px;
+            margin-top:45px;
+            height:10px;
+            
         }
 
         .iconeTabela{
             margin-top:-7px;
         }
 
-        .divFuncoesBotoes {
-    margin-top: 20px;
-    display: flex;
-    gap: 0; 
-}
-
-.botaoTelasativa {
-    background-color: #6B0000;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    height: 33px;
-    margin-right: 0; 
-}
-.botaoTelasinativa {
-    background-color: #fff;
-    color: #6B0000;
-    border: 0.5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    height: 33px;
-    margin-right: 0; 
-}
     </style>
+    <script>
+        var contador = 0;
+
+        function excinsumo(a){
+            let numeromenos = 0;
+            let numero = a;
+            let para = 0;
+            let elemento = document.getElementById("insumo"+a+"");
+            elemento.remove();
+            elemento = document.getElementById("quantidade_insumo"+a+"");
+            elemento.remove();
+            elemento = document.getElementById("botaoexc"+a+"");
+            elemento.remove();
+            contador -= 1;
+            while(para != 1){
+                numero += 1;
+                if(document.querySelector("#insumo"+numero+"")){
+                    numeromenos = numero - 1;
+                    elemento = document.querySelector("#insumo"+numero+"")
+                    elemento.setAttribute("name", "insumo"+numeromenos+"");
+                    elemento.setAttribute("id", "insumo"+numeromenos+"");
+
+                    elemento = document.querySelector("#quantidade_insumo"+numero+"")
+                    elemento.setAttribute("name", "quantidade_insumo"+numeromenos+"");
+                    elemento.setAttribute("id", "quantidade_insumo"+numeromenos+"");
+
+                    elemento = document.querySelector("#botaoexc"+numero+"")
+                    elemento.setAttribute("name", "botaoexc"+numeromenos+"");
+                    elemento.setAttribute("id", "botaoexc"+numeromenos+"");
+                    elemento.setAttribute("onclick", "excinsumo("+numeromenos+")");
+                }
+                else{
+                    para = 1;
+                }
+            }
+        }
+
+        function addinsumo(){
+            if(contador<30){
+            contador += 1;
+            let modal = document.querySelector('.divinsumos');
+            let novoselect = `<select id="insumo`+contador+`" class="selectInsumo" name="insumo`+contador+`">
+                        <option value="" selected="selected">Selecione...</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumo = mysql_fetch_array($query))
+                        {
+                        ?>
+                        <option value="<?php echo $insumo["id_insumo"]?>">                                                     
+                        <?php echo $insumo["nome"]  ?></option>
+                        <?php }
+                        ?>
+                        </select>
+                        <input type="text" class="textInsumo" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
+                        <button class="btnInsumo" id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
+            
+            modal.insertAdjacentHTML('beforeend', novoselect);
+                        }
+            else{
+                if(document.querySelector("#alerta") == null){
+                    let local = document.querySelector('#myModalCadastrar');
+                    let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">Numero maximo de insumos atingido!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
+                    local.insertAdjacentHTML('afterbegin', aviso);
+                }
+            }
+        }
+
+        function deletarAlerta(){
+            let alerta = document.getElementById("alerta");
+            alerta.remove();
+        }
+    </script>
 </head>
 
 <body>
 <div class="lateral">
 <p class="txtfrangelato">FRANGELATO</p> 
 
-<a href="/SISTEMA_SORVETERIA/screens/widgets/widgets.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M666-440 440-666l226-226 226 226-226 226Zm-546-80v-320h320v320H120Zm400 400v-320h320v320H520Zm-400 0v-320h320v320H120Zm80-480h160v-160H200v160Zm467 48 113-113-113-113-113 113 113 113Zm-67 352h160v-160H600v160Zm-400 0h160v-160H200v160Zm160-400Zm194-65ZM360-360Zm240 0Z"/></svg>
-            <p class="paraBotaoB">Dashboard</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
-
-<a href="/SISTEMA_SORVETERIA/screens/funcionario/main_funcionario.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"/></svg>
-            <p class="paraBotaoB">Funcionários</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
-
-<a href="/SISTEMA_SORVETERIA/screens/fornecedor/main_fornecedor.php">
+<a href="/SISTEMA_SORVETERIA/funcionarios/fornecedor/main_fornecedor.php">
 <div class="botaoArea2">
     <div class=botaoB>
             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M640-640h120-120Zm-440 0h338-18 14-334Zm16-80h528l-34-40H250l-34 40Zm184 270 80-40 80 40v-190H400v190Zm182 330H200q-33 0-56.5-23.5T120-200v-499q0-14 4.5-27t13.5-24l50-61q11-14 27.5-21.5T250-840h460q18 0 34.5 7.5T772-811l50 61q9 11 13.5 24t4.5 27v196q-19-7-39-11t-41-4v-122H640v153q-35 20-61 49.5T538-371l-58-29-160 80v-320H200v440h334q8 23 20 43t28 37Zm138 0v-120H600v-80h120v-120h80v120h120v80H800v120h-80Z"/></svg>
@@ -461,47 +555,38 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     </div>
     <div class="opcoes2">
         
-           <a href="/SISTEMA_SORVETERIA/screens/equipamento/main_equipamento.php" class="a1">Equipamento</a>
-           <a href="/SISTEMA_SORVETERIA/screens/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/equipamento/main_equipamento.php" class="a1">Equipamento</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
         
     </div>
 </div>
 
-<a href="/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php">
+<a href="/SISTEMA_SORVETERIA/funcionarios/insumo/main_insumo.php">
 <div class="botaoArea2">
-    <div class=botaoA>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#fff"><path d="M221-120q-27 0-48-16.5T144-179L42-549q-5-19 6.5-35T80-600h190l176-262q5-8 14-13t19-5q10 0 19 5t14 13l176 262h192q20 0 31.5 16t6.5 35L816-179q-8 26-29 42.5T739-120H221Zm-1-80h520l88-320H132l88 320Zm260-80q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM367-600h225L479-768 367-600Zm113 240Z"/></svg>
-            <p class="paraBotaoA">Insumos</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fff" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+    <div class=botaoB>
+    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M221-120q-27 0-48-16.5T144-179L42-549q-5-19 6.5-35T80-600h190l176-262q5-8 14-13t19-5q10 0 19 5t14 13l176 262h192q20 0 31.5 16t6.5 35L816-179q-8 26-29 42.5T739-120H221Zm-1-80h520l88-320H132l88 320Zm260-80q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM367-600h225L479-768 367-600Zm113 240Z"/></svg>
+            <p class="paraBotaoB">Insumos</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
     </div>
 </div>
 </a>
 
 <div class="botaoArea1">
-    <div class=botaoB>
-    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M482-40 294-400q-71 3-122.5-41T120-560q0-51 29.5-92t74.5-58q18-91 89.5-150.5T480-920q95 0 166.5 59.5T736-710q45 17 74.5 58t29.5 92q0 75-53 119t-119 41L482-40ZM280-480q15 0 29.5-5t26.5-17l22-22 26 16q21 14 45.5 21t50.5 7q26 0 50.5-7t45.5-21l26-16 22 22q12 12 26.5 17t29.5 5q33 0 56.5-23.5T760-560q0-30-19-52.5T692-640l-30-4-2-32q-5-69-57-116.5T480-840q-71 0-123 47.5T300-676l-2 32-30 6q-30 6-49 27t-19 51q0 33 23.5 56.5T280-480Zm202 266 108-210q-24 12-52 18t-58 6q-27 0-54.5-6T372-424l110 210Zm-2-446Z"/></svg>
-            <p class="paraBotaoB">Produtos</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
+    <div class=botaoA>
+    <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#fff"><path d="M482-40 294-400q-71 3-122.5-41T120-560q0-51 29.5-92t74.5-58q18-91 89.5-150.5T480-920q95 0 166.5 59.5T736-710q45 17 74.5 58t29.5 92q0 75-53 119t-119 41L482-40ZM280-480q15 0 29.5-5t26.5-17l22-22 26 16q21 14 45.5 21t50.5 7q26 0 50.5-7t45.5-21l26-16 22 22q12 12 26.5 17t29.5 5q33 0 56.5-23.5T760-560q0-30-19-52.5T692-640l-30-4-2-32q-5-69-57-116.5T480-840q-71 0-123 47.5T300-676l-2 32-30 6q-30 6-49 27t-19 51q0 33 23.5 56.5T280-480Zm202 266 108-210q-24 12-52 18t-58 6q-27 0-54.5-6T372-424l110 210Zm-2-446Z"/></svg>
+            <p class="paraBotaoA">Produtos</p>
+            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#fff" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
     </div>
     <div class="opcoes">
         
-           <a href="/SISTEMA_SORVETERIA/screens/receita/main_receita.php" class="a1">Receita</a>
-           <a href="/SISTEMA_SORVETERIA/screens/produto/main_produto.php" class="a1">Produto</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/receita/main_receita.php" class="a1">Receita</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/produto/main_produto.php" class="a1">Produto</a>
         
     </div>
 </div>
 
-<a href="/SISTEMA_SORVETERIA/screens/usuario/main_usuario.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#B60000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
-            <p class="paraBotaoB">Usuários</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#B60000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
+<a href="/SISTEMA_SORVETERIA/login.php"><p class="logout">Log Out</p></a>
 
-<a href="/SISTEMA_SORVETERIA/login.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><p class="logout">Log Out</p></a>
 
 </div>
     <!--Modal Cadastrar-->
@@ -511,27 +596,29 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 <div class="modal-header">
                     <h1>Adicionar um registro ...</h1>
                 </div>
-                <div class="modal-body">
-                    <form class="form-group well" action="adicionar_insumo.php" method="POST">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
-                        <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-
-                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
-                        <option value="" selected="selected">Fornecedor</option>
+                <div class="modal-body1">
+                    <form class="form-group well" action="adicionar_receita.php" method="POST">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
+                        
+                        <select name="insumo0" class="selectInsumo">
+                        <option value="" selected="selected">Selecione...</option>
 
                         <?php
-                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
-                        while($fornecedores = mysql_fetch_array($query))
+                        $query = mysql_query("SELECT id_insumo, nome FROM insumo");
+                        while($insumo = mysql_fetch_array($query))
                         {
-                            ?>
-                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
-                                       <?php echo $fornecedores['nome']  ?></option>
+                        ?>
+                        <option value="<?php echo $insumo['id_insumo']?>">                                                     
+                        <?php echo $insumo['nome']  ?></option>
                         <?php }
-                            ?>
+                        ?>
                         </select>
-
+                        <input type="text" class="textInsumo" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
+                        <div class="divinsumos"></div>
+                        <button class="btnAdicionar" onclick="addinsumo()">Insumo +</button>
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
@@ -541,7 +628,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             </div>
         </div>
     </div>
-
+    
     <!--Modal Alterar-->
     <div class="modal fade" id="myModalAlterar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -550,27 +637,13 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_insumo.php" method="POST">
-                        <input type="text" id="id_insumo" name="id_insumo" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
-                        <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-                                                
-                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
-                        <option value="" selected="selected">Fornecedor</option>
-
-                        <?php
-                        $query = mysql_query("SELECT id_fornecedor, nome FROM fornecedor");
-                        while($fornecedores = mysql_fetch_array($query))
-                        {
-                            ?>
-                        <option value="<?php echo $fornecedores['id_fornecedor']?>">                                                     
-                                       <?php echo $fornecedores['nome']  ?></option>
-                        <?php }
-                            ?>
-                        </select>
-
+                    <form class="form-group well" action="alterar_receita.php" method="POST">
+                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
+                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
@@ -589,13 +662,13 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Excluir Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="excluir_insumo.php" method="GET">
-                        <input type="text" id="id_insumo" name="id_insumo" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
-                        <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-                        <input type="text" id="id_fornecedor_insumo" name="id_fornecedor_insumo" required placeholder="id_fornecedor_insumo">
+                    <form class="form-group well" action="excluir_receita.php" method="GET">
+                        <input type="text" class="textoForm" id="id_receita" name="id_receita" required placeholder="Código">
+                        <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="Custo unitário">
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="Data de validade">
+                        <input type="text" class="textoForm" id="custo_total" name="custo_total" required placeholder="custo_total">
                         <button type="submit" class="btn" name="excluir">Excluir</button>
                     </form>
                 </div>
@@ -607,12 +680,14 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     </div>
 
     <div class="container">
-        <h2>INSUMOS</h2><br>
-        <form action="main_insumo.php" method="POST">
-        <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+        <h2>RECEITA</h2><br>
+        <form action="main_receita.php" method="POST">
+    <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
+    
+    <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+    
     <div class="divFuncoes">
-                    <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
+    <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
         <i class="fas fa-plus"></i> Cadastrar
     </button>
@@ -621,35 +696,23 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalExportar" onclick="generatePDF()">
         <i class="fas fa-file-export"></i> Exportar
     </button>
-
     </div>
 
-    <div class="divFuncoesBotoes">
-            <!-- Botão "Cadastrar" -->
-            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
-                insumos
-            </button>
-
-            <!-- Botão "Exportar" -->
-            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/estoque_insumo.php'">
-                Estoque
-            </button>
-
-        </div>
-        </form>
+</form>
+    <div style="overflow-x:auto;">
         <table class="table table-striped">
             <tr>
                 <th>Código</th>
                 <th>Nome</th>
-                <th>Unidade de medida</th>
-                <th>Custo unitario</th>
-                <th>Data de validade</th>
-                <th>Fornecedor</th>
+                <th>Descrição</th>
+                <th>Tempo de preparo</th>
+                <th>Quantidade</th>
+                <th>Custo total</th>
                 <th>Operação</th>
             </tr>
             <?php
             if ((isset($_POST['pesquisar'])) or isset($_POST['cadastrar'])) {
-                $consulta = "SELECT * FROM insumo";
+                $consulta = "SELECT * FROM receita";
 
                 if ($_POST['nome'] != '') {
                     $consulta .= " WHERE nome LIKE '%" . $_POST['nome'] . "%'";
@@ -658,27 +721,28 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_insumo'] . "*" . $dados['nome'] . "*" . $dados['unidade_medida'] . "*" . $dados['custo_unitario'] . "*" . $dados['data_validade'] . "*" . $dados['id_fornecedor_insumo'];
+                    $strdados = $dados['id_receita'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['tempo_preparo'] . "*" . $dados['quantidade_produzida'] . "*" . $dados['custo_total'];
                     ?>
                     <tr>
-                        <td><?php echo $dados['id_insumo']; ?></td>
-                        <td><?php echo $dados['nome']; ?></td>
-                        <td><?php echo $dados['unidade_medida']; ?></td>
-                        <td><?php echo $dados['custo_unitario']; ?></td>
-                        <td><?php echo $dados['data_validade']; ?></td>
-                        <td><?php echo $dados['id_fornecedor_insumo']; ?></td>
-                        <td class="table-btn">
-                            <a href="excluir_insumo.php?id_insumo=<?php echo $dados['id_insumo']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
-
+                        <td ><?php echo $dados['id_receita']; ?></td>
+                        <td ><?php echo $dados['nome']; ?></td>
+                        <td ><?php echo $dados['descricao']; ?></td>
+                        <td ><?php echo $dados['tempo_preparo']; ?></td>
+                        <td ><?php echo $dados['quantidade_produzida']; ?></td>
+                        <td ><?php echo $dados['custo_total']; ?></td>
+                        <td>
+                            <a href="excluir_receita.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                     <?php
+                    
                 }
                 mysql_close($conectar);
             }
             ?>
         </table>
+        </div>
     </div>
 
     <!-- Bibliotecas requeridas -->

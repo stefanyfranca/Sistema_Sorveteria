@@ -240,12 +240,12 @@ while ($row = mysql_fetch_array($result)) {
         }
 
         .botaoArea1{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }
         .botaoArea2{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }

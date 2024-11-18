@@ -15,7 +15,7 @@ if (isset($_POST['conectar'])) {
     $senha = $_POST['senha'];
 
     // Usar prepared statements para evitar SQL injection
-    $stmt = $conexao->prepare("SELECT * FROM usuario WHERE cpf = ? AND senha = ?");
+    $stmt = $conexao->prepare("SELECT tipo FROM usuario WHERE cpf = ? AND senha = ?");
     $stmt->bind_param("ss", $cpf, $senha); // 'ss' significa dois parâmetros do tipo string
     $stmt->execute();
     $resultado = $stmt->get_result();
@@ -24,8 +24,16 @@ if (isset($_POST['conectar'])) {
         // Se o login falhar, exibe a mensagem de erro
         $mensagem_erro = "CPF ou senha inválida...";
     } else {
-        $_SESSION['cpf'] = $cpf;
-        header("Location: screens/funcionario/main_funcionario.php");
+        // Obter o tipo de usuário
+        $usuario = $resultado->fetch_assoc();
+        $tipo = $usuario['tipo'];
+
+        // Redirecionar com base no tipo de usuário
+        if ($tipo === 'adm') {
+            header("Location: screens/widgets/widgets.php");
+        } else {
+            header("Location: funcionarios/processo_fabricacao/main_fabricacao.php");
+        }
         exit(); // Importante para evitar que o script continue após o redirecionamento
     }
 
@@ -34,6 +42,7 @@ if (isset($_POST['conectar'])) {
 
 $conexao->close();
 ?>
+
 <html>
     <head>
         <meta charset="UTF-8">
@@ -43,11 +52,9 @@ $conexao->close();
             body {
                 margin: 0;
                 padding: 0;
-                height: 100%;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                background-color: #C6e2e9;
             }
 
             .container {

@@ -112,7 +112,6 @@ $db = mysql_select_db('frangelato');
 
         table {
             width: 100%;
-            margin-top: 20px;
             background-color: #FFF;
             border-collapse: collapse;
             border: 0px solid;
@@ -153,12 +152,12 @@ $db = mysql_select_db('frangelato');
         }
 
         .botaoArea1{
-            margin-top:12%;
+            margin-top:15%;
             height:40px;
             width:220px;
         }
         .botaoArea2{
-            margin-top:12%;
+            margin-top:15%;
             height:40px;
             width:220px;
         }
@@ -283,7 +282,7 @@ $db = mysql_select_db('frangelato');
             color:#6B0000;
             font-size:20px;
             margin-left:35%;
-            margin-top:15%;
+            margin-top:90%;
             text-decoration: none;
         }
         .fa-arrow-right-from-bracket{
@@ -369,6 +368,30 @@ $db = mysql_select_db('frangelato');
             margin-top:-7px;
         }
 
+        .divFuncoesBotoes {
+    margin-top: 20px;
+    display: flex;
+    gap: 0; 
+}
+
+.botaoTelasativa {
+    background-color: #6B0000;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
+.botaoTelasinativa {
+    background-color: #fff;
+    color: #6B0000;
+    border: 0.5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    height: 33px;
+    margin-right: 0; 
+}
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -440,27 +463,7 @@ $db = mysql_select_db('frangelato');
 <div class="lateral">
 <p class="txtfrangelato">FRANGELATO</p> 
 
-<a href="/SISTEMA_SORVETERIA/screens/widgets/widgets.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M666-440 440-666l226-226 226 226-226 226Zm-546-80v-320h320v320H120Zm400 400v-320h320v320H520Zm-400 0v-320h320v320H120Zm80-480h160v-160H200v160Zm467 48 113-113-113-113-113 113 113 113Zm-67 352h160v-160H600v160Zm-400 0h160v-160H200v160Zm160-400Zm194-65ZM360-360Zm240 0Z"/></svg>
-            <p class="paraBotaoB">Dashboard</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
-
-<a href="/SISTEMA_SORVETERIA/screens/funcionario/main_funcionario.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M40-160v-112q0-34 17.5-62.5T104-378q62-31 126-46.5T360-440q66 0 130 15.5T616-378q29 15 46.5 43.5T680-272v112H40Zm720 0v-120q0-44-24.5-84.5T666-434q51 6 96 20.5t84 35.5q36 20 55 44.5t19 53.5v120H760ZM360-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47Zm400-160q0 66-47 113t-113 47q-11 0-28-2.5t-28-5.5q27-32 41.5-71t14.5-81q0-42-14.5-81T544-792q14-5 28-6.5t28-1.5q66 0 113 47t47 113ZM120-240h480v-32q0-11-5.5-20T580-306q-54-27-109-40.5T360-360q-56 0-111 13.5T140-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T440-640q0-33-23.5-56.5T360-720q-33 0-56.5 23.5T280-640q0 33 23.5 56.5T360-560Zm0 320Zm0-400Z"/></svg>
-            <p class="paraBotaoB">Funcionários</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
-
-<a href="/SISTEMA_SORVETERIA/screens/fornecedor/main_fornecedor.php">
+<a href="/SISTEMA_SORVETERIA/funcionarios/fornecedor/main_fornecedor.php">
 <div class="botaoArea2">
     <div class=botaoB>
             <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M640-640h120-120Zm-440 0h338-18 14-334Zm16-80h528l-34-40H250l-34 40Zm184 270 80-40 80 40v-190H400v190Zm182 330H200q-33 0-56.5-23.5T120-200v-499q0-14 4.5-27t13.5-24l50-61q11-14 27.5-21.5T250-840h460q18 0 34.5 7.5T772-811l50 61q9 11 13.5 24t4.5 27v196q-19-7-39-11t-41-4v-122H640v153q-35 20-61 49.5T538-371l-58-29-160 80v-320H200v440h334q8 23 20 43t28 37Zm138 0v-120H600v-80h120v-120h80v120h120v80H800v120h-80Z"/></svg>
@@ -479,13 +482,13 @@ $db = mysql_select_db('frangelato');
     </div>
     <div class="opcoes2">
         
-           <a href="/SISTEMA_SORVETERIA/screens/equipamento/main_equipamento.php" class="a1">Equipamento</a>
-           <a href="/SISTEMA_SORVETERIA/screens/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/equipamento/main_equipamento.php" class="a1">Equipamento</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/processo_fabricacao/main_fabricacao.php" class="a1">Fabricação</a>
         
     </div>
 </div>
 
-<a href="/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php">
+<a href="/SISTEMA_SORVETERIA/funcionarios/insumo/main_insumo.php">
 <div class="botaoArea1">
     <div class=botaoB>
     <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M221-120q-27 0-48-16.5T144-179L42-549q-5-19 6.5-35T80-600h190l176-262q5-8 14-13t19-5q10 0 19 5t14 13l176 262h192q20 0 31.5 16t6.5 35L816-179q-8 26-29 42.5T739-120H221Zm-1-80h520l88-320H132l88 320Zm260-80q33 0 56.5-23.5T560-360q0-33-23.5-56.5T480-440q-33 0-56.5 23.5T400-360q0 33 23.5 56.5T480-280ZM367-600h225L479-768 367-600Zm113 240Z"/></svg>
@@ -503,23 +506,13 @@ $db = mysql_select_db('frangelato');
     </div>
     <div class="opcoes">
         
-           <a href="/SISTEMA_SORVETERIA/screens/receita/main_receita.php" class="a1">Receita</a>
-           <a href="/SISTEMA_SORVETERIA/screens/produto/main_produto.php" class="a1">Produto</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/receita/main_receita.php" class="a1">Receita</a>
+           <a href="/SISTEMA_SORVETERIA/funcionarios/produto/main_produto.php" class="a1">Produto</a>
         
     </div>
 </div>
 
-<a href="/SISTEMA_SORVETERIA/screens/usuario/main_usuario.php">
-<div class="botaoArea2">
-    <div class=botaoB>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" class= "icone"fill="#6B0000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
-            <p class="paraBotaoB">Usuários</p>
-            <svg xmlns="http://www.w3.org/2000/svg" height="28px" viewBox="0 -960 960 960" width="28px" fill="#6B0000" id="setaB"><path d="M504-480 320-664l56-56 240 240-240 240-56-56 184-184Z"/></svg>
-    </div>
-</div>
-</a>
-
-<a href="/SISTEMA_SORVETERIA/login.php"><i class="fa-solid fa-arrow-right-from-bracket"></i><p class="logout">Log Out</p></a>
+<a href="/SISTEMA_SORVETERIA/login.php"><p class="logout">Log Out</p></a>
 
 
 </div>
@@ -579,6 +572,19 @@ $db = mysql_select_db('frangelato');
         <i class="fas fa-file-export"></i> Exportar
     </button>
     </div>
+
+    <div class="divFuncoesBotoes">
+            <!-- Botão "Cadastrar" -->
+            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/produto/main_produto.php'">
+                Produtos
+            </button>
+
+            <!-- Botão "Exportar" -->
+            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/produto/estoque_produto.php'">
+                Estoque
+            </button>
+
+        </div>
 
 </form>
     <div style="overflow-x:auto;">

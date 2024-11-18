@@ -1,16 +1,16 @@
 <?php
-    $id_ingrediente = $_GET['id_ingrediente'];
+    $id_insumo = $_GET['id_insumo'];
     
     $conectar  = mysql_connect('localhost','root','');
     $db        = mysql_select_db('frangelato');
-    $sql       = "delete from ingrediente_receita WHERE
-    id_ingrediente = '$id_ingrediente';";
+    $sql       = "delete from insumo WHERE
+    id_insumo = '$id_insumo';";
     $resultado = mysql_query($sql);
 ?>
 
 <script>
 	alert('excluido com Sucesso!');
 	<?php
-		echo "location.href='main_ingrediente.php'";
+		echo "location.href='main_insumo.php'";
 	?>
 </script>
