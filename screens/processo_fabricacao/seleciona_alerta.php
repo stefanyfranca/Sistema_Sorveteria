@@ -10,6 +10,11 @@
 
     $saida = 0;
 
+    $query = mysql_query("SELECT quantidade_receita FROM produto WHERE id_produto = $id_produto");
+    $fetch = mysql_fetch_array($query);
+
+    $quantidadeReceita = $fetch["quantidade_receita"];
+
     $query = mysql_query("SELECT id_receita_produto FROM produto WHERE id_produto = $id_produto");
     $fetch = mysql_fetch_array($query);
 
@@ -27,7 +32,7 @@
     for ($i = 1; $i <= $repeticoes; $i++){
         $id_insumo = $insumos[$indexID];
         $quantidade_retirar = $insumos[$indexQuant];
-        $quantidade_retirar = $quantidade_retirar * $quantidade;
+        $quantidade_retirar = $quantidade_retirar * $quantidade * $quantidadeReceita;
         $query = mysql_query("SELECT quantidade_estoque FROM insumo WHERE id_insumo = $id_insumo");
         $fetch = mysql_fetch_array($query);
         $quantidade_estoque = $fetch["quantidade_estoque"];

@@ -627,7 +627,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
             <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
-                insumos
+                Insumos
             </button>
 
             <!-- Botão "Exportar" -->

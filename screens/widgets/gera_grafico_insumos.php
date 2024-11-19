@@ -11,6 +11,7 @@ $insumosA = array(); //tenho
 $insumosNome = array(); //tenho
 $quantidadeFabricada = array(); //tenho
 $infoReceitas = array(); //tenho
+$quantidadesReceita = array();
 
 $insumosNomeFabricado = array(); 
 $quantidadeInsumoFabricado = array(); 
@@ -120,6 +121,16 @@ foreach($produtoFabricado as $prod){
         }
 }
 
+//quantidade fabricada de uma receita
+foreach($produtoFabricado as $prod){
+    $quantidadereceitaSelect = "SELECT quantidade_receita FROM produto WHERE id_produto = '$prod'";
+    $quantidadereceitaQuery = mysql_query($quantidadereceitaSelect);
+    while($quants = mysql_fetch_array($quantidadereceitaQuery)){
+        $quant = $quants['quantidade_receita'];
+        array_push($quantidadesReceita, $quant);
+        }
+}
+
 //informação da receita
 foreach($receitaFabricada as $rec){
     $idreceitaSelect = "SELECT insumos_utilizados FROM receita WHERE id_receita = '$rec'";
@@ -145,7 +156,7 @@ foreach($insumosA as $id){
         for($i = 1; $i <= $repeticoes; $i++){
             $insumoReceita = $conteudoReceita[$contadorInsumo];
             $quantidadeReceita = $conteudoReceita[$contadorQuantidade];
-            $multiplica = $quantidadeFabricada[$contadorMultiplica];
+            $multiplica = $quantidadeFabricada[$contadorMultiplica] * $quantidadesReceita[$contadorMultiplica];
             if($insumoReceita == $id){
                 $quantidadeInsumo += $quantidadeReceita * $multiplica; 
             }

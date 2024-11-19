@@ -33,6 +33,11 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+
     <script>
 function generatePDF() {
     var props = {
@@ -384,7 +389,9 @@ function generatePDF() {
 
     </style>
     <script>
-
+        $(document).ready(function(){
+            $('#cpf').mask('000.000.000-00', {reverse: false});
+        });
     </script>
 </head>
 
@@ -607,8 +614,6 @@ function generatePDF() {
     </div>
 
     <!-- Biblioteca requerida -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 
 </html>

@@ -38,6 +38,8 @@ while ($row = mysql_fetch_array($result)) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
     function generatePDF() {
     var props = {
@@ -414,9 +416,57 @@ while ($row = mysql_fetch_array($result)) {
     height: 33px;
     margin-right: 0; 
 }
+
+.divrec{
+    width: 140px;
+}
+.divrec2{
+    width: 10px;
+    position: absolute;
+    margin-left:123px;
+    margin-top:-30px;
+}
+
     </style>
     <script>
+        $(document).ready(function(){
+            $('#quantidade_receita').change(function(){
+                var idreceita = $('#id_receita_produto').val(); 
+                var quantidade =  $('#quantidade_receita').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacao");
+                        recomendacao.remove();
+                        let local = document.querySelector('#recomendacaoDIV');
+                        let valorRecomendacao = `<p id="recomendacao">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
 
+            $('#id_receita_produto').change(function(){
+                var idreceita = $('#id_receita_produto').val(); 
+                var quantidade =  $('#quantidade_receita').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacao");
+                        recomendacao.remove();
+                        let local = document.querySelector('#recomendacaoDIV');
+                        let valorRecomendacao = `<p id="recomendacao">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
+
+        });
     </script>
 </head>
 
@@ -517,10 +567,11 @@ while ($row = mysql_fetch_array($result)) {
                     <form class="form-group well" action="adicionar_produto.php" method="POST">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="quantidade da receita">
-                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="id_receita_produto">
-                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo_total_produto">
+                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="Quantidade da receita">
+                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="Receita">
+                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="Custo total">
+                        <div class="divrec"><p>Custo aproximado: </p></div><div id="recomendacaoDIV" class="divrec2"><p id="recomendacao"></p></div>
+                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo de venda">
                         <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
@@ -543,10 +594,10 @@ while ($row = mysql_fetch_array($result)) {
                         <input type="text" id="id_produto" name="id_produto" required placeholder="Código">
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
+                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo de venda">
                         <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="Data de validade">
-                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="id_receita_produto">
-                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo_total_produto">
+                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="receita">
+                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo total">
                         <button type="submit" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
@@ -603,7 +654,7 @@ while ($row = mysql_fetch_array($result)) {
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
             <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
-                insumos
+                Produtos
             </button>
 
             <!-- Botão "Exportar" -->
@@ -666,8 +717,7 @@ while ($row = mysql_fetch_array($result)) {
     </div>
 
     <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

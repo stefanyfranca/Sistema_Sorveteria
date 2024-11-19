@@ -111,7 +111,7 @@ $db = mysql_select_db('frangelato');
             background-color:#FFFFFF;
             height:100%;
             width:220px;
-            position:absolute;
+            position:fixed;
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
         .botaoArea1{

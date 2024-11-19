@@ -38,6 +38,11 @@ while ($row = mysql_fetch_array($result)) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+
     <script>
     function generatePDF() {
     var props = {
@@ -390,19 +395,10 @@ while ($row = mysql_fetch_array($result)) {
         }
 
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" integrity="sha512-MpDFIChbcXl2QgipQrt1VcPHMldRILetapBl5MPCA9Y8r7qvlwx1/Mc9hNTzY+kS5kX6PdoDq41ws1HiVNLdZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script>
-        function gerarPDF(){
-            const tabela = document.querySelector('#teste');
-
-            const options = {
-                margin: [10,10,10,10],
-                filename: "Relatório Usuário.pdf",
-                html2Canvas: {scale: 2},
-                jsPDF: {unit:"mm", format:"a4", orientation:"portrait"},
-            };
-            html2pdf().set(options).from(tabela).save();
-        }
+     $(document).ready(function(){
+        $('#cpf').mask('000.000.000-00', {reverse: false});
+     });
     </script>
 </head>
 
@@ -628,8 +624,7 @@ while ($row = mysql_fetch_array($result)) {
     </div>
 
     <!-- Biblioteca requerida -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

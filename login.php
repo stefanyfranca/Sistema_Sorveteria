@@ -48,6 +48,11 @@ $conexao->close();
         <meta charset="UTF-8">
         <title>Login Usuários</title>
         <link rel="stylesheet" href="css/bootstrap.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
+
         <style type="text/css">
             body {
                 margin: 0;
@@ -155,6 +160,11 @@ $conexao->close();
             }
         </style>
     </head>
+    <script>
+    $(document).ready(function(){
+        $('#cpf').mask('000.000.000-00', {reverse: false});
+    });
+    </script>
     <body>
         <div class="container">
             <div class="left-section"></div>
