@@ -35,6 +35,10 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script>
 function generatePDF() {
     var props = {
@@ -385,8 +389,147 @@ function generatePDF() {
         .iconeTabela{
             margin-top:-7px;
         }
+
+        .confirma{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:25%;
+            position: fixed;
+            z-index: 100;
+            margin-top:15%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnConfirma1{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+            
+        }
+        
+        .btnConfirma2{
+            width:70px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:50px;
+            border-style:none;
+            border-radius:4px;
+            position: absolute;
+        }
+
+        .textoConfirma{
+            margin-left:80px;
+            margin-top:45px;
+            height:10px;
+        }
     </style>
     <script>
+    $(document).ready(function(){
+        $('#cnpj').mask('00.000.000/0000-00', {reverse: false});
+        $('#telefone').mask('(00) 0000-0000', {reverse: false});
+        $('#cnpjA').mask('00.000.000/0000-00', {reverse: false});
+        $('#telefoneA').mask('(00) 0000-0000', {reverse: false});
+
+
+        $('#cadastrar').on( "click", function(){
+                let nomelet = document.getElementById("nome").value;
+                let cnpjlet = document.getElementById("cnpj").value;
+                let enderecolet = document.getElementById("endereco").value;
+                let cidadelet = document.getElementById("cidade").value;
+                let estadolet = document.getElementById("estado").value;
+                let paislet = document.getElementById("pais").value;
+                let telefonelet = document.getElementById("telefone").value;
+                let emaillet = document.getElementById("email").value;
+                let observacoeslet = document.getElementById("observacoes").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_fornecedor.php',
+                data: {nome: nomelet, cnpj: cnpjlet, endereco: enderecolet, cidade: cidadelet, estado: estadolet, pais: paislet, telefone: telefonelet, email: emaillet, observacoes: observacoeslet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+            $('#alterar').on( "click", function(){
+                let id_fornecedorlet = document.getElementById("id_fornecedorA").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let cnpjlet = document.getElementById("cnpjA").value;
+                let enderecolet = document.getElementById("enderecoA").value;
+                let cidadelet = document.getElementById("cidadeA").value;
+                let estadolet = document.getElementById("estadoA").value;
+                let paislet = document.getElementById("paisA").value;
+                let telefonelet = document.getElementById("telefoneA").value;
+                let emaillet = document.getElementById("emailA").value;
+                let observacoeslet = document.getElementById("observacoesA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_fornecedor.php',
+                data: {id_fornecedor: id_fornecedorlet, nome: nomelet, cnpj: cnpjlet, endereco: enderecolet, cidade: cidadelet, estado: estadolet, pais: paislet, telefone: telefonelet, email: emaillet, observacoes: observacoeslet},  
+                success: function(data)  
+                {
+                    alert('Alterado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+    });
+
+    function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_fornecedor.php',
+                data: {id_fornecedor: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir(`+id+`)">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
+
+        function infoAlterar(id,nome,cnpj,endereco,cidade,estado,pais,telefone,email,observacoes){
+            document.getElementById("id_fornecedorA").value = id;
+            document.getElementById("nomeA").value = nome;
+            document.getElementById("cnpjA").value = cnpj;
+            document.getElementById("enderecoA").value = endereco;
+            document.getElementById("cidadeA").value = cidade;
+            document.getElementById("estadoA").value = estado;
+            document.getElementById("paisA").value = pais;
+            document.getElementById("telefoneA").value = telefone;
+            document.getElementById("emailA").value = email;
+            document.getElementById("observacoesA").value = observacoes;
+        }
 
     </script>
 </head>
@@ -485,17 +628,26 @@ function generatePDF() {
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_fornecedor.php" method="POST">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
+                    <form class="form-group well" method="POST">
+                        <label>Nome:</label>
+                        <input type="text" id="nome" name="nome" required placeholder="nome">
+                        <label>Cnpj:</label>
                         <input type="text" id="cnpj" name="cnpj" required placeholder="cnpj">
-                        <input type="text" id="endereco" name="endereco" required placeholder="endereco">
+                        <label>Endereço:</label>
+                        <input type="text" id="endereco" name="endereco" required placeholder="endereço">
+                        <label>Cidade:</label>
                         <input type="text" id="cidade" name="cidade" required placeholder="cidade">
+                        <label>Estado:</label>
                         <input type="text" id="estado" name="estado" required placeholder="estado">
-                        <input type="text" id="pais" name="pais" required placeholder="pais">
+                        <label>País:</label>
+                        <input type="text" id="pais" name="pais" required placeholder="país">
+                        <label>Telefone:</label>
                         <input type="text" id="telefone" name="telefone" required placeholder="telefone">
+                        <label>Email:</label>
                         <input type="text" id="email" name="email" required placeholder="email">
-                        <input type="text" id="observacoes" name="observacoes" required placeholder="observacoes">
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
+                        <label>Observações:</label>
+                        <input type="text" id="observacoes" name="observacoes" required placeholder="observações">
+                        <button type="button" id="cadastrar" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -513,18 +665,27 @@ function generatePDF() {
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_fornecedor.php" method="POST">
-                        <input type="text" id="id_fornecedor" name="id_fornecedor" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="cnpj" name="cnpj" required placeholder="cnpj">
-                        <input type="text" id="endereco" name="endereco" required placeholder="endereco">
-                        <input type="text" id="cidade" name="cidade" required placeholder="cidade">
-                        <input type="text" id="estado" name="estado" required placeholder="estado">
-                        <input type="text" id="pais" name="pais" required placeholder="pais">
-                        <input type="text" id="telefone" name="telefone" required placeholder="telefone">
-                        <input type="text" id="email" name="email" required placeholder="email">
-                        <input type="text" id="observacoes" name="observacoes" required placeholder="observacoes">
-                        <button type="submit" class="btn" name="alterar">Alterar</button>
+                    <form class="form-group well"  method="POST">
+                        <input type="hidden" id="id_fornecedorA" name="id_fornecedor" required placeholder="Código">
+                        <label>Nome:</label>
+                        <input type="text" id="nomeA" name="nome" required placeholder="nome">
+                        <label>Cnpj:</label>
+                        <input type="text" id="cnpjA" name="cnpj" required placeholder="cnpj">
+                        <label>Endereço:</label>
+                        <input type="text" id="enderecoA" name="endereco" required placeholder="endereço">
+                        <label>Cidade:</label>
+                        <input type="text" id="cidadeA" name="cidade" required placeholder="cidade">
+                        <label>Estado:</label>
+                        <input type="text" id="estadoA" name="estado" required placeholder="estado">
+                        <label>País:</label>
+                        <input type="text" id="paisA" name="pais" required placeholder="país">
+                        <label>Telefone:</label>
+                        <input type="text" id="telefoneA" name="telefone" required placeholder="telefone">
+                        <label>Email:</label>
+                        <input type="text" id="emailA" name="email" required placeholder="email">
+                        <label>Observações:</label>
+                        <input type="text" id="observacoesA" name="observacoes" required placeholder="observacoes">
+                        <button type="button" id="alterar" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -567,7 +728,7 @@ function generatePDF() {
         <h2>FORNECEDORES</h2><br>
         <form action="main_fornecedor.php" method="POST">
         <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" name="pesquisar" id="pesquisar" class="btnPesquisar">Pesquisar</button>
     <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
@@ -604,7 +765,6 @@ function generatePDF() {
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_fornecedor'] . "*" . $dados['nome'] . "*" . $dados['cnpj'] . "*" . $dados['endereco'] . "*" . $dados['cidade'] . "*" . $dados['estado'] . "*" . $dados['pais'] . "*" . $dados['telefone']. "*" . $dados['email']. "*" . $dados['observacoes'];
                     ?>
                     <tr>
                         <td><?php echo $dados['id_fornecedor']; ?></td>
@@ -618,9 +778,9 @@ function generatePDF() {
                         <td><?php echo $dados['email']; ?></td>
                         <td><?php echo $dados['observacoes']; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_fornecedor.php?id_fornecedor=<?php echo $dados['id_fornecedor']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                            <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_fornecedor']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['id_fornecedor']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['cnpj']; ?>','<?php echo $dados['endereco']; ?>','<?php echo $dados['cidade']; ?>','<?php echo $dados['estado']; ?>','<?php echo $dados['pais']; ?>','<?php echo $dados['telefone']; ?>','<?php echo $dados['email']; ?>','<?php echo $dados['observacoes']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                     <?php
@@ -632,8 +792,7 @@ function generatePDF() {
     </div>
 
     <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

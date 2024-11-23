@@ -180,6 +180,7 @@ function generatePDF() {
         th {
             height:20px;
             color:#6B0000;
+            background-color:#f9f9f9;
         }
 
         tr:nth-child(even){
@@ -387,11 +388,125 @@ function generatePDF() {
             margin-top:-7px;
         }
 
+        .confirma{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:25%;
+            position: fixed;
+            z-index: 100;
+            margin-top:15%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnConfirma1{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+            
+        }
+        
+        .btnConfirma2{
+            width:70px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:50px;
+            border-style:none;
+            border-radius:4px;
+            position: absolute;
+        }
+
+        .textoConfirma{
+            margin-left:80px;
+            margin-top:45px;
+            height:10px;
+        }
+
     </style>
     <script>
         $(document).ready(function(){
             $('#cpf').mask('000.000.000-00', {reverse: false});
+            $('#cpfA').mask('000.000.000-00', {reverse: false});
+        
+            $('#cadastrar').on( "click", function(){
+                let cpflet = document.getElementById("cpf").value;
+                let nomelet = document.getElementById("nome").value;
+                let tipolet = document.getElementById("tipo").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_funcionario.php',
+                data: {cpf: cpflet, nome: nomelet, tipo: tipolet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+            $('#alterar').on( "click", function(){
+                let cpflet = document.getElementById("cpfA").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let tipolet = document.getElementById("tipoA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_funcionario.php',
+                data: {cpf: cpflet, nome: nomelet, tipo: tipolet},  
+                success: function(data)  
+                {
+                    alert('Alterado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
         });
+
+        function infoAlterar(cpf,nome,tipo){
+            document.getElementById("cpfA").value = cpf;
+            document.getElementById("nomeA").value = nome;
+            document.getElementById("tipoA").value = tipo;
+        }
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_funcionario.php',
+                data: {cpf: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir('`+id+`')">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
     </script>
 </head>
 
@@ -489,11 +604,11 @@ function generatePDF() {
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_funcionario.php" method="POST">
+                    <form class="form-group well" method="POST">
                         <input type="text" id="cpf" name="cpf" class="span3" value="" required placeholder="cpf" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="nome" name="nome" class="span3" value="" required placeholder="Nome" style=" margin-bottom: -2px; height: 25px;"><br><br>
                         <input type="text" id="tipo" name="tipo" class="span3" value="" required placeholder="tipo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="submit" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
+                        <button type="button" id="cadastrar" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -512,11 +627,11 @@ function generatePDF() {
                     <h1>Alterar de Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_funcionario.php" method="POST">
-                        cpf   <input id="cpf" type="text" name="cpf" value="" required>
-                        nome  <input id="nome" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        tipo <input id="tipo" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="submit" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
+                    <form class="form-group well" method="POST">
+                        cpf   <input id="cpfA" type="hidden" name="cpf" value="" required>
+                        nome  <input id="nomeA" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        tipo <input id="tipoA" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
+                        <button type="button" id="alterar" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -555,7 +670,7 @@ function generatePDF() {
             <h2>FUNCIONÁRIOS </h2><br>
             <form action="main_funcionario.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" name="pesquisar" id="pesquisar" class="btnPesquisar">Pesquisar</button>
 
     <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
@@ -591,17 +706,16 @@ function generatePDF() {
 
 					while ($dados = mysql_fetch_array($resultado))
                     {
-						$strdados = $dados['cpf']."*".$dados['nome']."*".$dados['tipo'];
 				    ?>
                     <tr>
                         <td><?php echo $dados['cpf']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>  
                         <td><?php echo $dados['tipo']; ?></td>
                         <td>
-                        <a href="excluir_funcionario.php?cpf=<?php echo $dados['cpf']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                        <button type="button" class="btn btn-danger" onclick= "confirmaExcluir('<?php echo $dados['cpf']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
 
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['cpf']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['tipo']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                 <?php
