@@ -204,12 +204,12 @@ while ($row = mysql_fetch_array($result)) {
             box-shadow: 10px 0px 5px rgba(0, 0, 0, 0.1);
         }
         .botaoArea1{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }
         .botaoArea2{
-            margin-top:15%;
+            margin-top:12%;
             height:40px;
             width:220px;
         }
