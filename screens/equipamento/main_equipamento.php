@@ -157,6 +157,15 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             padding: 5px;
         }
 
+        .form-group input[type="date"] {
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
+
         select{
             margin-bottom: 10px;
             height: 28px;
@@ -496,7 +505,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 data: {id_equipamento: id},
                 success: function(data)
                 {
-                    alert('Excluido com Sucesso!');
+                    alert(''+data+'');
                     document.getElementById("pesquisar").click();
                 }
                 });
@@ -621,18 +630,26 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_equipamento.php" method="POST">
+                    <form class="form-group well" method="POST">
+                        <label>Nome:</label>
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="data_aquisicao" name="data_aquisicao" required placeholder="data de aquisição - AAAA/MM/DD">
                         
+                        <label>Descrição:</label>
+                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
+
+                        <label>Data de aquisição:</label>
+                        <input type="date" id="data_aquisicao" name="data_aquisicao" required>
+                        
+                        <label>Status:</label>
                         <select id="status" name="status">
                             <option value="ativo">ativo</option>
                             <option value="inativo">inativo</option>
                         </select>
 
-                        <input type="text" id="ultima_manutencao" name="ultima_manutencao" required placeholder="ultima manutenção - AAAA/MM/DD">
+                        <label>Última manutenção:</label>
+                        <input type="date" id="ultima_manutencao" name="ultima_manutencao" required>
                         
+                        <label>Fornecedor:</label>
                         <select name="id_fornecedor" id="id_fornecedor">
                         <option value="" selected="selected">Fornecedor</option>
 
@@ -665,18 +682,22 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_equipamento.php" method="POST">
-                        <input type="text" id="id_equipamentoA" name="id_equipamento" required placeholder="Código">
+                    <form class="form-group well" method="POST">
+                        <input type="hidden" id="id_equipamentoA" name="id_equipamento" required placeholder="Código">
+                        <label>Nome:</label>
                         <input type="text" id="nomeA" name="nome" required placeholder="Nome">
+                        <label>Descrição:</label>
                         <input type="text" id="descricaoA" name="descricao" required placeholder="descrição">
-                        <input type="text" id="data_aquisicaoA" name="data_aquisicao" required placeholder="data de aquisição">
-                        
+                        <label>Data de aquisição:</label>
+                        <input type="date" id="data_aquisicaoA" name="data_aquisicao" required>
+                        <label>Status:</label>
                         <select id="statusA" name="status">
                             <option value="ativo">ativo</option>
                             <option value="inativo">inativo</option>
                         </select>
-
-                        <input type="text" id="ultima_manutencaoA" name="ultima_manutencao" required placeholder="ultima manutenção">
+                        <label>Última manutenção:</label>
+                        <input type="date" id="ultima_manutencaoA" name="ultima_manutencao" required>
+                        <label>Fornecedor:</label>
                         <select name="id_fornecedor" id="id_fornecedorA">
                         <option value="" selected="selected">Fornecedor</option>
 
@@ -765,7 +786,14 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
+                    $id_forn = $dados['id_fornecedor'];
+                    $fornecedorTabelaSelect = "SELECT nome FROM fornecedor WHERE id_fornecedor = '$id_forn'";
+                    $fornecedorTabelaQuery = mysql_query($fornecedorTabelaSelect);
+                    while($forn = mysql_fetch_array($fornecedorTabelaQuery)){
+                        $fornecedorTabela = $forn['nome'];
+                    }
                     ?>
+                    
                     <tr>
                         <td><?php echo $dados['id_equipamento']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>
@@ -773,7 +801,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <td><?php echo $dados['data_aquisicao']; ?></td>
                         <td><?php echo $dados['status']; ?></td>
                         <td><?php echo $dados['ultima_manutencao']; ?></td>
-                        <td><?php echo $dados['id_fornecedor']; ?></td>
+                        <td><?php echo $fornecedorTabela; ?></td>
                         <td class="table-btn">
                             <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_equipamento']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 

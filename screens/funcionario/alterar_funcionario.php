@@ -1,7 +1,6 @@
 <?php
     $cpf = $_POST['cpf'];
     $nome   = $_POST['nome'];
-   
     $tipo  = $_POST['tipo'];
     
     $conectar  = mysql_connect('localhost','root','');
@@ -10,9 +9,3 @@
     $resultado = mysql_query($sql);
 ?>
 
-<script>
-	alert('Alterado com Sucesso!');
-	<?php
-		echo "location.href='main_funcionario.php'";
-	?>
-</script>

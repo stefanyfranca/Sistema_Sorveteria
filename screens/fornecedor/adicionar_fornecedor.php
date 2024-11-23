@@ -14,10 +14,3 @@
     $sql       = "insert into fornecedor (nome,cnpj,endereco,cidade,estado, pais, telefone, email, observacoes) values ('$nome','$cnpj','$endereco','$cidade','$estado','$pais','$telefone','$email','$observacoes')";
     $resultado = mysql_query($sql);
 ?>
-
-<script>
-	alert('Adicionado com Sucesso!');
-	<?php
-		echo "location.href='main_fornecedor.php'";
-	?>
-</script>
