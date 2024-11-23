@@ -393,39 +393,39 @@ while ($row = mysql_fetch_array($result)) {
         }
 
         .divFuncoesBotoes {
-    margin-top: 20px;
-    display: flex;
-    gap: 0; 
-}
+        margin-top: 20px;
+        display: flex;
+        gap: 0; 
+        }
 
-.botaoTelasativa {
-    background-color: #6B0000;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    height: 33px;
-    margin-right: 0; 
-}
-.botaoTelasinativa {
-    background-color: #fff;
-    color: #6B0000;
-    border: 0.5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    height: 33px;
-    margin-right: 0; 
-}
+        .botaoTelasativa {
+            background-color: #6B0000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height: 33px;
+            margin-right: 0; 
+        }
+        .botaoTelasinativa {
+            background-color: #fff;
+            color: #6B0000;
+            border: 0.5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            height: 33px;
+            margin-right: 0; 
+        }
 
-.divrec{
-    width: 140px;
-}
-.divrec2{
-    width: 10px;
-    position: absolute;
-    margin-left:123px;
-    margin-top:-30px;
-}
+        .divrec{
+            width: 140px;
+        }
+        .divrec2{
+            width: 10px;
+            position: absolute;
+            margin-left:123px;
+            margin-top:-30px;
+        }
 
     </style>
     <script>
@@ -653,12 +653,12 @@ while ($row = mysql_fetch_array($result)) {
 
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
-            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
+            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/produto/main_produto.php'">
                 Produtos
             </button>
 
             <!-- Botão "Exportar" -->
-            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/estoque_insumo.php'">
+            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/produto/estoque_produto.php'">
                 Estoque
             </button>
 
