@@ -38,6 +38,8 @@ while ($row = mysql_fetch_array($result)) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
     function generatePDF() {
     var props = {
@@ -381,6 +383,15 @@ while ($row = mysql_fetch_array($result)) {
             margin-left:5px;
         }
 
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
+        
         .btnPesquisar:hover {
             background-color: #450101;
             color: #fff;
@@ -416,7 +427,163 @@ while ($row = mysql_fetch_array($result)) {
 }
     </style>
     <script>
+        $(document).ready(function(){
+            $('#quantidade_receita').change(function(){
+                var idreceita = $('#id_receita_produto').val(); 
+                var quantidade =  $('#quantidade_receita').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacao");
+                        recomendacao.remove();
+                        document.getElementById('custo_total_produto').value = valor;
+                        let local = document.querySelector('#recomendacaoDIV');
+                        let valorRecomendacao = `<p id="recomendacao">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
 
+            $('#id_receita_produto').change(function(){
+                var idreceita = $('#id_receita_produto').val(); 
+                var quantidade =  $('#quantidade_receita').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacao");
+                        recomendacao.remove();
+                        document.getElementById('custo_total_produto').value = valor;
+                        let local = document.querySelector('#recomendacaoDIV');
+                        let valorRecomendacao = `<p id="recomendacao">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
+
+            $('#quantidade_receitaA').change(function(){
+                var idreceita = $('#id_receita_produtoA').val(); 
+                var quantidade =  $('#quantidade_receitaA').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacaoA");
+                        recomendacao.remove();
+                        document.getElementById('custo_total_produtoA').value = valor;
+                        let local = document.querySelector('#recomendacaoDIVA');
+                        let valorRecomendacao = `<p id="recomendacaoA">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
+
+            $('#id_receita_produtoA').change(function(){
+                var idreceita = $('#id_receita_produtoA').val(); 
+                var quantidade =  $('#quantidade_receitaA').val();
+                $.ajax({
+                    type: 'POST',
+                    url: 'recomenda_preco.php',
+                    data: {idreceita:idreceita, quantidade:quantidade},  
+                    success: function(valor)  
+                    {
+                        let recomendacao = document.querySelector("#recomendacaoA");
+                        recomendacao.remove();
+                        document.getElementById('custo_total_produtoA').value = valor;
+                        let local = document.querySelector('#recomendacaoDIVA');
+                        let valorRecomendacao = `<p id="recomendacaoA">`+valor+`</p>`; 
+                        local.insertAdjacentHTML('afterbegin', valorRecomendacao);
+                    }
+                });
+            })
+
+            $('#cadastrar').on( "click", function(){
+                let nomelet = document.getElementById("nome").value;
+                let descricaolet = document.getElementById("descricao").value;
+                let quantidade_receitalet = document.getElementById("quantidade_receita").value;
+                let id_receita_produtolet = document.getElementById("id_receita_produto").value;
+                let custo_total_produtolet = document.getElementById("custo_total_produto").value;
+                let custo_vendalet = document.getElementById("custo_venda").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_produto.php',
+                data: {nome: nomelet, descricao: descricaolet, quantidade_receita: quantidade_receitalet, id_receita_produto: id_receita_produtolet, custo_total_produto: custo_total_produtolet, custo_venda: custo_vendalet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+            $('#alterar').on( "click", function(){
+                let idlet = document.getElementById("id_produto").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let descricaolet = document.getElementById("descricaoA").value;
+                let quantidade_receitalet = document.getElementById("quantidade_receitaA").value;
+                let id_receita_produtolet = document.getElementById("id_receita_produtoA").value;
+                let custo_total_produtolet = document.getElementById("custo_total_produtoA").value;
+                let custo_vendalet = document.getElementById("custo_vendaA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_produto.php',
+                data: {id_produto: idlet, nome: nomelet, descricao: descricaolet, quantidade_receita: quantidade_receitalet, id_receita_produto: id_receita_produtolet, custo_total_produto: custo_total_produtolet, custo_venda: custo_vendalet},  
+                success: function(data)  
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+        });
+
+        function infoAlterar(id,nome,descricao,quantidade_receita,id_receita_produto,custo_total_produto,custo_venda){
+             document.getElementById("id_produto").value = id;
+             document.getElementById("nomeA").value = nome;
+             document.getElementById("descricaoA").value = descricao;
+             document.getElementById("quantidade_receitaA").value = quantidade_receita;
+             document.getElementById("id_receita_produtoA").value = id_receita_produto;
+             document.getElementById("custo_total_produtoA").value = custo_total_produto;
+             document.getElementById("custo_vendaA").value = custo_venda;
+        }
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_produto.php',
+                data: {id_produto: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir(`+id+`)">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
     </script>
 </head>
 
@@ -485,13 +652,32 @@ while ($row = mysql_fetch_array($result)) {
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_produto.php" method="POST">
+                        <label>Nome:</label>
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
+                        <label>Descrição:</label>
                         <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="quantidade da receita">
-                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="id_receita_produto">
-                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo_total_produto">
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
+                        <label>Quantidade da Receita:</label>
+                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="Quantidade da receita">
+                        <label>Receita:</label>
+                        <select name="id_receita_produto" id="id_receita_produto">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+                        
+                        <input type="hidden" id="custo_total_produto" name="custo_total_produto" required placeholder="Custo total">
+                        <div class="divrec"><p>Custo aproximado: </p></div><div id="recomendacaoDIV" class="divrec2"><p id="recomendacao"></p></div>
+                        <label>Valor:</label>
+                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Valor:">
+                        <button type="button" id="cadastrar" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -510,14 +696,34 @@ while ($row = mysql_fetch_array($result)) {
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_produto.php" method="POST">
-                        <input type="text" id="id_produto" name="id_produto" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="descricao" name="descricao" required placeholder="Descrição">
-                        <input type="text" id="custo_venda" name="custo_venda" required placeholder="Custo unitário">
-                        <input type="text" id="quantidade_receita" name="quantidade_receita" required placeholder="Data de validade">
-                        <input type="text" id="id_receita_produto" name="id_receita_produto" required placeholder="id_receita_produto">
-                        <input type="text" id="custo_total_produto" name="custo_total_produto" required placeholder="custo_total_produto">
-                        <button type="submit" class="btn" name="alterar">Alterar</button>
+                        <input type="hidden" id="id_produto" name="id_produto" required placeholder="Código">
+                        <label>Nome:</label>
+                        <input type="text" id="nomeA" name="nome" required placeholder="Nome">
+                        <label>Descrição:</label>
+                        <input type="text" id="descricaoA" name="descricao" required placeholder="Descrição">
+                        <label>Quantidade da Receita:</label>
+                        <input type="text" id="quantidade_receitaA" name="quantidade_receita" required placeholder="Quantidade da receita">
+                        
+                        <label>Receita:</label>
+                        <select name="id_receita_produtoA" id="id_receita_produtoA">
+                        <option value="" selected="selected">Receita</option>
+
+                        <?php
+                        $query = mysql_query("SELECT id_receita, nome FROM receita");
+                        while($receitas = mysql_fetch_array($query))
+                        {
+                            ?>
+                        <option value="<?php echo $receitas['id_receita']?>">                                                     
+                                       <?php echo $receitas['nome']  ?></option>
+                        <?php }
+                            ?>
+                        </select>
+
+                        <input type="hidden" id="custo_total_produtoA" name="custo_total_produto" required placeholder="Custo total">
+                        <div class="divrec"><p>Custo aproximado: </p></div><div id="recomendacaoDIVA" class="divrec2"><p id="recomendacaoA"></p></div>
+                        <label>Valor:</label>
+                        <input type="text" id="custo_vendaA" name="custo_venda" required placeholder="Valor">
+                        <button type="button" id="alterar" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -557,7 +763,7 @@ while ($row = mysql_fetch_array($result)) {
         <h2>PRODUTO</h2><br>
         <form action="main_produto.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-            <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+            <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     <div class="divFuncoes">        
                         <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
@@ -572,12 +778,12 @@ while ($row = mysql_fetch_array($result)) {
 
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
-            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/produto/main_produto.php'">
+            <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/produto/main_produto.php'">
                 Produtos
             </button>
 
             <!-- Botão "Exportar" -->
-            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/produto/estoque_produto.php'">
+            <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/produto/estoque_produto.php'">
                 Estoque
             </button>
 
@@ -588,7 +794,7 @@ while ($row = mysql_fetch_array($result)) {
         <th>Código</th>
         <th>Nome</th>
         <th>Descrição</th>
-        <th>Custo de venda</th>
+        <th>Valor</th>
         <th>Quantidade da receita</th>
         <th>Receita</th>
         <th>Custo total</th>
@@ -609,7 +815,12 @@ while ($row = mysql_fetch_array($result)) {
         }
 
         while ($dados = mysql_fetch_array($resultado)) {
-            $strdados = $dados['id_produto'] . "*" . $dados['nome'] . "*" . $dados['descricao'] . "*" . $dados['custo_venda'] . "*" . $dados['quantidade_receita'] . "*" . $dados['id_receita_produto']."*". $dados['custo_total_produto'];
+            $id_rec = $dados['id_receita_produto'];
+            $receitaTabelaSelect = "SELECT nome FROM receita WHERE id_receita = '$id_rec'";
+            $receitaTabelaQuery = mysql_query($receitaTabelaSelect);
+            while($rec = mysql_fetch_array($receitaTabelaQuery)){
+                $receitaTabela = $rec['nome'];
+            }
             ?>
             <tr>
                 <td><?php echo $dados['id_produto']; ?></td>
@@ -617,12 +828,12 @@ while ($row = mysql_fetch_array($result)) {
                 <td><?php echo $dados['descricao']; ?></td>
                 <td><?php echo $dados['custo_venda']; ?></td>
                 <td><?php echo $dados['quantidade_receita']; ?></td>
-                <td><?php echo $dados['id_receita_produto']; ?></td>
+                <td><?php echo $receitaTabela; ?></td>
                 <td><?php echo $dados['custo_total_produto']; ?></td>
                 <td class="table-btn">
-                    <a href="excluir_produto.php?id_produto=<?php echo $dados['id_produto']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                    <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_produto']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['id_produto']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['descricao']; ?>','<?php echo $dados['quantidade_receita']; ?>','<?php echo $dados['id_receita_produto']; ?>','<?php echo $dados['custo_total_produto']; ?>','<?php echo $dados['custo_venda']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                 </td>
             </tr>
             <?php
@@ -636,8 +847,7 @@ while ($row = mysql_fetch_array($result)) {
     </div>
 
     <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

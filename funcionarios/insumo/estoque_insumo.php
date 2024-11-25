@@ -607,10 +607,10 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Adicionar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form id="formAdicionar" class="form-group well" action="adicionar_estoque_insumo.php" method="POST">
+                    <form id="formAdicionar" class="form-group well" method="POST">
                         <input type="text" class="textoForm" id="quantidade_adicionar" name="quantidade_adicionar" required placeholder="...g,ml">
 
-                        <button type="submit" class="btn" name="adicionar">adicionar</button>
+                        <button type="button" id="adicionar" class="btn" name="adicionar">adicionar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -628,7 +628,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Retirar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form id="formRetirar" class="form-group well" action="retirar_estoque_insumo.php" method="POST">
+                    <form id="formRetirar" class="form-group well" method="POST">
                     <input type="text" class="textoForm" id="quantidade_retirar" name="quantidade_retirar" required placeholder="...g,ml">
 
                     
@@ -646,7 +646,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         <form action="estoque_insumo.php" method="POST">
     <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
     
-    <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+    <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     
     <div class="divFuncoes">
 
@@ -659,7 +659,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
             <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/insumo/main_insumo.php'">
-                insumos
+                Insumos
             </button>
 
             <!-- Botão "Exportar" -->

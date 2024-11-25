@@ -186,6 +186,14 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
         }
 
+        .form-group input[type="date"] {
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
 
         th {
             height:20px;
@@ -462,8 +470,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         }
 
     </style>
-    <script>
-
+   <script>
         function decideBTN(data){
             if(data == 1){
                 botao = document.querySelector("#cadastrar")
@@ -477,7 +484,25 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         }
 
         function enviar(){
-            document.getElementById("formCadastrar").submit();
+                let data_fabricacaolet = document.getElementById("data_fabricacao").value;
+                let sequencia_processolet = document.getElementById("sequencia_processo").value;
+                let descricao_processolet = document.getElementById("descricao_processo").value;
+                let tempo_execucaolet = document.getElementById("tempo_execucao").value;
+                let quantidadelet = document.getElementById("quantidade").value;
+                let id_equipamento_processolet = document.getElementById("id_equipamento_processo").value;
+                let id_funcionario_processolet = document.getElementById("id_funcionario_processo").value;
+                let id_produto_processolet = document.getElementById("id_produto_processo").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_fabricacao.php',
+                data: {data_fabricacao: data_fabricacaolet, sequencia_processo: sequencia_processolet, descricao_processo: descricao_processolet, tempo_execucao: tempo_execucaolet, quantidade: quantidadelet, id_equipamento_processo: id_equipamento_processolet, id_funcionario_processo: id_funcionario_processolet, id_produto_processo: id_produto_processolet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
         }
 
         function alerta(){
@@ -493,6 +518,34 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
         function deletarAlertaP(numero){
             let alerta = document.getElementById("alertaP"+numero+"");
+            alerta.remove();
+        }
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_fabricacao.php',
+                data: {id_processo: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir(`+id+`)">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
             alerta.remove();
         }
 
@@ -636,13 +689,17 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 </div>
                 <div class="modal-body">
                     <form id="formCadastrar" class="form-group well" action="adicionar_fabricacao.php" method="POST">
-
-                        <input type="text" id="data_fabricacao" name="data_fabricacao" class="span3" value="" required placeholder="data_fabricacao" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="sequencia_processo" name="sequencia_processo" class="span3" value="" required placeholder="sequencia_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="descricao_processo" name="descricao_processo" class="span3" value="" required placeholder="descricao_processo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="tempo_execucao" name="tempo_execucao" class="span3" value="" required placeholder="tempo_execucao" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="quantidade" name="quantidade" class="span3" value="" required placeholder="quantidade" style=" margin-bottom: -2px; height: 25px;"><br><br>
-
+                        <label>Data de Fabricação:</label>
+                        <input type="date" id="data_fabricacao" name="data_fabricacao" class="span3">
+                        <label>Sequência:</label>
+                        <input type="text" id="sequencia_processo" name="sequencia_processo" class="span3" value="" required placeholder="sequência">
+                        <label>Descrição:</label>
+                        <input type="text" id="descricao_processo" name="descricao_processo" class="span3" value="" required placeholder="descrição">
+                        <label>Tempo de Execução:</label>
+                        <input type="text" id="tempo_execucao" name="tempo_execucao" class="span3" value="" required placeholder="tempo de execução: minutos">
+                        <label>Quantidade:</label>
+                        <input type="text" id="quantidade" name="quantidade" class="span3" value="" required placeholder="quantidade">
+                        <label>Equipamento:</label>
                         <select name="id_equipamento_processo" id="id_equipamento_processo">
                         <option value="" selected="selected">Equipamento</option>
 
@@ -656,7 +713,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <?php }
                             ?>
                         </select>
-
+                        <label>Funcionário:</label>
                         <select name="id_funcionario_processo" id="id_funcionario_processo">
                         <option value="" selected="selected">Funcionário</option>
 
@@ -670,7 +727,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <?php }
                             ?>
                         </select>                   
-
+                        <label>Produto:</label>
                         <select name="id_produto_processo" id="id_produto_processo">
                         <option value="" selected="selected">Produto</option>
 
@@ -770,7 +827,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
             <h2>FABRICAÇÃO </h2><br>
             <form action="main_fabricacao.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
 
     <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
@@ -813,7 +870,29 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
 					while ($dados = mysql_fetch_array($resultado))
                     {
-				    ?>
+                    
+                    $id_equi = $dados['id_equipamento_processo'];
+                    $equipamentoTabelaSelect = "SELECT nome FROM equipamento WHERE id_equipamento = '$id_equi'";
+                    $equipamentoTabelaQuery = mysql_query($equipamentoTabelaSelect);
+                    while($equi = mysql_fetch_array($equipamentoTabelaQuery)){
+                         $equipamentoTabela = $equi['nome'];
+                    }
+
+                    $id_fun = $dados['id_funcionario_processo'];
+                    $funcionarioTabelaSelect = "SELECT nome FROM funcionario WHERE id_funcionario = '$id_fun'";
+                    $funcionarioTabelaQuery = mysql_query($funcionarioTabelaSelect);
+                    while($fun = mysql_fetch_array($funcionarioTabelaQuery)){
+                         $funcionarioTabela = $fun['nome'];
+                    }
+
+                    $id_prod = $dados['id_produto_processo'];
+                    $produtoTabelaSelect = "SELECT nome FROM produto WHERE id_produto = '$id_prod'";
+                    $produtoTabelaQuery = mysql_query($produtoTabelaSelect);
+                    while($prod = mysql_fetch_array($produtoTabelaQuery)){
+                         $produtoTabela = $prod['nome'];
+                    }
+
+                    ?>
                     <tr>
                         <td><?php echo $dados['id_processo']; ?></td>
                         <td><?php echo $dados['data_fabricacao']; ?></td>
@@ -821,15 +900,12 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                         <td><?php echo $dados['descricao_processo']; ?></td>
                         <td><?php echo $dados['tempo_execucao']; ?></td>
                         <td><?php echo $dados['quantidade']; ?></td>
-                        <td><?php echo $dados['id_equipamento_processo']; ?></td>
-                        <td><?php echo $dados['id_funcionario_processo']; ?></td>
-                        <td><?php echo $dados['id_produto_processo']; ?></td>
+                        <td><?php echo $equipamentoTabela; ?></td>
+                        <td><?php echo $funcionarioTabela; ?></td>
+                        <td><?php echo $produtoTabela; ?></td>
                         <td>
 
-                                <a href="excluir_fabricacao.php?id_processo=<?php echo $dados['id_processo']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
-							
-
-                                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                                <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_processo']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
                         </td>
                     </tr>
                 <?php

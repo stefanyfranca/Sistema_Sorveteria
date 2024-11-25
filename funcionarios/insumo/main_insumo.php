@@ -34,6 +34,9 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
     function generatePDF() {
     var props = {
@@ -417,7 +420,83 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 }
     </style>
 </head>
+<script>
+        $(document).ready(function(){
+            $('#cadastrar').on( "click", function(){
+                let nomelet = document.getElementById("nome").value;
+                let unidade_medidalet = document.getElementById("unidade_medida").value;
+                let custo_unitariolet = document.getElementById("custo_unitario").value;
+                let id_fornecedor_insumolet = document.getElementById("id_fornecedor_insumo").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_insumo.php',
+                data: {nome: nomelet, unidade_medida: unidade_medidalet, custo_unitario: custo_unitariolet, id_fornecedor_insumo: id_fornecedor_insumolet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
 
+            $('#alterar').on( "click", function(){
+                let id_insumolet = document.getElementById("id_insumo").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let unidade_medidalet = document.getElementById("unidade_medidaA").value;
+                let custo_unitariolet = document.getElementById("custo_unitarioA").value;
+                let id_fornecedor_insumolet = document.getElementById("id_fornecedor_insumoA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_insumo.php',
+                data: {id_insumo: id_insumolet , nome: nomelet, unidade_medida: unidade_medidalet, custo_unitario: custo_unitariolet, id_fornecedor_insumo: id_fornecedor_insumolet},  
+                success: function(data)  
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+
+        });
+
+        function infoAlterar(id_insumo,nome,unidade_medida,custo_unitario,id_fornecedor_insumo){
+            document.getElementById("id_insumo").value = id_insumo;
+            document.getElementById("nomeA").value = nome;
+            document.getElementById("unidade_medidaA").value = unidade_medida;
+            document.getElementById("custo_unitarioA").value = custo_unitario;
+            document.getElementById("id_fornecedor_insumoA").value = id_fornecedor_insumo;
+        }
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_insumo.php',
+                data: {id_insumo: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir('`+id+`')">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
+</script>
 <body>
 <div class="lateral">
 <p class="txtfrangelato">FRANGELATO</p> 
@@ -482,12 +561,17 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="adicionar_insumo.php" method="POST">
+                    <form class="form-group well" method="POST">
+                        <label>Nome:</label>
                         <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
+                        <label>Unidade de Medida:</label>
+                        <select name="unidade_medida" id="unidade_medida">
+                            <option value="g" selected="selected">g</option>
+                            <option value="ml">ml</option>
+                        </select>
+                        <label>Custo Unitário:</label>
                         <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
-                        <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-
+                        <label>Fornecedor:</label>
                         <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
                         <option value="" selected="selected">Fornecedor</option>
 
@@ -502,7 +586,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                             ?>
                         </select>
 
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
+                        <button type="button" id="cadastrar" class="btn" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -520,14 +604,19 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
-                    <form class="form-group well" action="alterar_insumo.php" method="POST">
-                        <input type="text" id="id_insumo" name="id_insumo" required placeholder="Código">
-                        <input type="text" id="nome" name="nome" required placeholder="Nome">
-                        <input type="text" id="unidade_medida" name="unidade_medida" required placeholder="Ex.: g ou Kg">
-                        <input type="text" id="custo_unitario" name="custo_unitario" required placeholder="Custo unitário">
-                        <input type="text" id="data_validade" name="data_validade" required placeholder="Data de validade">
-                                                
-                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumo">
+                    <form class="form-group well" method="POST">
+                        <input type="hidden" id="id_insumo" name="id_insumo" required placeholder="Código">
+                        <label>Nome:</label>
+                        <input type="text" id="nomeA" name="nome" required placeholder="Nome">
+                        <label>Unidade de Medida:</label>
+                        <select name="unidade_medida" id="unidade_medidaA">
+                            <option value="g" selected="selected">g</option>
+                            <option value="ml">ml</option>
+                        </select>
+                        <label>Custo Unitário:</label>
+                        <input type="text" id="custo_unitarioA" name="custo_unitario" required placeholder="Custo unitário">
+                        <label>Fornecedor:</label>         
+                        <select name="id_fornecedor_insumo" id="id_fornecedor_insumoA">
                         <option value="" selected="selected">Fornecedor</option>
 
                         <?php
@@ -541,7 +630,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                             ?>
                         </select>
 
-                        <button type="submit" class="btn" name="alterar">Alterar</button>
+                        <button type="button" id="alterar" class="btn" name="alterar">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -580,7 +669,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         <h2>INSUMOS</h2><br>
         <form action="main_insumo.php" method="POST">
         <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
     <button type="button" class="btnFuncoes" data-toggle="modal" data-target="#myModalCadastrar">
@@ -597,7 +686,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
             <button type="button" class="botaoTelasativa" onclick="window.location.href='/SISTEMA_SORVETERIA/funcionarios/insumo/main_insumo.php'">
-                insumos
+                Insumos
             </button>
 
             <!-- Botão "Exportar" -->
@@ -612,8 +701,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 <th>Código</th>
                 <th>Nome</th>
                 <th>Unidade de medida</th>
-                <th>Custo unitario</th>
-                <th>Data de validade</th>
+                <th>Custo unitário</th>
                 <th>Fornecedor</th>
                 <th>Operação</th>
             </tr>
@@ -628,19 +716,23 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 $resultado = mysql_query($consulta);
 
                 while ($dados = mysql_fetch_array($resultado)) {
-                    $strdados = $dados['id_insumo'] . "*" . $dados['nome'] . "*" . $dados['unidade_medida'] . "*" . $dados['custo_unitario'] . "*" . $dados['data_validade'] . "*" . $dados['id_fornecedor_insumo'];
+                    $id_forn = $dados['id_fornecedor_insumo'];
+                    $fornecedorTabelaSelect = "SELECT nome FROM fornecedor WHERE id_fornecedor = '$id_forn'";
+                    $fornecedorTabelaQuery = mysql_query($fornecedorTabelaSelect);
+                    while($forn = mysql_fetch_array($fornecedorTabelaQuery)){
+                        $fornecedorTabela = $forn['nome'];
+                    }
                     ?>
                     <tr>
                         <td><?php echo $dados['id_insumo']; ?></td>
                         <td><?php echo $dados['nome']; ?></td>
                         <td><?php echo $dados['unidade_medida']; ?></td>
                         <td><?php echo $dados['custo_unitario']; ?></td>
-                        <td><?php echo $dados['data_validade']; ?></td>
-                        <td><?php echo $dados['id_fornecedor_insumo']; ?></td>
+                        <td><?php echo $fornecedorTabela; ?></td>
                         <td class="table-btn">
-                            <a href="excluir_insumo.php?id_insumo=<?php echo $dados['id_insumo']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                            <button type="button" onclick= "confirmaExcluir('<?php echo $dados['id_insumo']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['id_insumo']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['unidade_medida']; ?>','<?php echo $dados['custo_unitario']; ?>','<?php echo $dados['id_fornecedor_insumo']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                     <?php
@@ -652,8 +744,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     </div>
 
     <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

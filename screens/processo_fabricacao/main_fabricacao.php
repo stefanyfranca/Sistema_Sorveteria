@@ -518,7 +518,6 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
     </style>
     <script>
-
         function decideBTN(data){
             if(data == 1){
                 botao = document.querySelector("#cadastrar")
