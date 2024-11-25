@@ -1,5 +1,5 @@
 <?php
-    $cpf = $_GET['cpf'];
+    $cpf = $_POST['cpf'];
    
     
     $conectar  = mysql_connect('localhost','root','');
@@ -8,9 +8,3 @@
     $resultado = mysql_query($sql);
 ?>
 
-<script>
-	alert('Excluido com Sucesso!');
-	<?php
-		echo "location.href='main_usuario.php'";
-	?>
-</script>

@@ -496,33 +496,57 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                 });
                 $('#myModalExcluir').on('hidden.bs.modal', function () {
 
-                let escondido = document.getElementById("escondido");
-                escondido.remove();
                 let btnRetirar = document.getElementById("btnRetirar");
                 btnRetirar.remove();
 
                 }); 
+
+                $('#adicionar').on( "click", function(){
+                    let idlet = document.getElementById("escondido").value;
+                    let quantidadeAdicionar = document.getElementById("quantidade_adicionar").value;
+                    $.ajax({
+                type: 'POST',
+                url: 'adicionar_estoque_insumo.php',
+                data: {id_insumo: idlet, quantidade_adicionar: quantidadeAdicionar},
+                success: function(data)
+                {
+                    $('#myModalAlterar').modal('hide');
+                    alert('Adicionado com sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+
+                });
+
             });
 
             function modalidRetirar(id, quantidade){
                 $('#myModalExcluir').modal('show');
                 
-                let local = document.querySelector('#formRetirar');
-                    let escondido = `<input type="hidden" name="id_insumo" id="escondido" value="`+id+`" />`; 
-                    local.insertAdjacentHTML('afterbegin', escondido);
-                
-                    local = document.querySelector('#formRetirar');
-                    let submit = `<button type="button" id="btnRetirar" class="btn" name="retirar" onclick="submitCondicionado(`+quantidade+`)">retirar</button>`; 
+                    let local = document.querySelector('#formRetirar');
+                    let submit = `<button type="button" id="btnRetirar" class="btn" name="retirar" onclick="submitCondicionado(`+quantidade+`,`+id+`)">retirar</button>`; 
                     local.insertAdjacentHTML('afterend', submit);
                     
             }
 
-            function submitCondicionado(quantidade){
+            function submitCondicionado(quantidade,id){
                 
                 let quantidadeRetirar = document.getElementById('quantidade_retirar').value;
 
                 if (quantidadeRetirar <= quantidade){
-                document.getElementById("formRetirar").submit();
+                    $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'retirar_estoque_insumo.php',
+                data: {id_insumo: id, quantidade_retirar: quantidadeRetirar},
+                success: function(data)
+                {
+                    $('#myModalExcluir').modal('hide');
+                    alert('Retirado com sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
                 }
                 else{
                     if(document.querySelector("#alerta") == null){
@@ -637,10 +661,10 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Adicionar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form id="formAdicionar" class="form-group well" action="adicionar_estoque_insumo.php" method="POST">
+                    <form id="formAdicionar" class="form-group well" method="POST">
                         <input type="text" class="textoForm" id="quantidade_adicionar" name="quantidade_adicionar" required placeholder="...g,ml">
 
-                        <button type="submit" class="btn" name="adicionar">adicionar</button>
+                        <button type="button" id="adicionar" class="btn" name="adicionar">adicionar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -658,7 +682,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                     <h1>Retirar...</h1>
                 </div>
                 <div class="modal-body">
-                    <form id="formRetirar" class="form-group well" action="retirar_estoque_insumo.php" method="POST">
+                    <form id="formRetirar" class="form-group well" method="POST">
                     <input type="text" class="textoForm" id="quantidade_retirar" name="quantidade_retirar" required placeholder="...g,ml">
 
                     
@@ -676,7 +700,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
         <form action="estoque_insumo.php" method="POST">
     <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
     
-    <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+    <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     
     <div class="divFuncoes">
 
@@ -689,7 +713,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
     <div class="divFuncoesBotoes">
             <!-- Botão "Cadastrar" -->
             <button type="button" class="botaoTelasinativa" onclick="window.location.href='/SISTEMA_SORVETERIA/screens/insumo/main_insumo.php'">
-                insumos
+                Insumos
             </button>
 
             <!-- Botão "Exportar" -->

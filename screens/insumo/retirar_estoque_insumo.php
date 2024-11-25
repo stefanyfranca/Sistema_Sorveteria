@@ -15,9 +15,3 @@
     $resultado = mysql_query($sql);
 ?>
 
-<script>
-	alert('Adicionado com Sucesso!');
-	<?php
-		echo "location.href='estoque_insumo.php'";
-	?>
-</script>

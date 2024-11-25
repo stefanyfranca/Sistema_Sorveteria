@@ -26,7 +26,7 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
 
 <head>
     <meta charset="UTF-8">
-    <title>Pesquisa receita</title>
+    <title>Pesquisa insumo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -128,6 +128,7 @@ function generatePDF() {
             cursor: pointer;
             transition: background-color 0.3s;
             margin: 10px 0;
+            margin-left:10px;
             height:30px;
         }
 
@@ -605,10 +606,13 @@ function generatePDF() {
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" method="POST">
+                        <label>Cpf:</label>
                         <input type="text" id="cpf" name="cpf" class="span3" value="" required placeholder="cpf" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="nome" name="nome" class="span3" value="" required placeholder="Nome" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="tipo" name="tipo" class="span3" value="" required placeholder="tipo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="button" id="cadastrar" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
+                        <label>Nome:</label>
+                        <input type="text" id="nome" name="nome" class="span3" value="" required placeholder="nome">
+                        <label>Tipo:</label>
+                        <input type="text" id="tipo" name="tipo" class="span3" value="" required placeholder="tipo">
+                        <button type="button" id="cadastrar" class="btn btn-success btn-large" name="cadastrar">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -624,14 +628,16 @@ function generatePDF() {
 
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1>Alterar de Registro...</h1>
+                    <h1>Alterar Registro...</h1>
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" method="POST">
-                        cpf   <input id="cpfA" type="hidden" name="cpf" value="" required>
-                        nome  <input id="nomeA" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        tipo <input id="tipoA" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="button" id="alterar" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
+                        <input id="cpfA" type="hidden" name="cpf" value="" required>
+                        <label>Nome:</label>
+                        <input id="nomeA" type="text" name="nome" class="span3" required value="">
+                        <label>Tipo:</label>
+                        <input id="tipoA" type="text" name="tipo" class="span3" required value="">
+                        <button type="button" id="alterar" class="btn btn-success btn-large" name="alterar">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">

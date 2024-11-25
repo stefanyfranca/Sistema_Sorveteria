@@ -26,7 +26,6 @@
 ?>
 
 <script>
-	alert('Adicionado com Sucesso!');
 	<?php
 		echo "location.href='main_receita.php'";
 	?>

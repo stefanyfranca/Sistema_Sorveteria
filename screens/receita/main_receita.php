@@ -37,6 +37,10 @@ while ($row = mysql_fetch_array($result)) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/db6ecd3c1f.js" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/jspdf-invoice-template@1.4.0/dist/index.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
     <script>
     function generatePDF() {
     var props = {
@@ -456,9 +460,53 @@ while ($row = mysql_fetch_array($result)) {
             margin-top:-7px;
         }
 
+        .confirma{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:25%;
+            position: fixed;
+            z-index: 100;
+            margin-top:15%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnConfirma1{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+            
+        }
+        
+        .btnConfirma2{
+            width:70px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:50px;
+            border-style:none;
+            border-radius:4px;
+            position: absolute;
+        }
+
+        .textoConfirma{
+            margin-left:80px;
+            margin-top:45px;
+            height:10px;
+        }
     </style>
     <script>
         var contador = 0;
+        var arrayinsumos = [];
 
         function excinsumo(a){
             let numeromenos = 0;
@@ -511,7 +559,7 @@ while ($row = mysql_fetch_array($result)) {
                         <?php }
                         ?>
                         </select>
-                        <input type="text" class="textInsumo" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g">
+                        <input type="text" class="textInsumo" id="quantidade_insumo`+contador+`" name="quantidade_insumo`+contador+`" required placeholder="...g, ml">
                         <button class="btnInsumo" id= "botaoexc`+contador+`" onclick="excinsumo(`+contador+`)">X</button>`;
             
             modal.insertAdjacentHTML('beforeend', novoselect);
@@ -527,6 +575,65 @@ while ($row = mysql_fetch_array($result)) {
 
         function deletarAlerta(){
             let alerta = document.getElementById("alerta");
+            alerta.remove();
+        }
+
+        function cadastrarF(){
+            let enviar = 0;
+            console.log("ue");
+            for(var i = 0; i <= 30; i++){
+                let insumo = document.getElementById("insumo"+i+"");
+                if(insumo != null){
+                    let idinsumo = document.getElementById("insumo"+i+"").value;
+                    if(arrayinsumos.includes(idinsumo)){
+                        if(document.querySelector("#alerta") == null){
+                        let local = document.querySelector('#myModalCadastrar');
+                        let aviso = `<div class="alerta" id="alerta"><p class="textoAlerta">A receita contém insumos repetidos!</p><button class="btnalerta" onclick="deletarAlerta()">OK</button></div>`; 
+                        local.insertAdjacentHTML('afterbegin', aviso);
+                        arrayinsumos = [];
+                        enviar = 0;
+                        break;
+                        }
+                    }
+                    else{
+                        enviar = 1;
+                        arrayinsumos.push(idinsumo);
+                    }
+                }
+                else{
+                    break;
+                }
+            }
+            if(enviar != 0){
+                document.getElementById("formcadastrar").submit();
+            }
+        }
+
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_receita.php',
+                data: {id_receita: id},
+                success: function(data)
+                {
+                    alert(''+data+'');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir(`+id+`)">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
             alerta.remove();
         }
     </script>
@@ -627,11 +734,13 @@ while ($row = mysql_fetch_array($result)) {
                     <h1>Adicionar um registro ...</h1>
                 </div>
                 <div class="modal-body1">
-                    <form class="form-group well" action="adicionar_receita.php" method="POST">
+                    <form class="form-group well" action="adicionar_receita.php" id="formcadastrar" method="POST">
+                        <label>Nome:</label>
                         <input type="text" class="textoForm" id="nome" name="nome" required placeholder="Nome">
+                        <label>Descrição:</label>
                         <input type="text" class="textoForm" id="descricao" name="descricao" required placeholder="Descrição">
-                        
-                        <select name="insumo0" class="selectInsumo">
+                        <label style="width:300px;">Insumos:</label>
+                        <select name="insumo0" id="insumo0"class="selectInsumo">
                         <option value="" selected="selected">Selecione...</option>
 
                         <?php
@@ -644,12 +753,14 @@ while ($row = mysql_fetch_array($result)) {
                         <?php }
                         ?>
                         </select>
-                        <input type="text" class="textInsumo" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g">
+                        <input type="text" class="textInsumo" id="quantidade_insumo0" name="quantidade_insumo0" required placeholder="...g, ml">
                         <div class="divinsumos"></div>
                         <button class="btnAdicionar" onclick="addinsumo()">Insumo +</button>
-                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo_preparo">
-                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade_produzida">
-                        <button type="submit" class="btn" name="cadastrar">Cadastrar</button>
+                        <label style="width:500px;">Tempo de Preparo:</label>
+                        <input type="text" class="textoForm" id="tempo_preparo" name="tempo_preparo" required placeholder="tempo de preparo">
+                        <label>Quantidade Produzida:</label>
+                        <input type="text" class="textoForm" id="quantidade_produzida" name="quantidade_produzida" required placeholder="quantidade produzida">
+                        <button type="button" class="btn" name="cadastrar" onclick="cadastrarF()">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -714,7 +825,7 @@ while ($row = mysql_fetch_array($result)) {
         <form action="main_receita.php" method="POST">
     <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
     
-    <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+    <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     
     <div class="divFuncoes">
     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
@@ -761,8 +872,7 @@ while ($row = mysql_fetch_array($result)) {
                         <td ><?php echo $dados['quantidade_produzida']; ?></td>
                         <td ><?php echo $dados['custo_total']; ?></td>
                         <td>
-                            <a href="excluir_receita.php?id_receita=<?php echo $dados['id_receita']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                            <button type="button"  onclick= "confirmaExcluir('<?php echo $dados['id_receita']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
                         </td>
                     </tr>
                     <?php
@@ -776,8 +886,7 @@ while ($row = mysql_fetch_array($result)) {
     </div>
 
     <!-- Bibliotecas requeridas -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 
 </html>

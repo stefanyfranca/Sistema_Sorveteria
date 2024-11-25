@@ -1,5 +1,5 @@
 <?php
-    $id_processo = $_GET['id_processo'];
+    $id_processo = $_POST['id_processo'];
    
     $indexID = 0;
     $indexQuant = 1;
@@ -63,11 +63,6 @@
 
     $sql       = "update produto set quantidade_estoque = '$quantidade' where id_produto = '$id_produto_processo';";
     $resultado = mysql_query($sql);
-?>
 
-<script>
-	alert('Excluido com Sucesso!');
-	<?php
-		echo "location.href='main_fabricacao.php'";
-	?>
-</script>
+    echo "Excluído com sucesso!";?>
+	

@@ -9,10 +9,3 @@
     $sql       = "update usuario set nome = '$nome', senha = '$senha', tipo = '$tipo' where cpf = '$cpf';";        
     $resultado = mysql_query($sql);
 ?>
-
-<script>
-	alert('Alterado com Sucesso!');
-	<?php
-		echo "location.href='main_usuario.php'";
-	?>
-</script>

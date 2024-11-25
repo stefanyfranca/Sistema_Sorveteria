@@ -136,6 +136,7 @@ while ($row = mysql_fetch_array($result)) {
             transition: background-color 0.3s;
             margin: 10px 0;
             height:30px;
+            margin-left:10px;
         }
 
         .btn:hover {
@@ -186,6 +187,7 @@ while ($row = mysql_fetch_array($result)) {
         th {
             height:20px;
             color:#6B0000;
+            background-color:#f9f9f9;
         }
 
         tr:nth-child(even){
@@ -394,11 +396,135 @@ while ($row = mysql_fetch_array($result)) {
             margin-top:-7px;
         }
 
+        .confirma{
+            height:120px;
+            width:300px;
+            background-color:#FFFFFF;
+            color:#6B0000;
+            border-radius:5px;
+            border-width:2px;
+            margin-left:25%;
+            position: fixed;
+            z-index: 100;
+            margin-top:15%;
+            box-shadow: 0px 0px 5px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .btnConfirma1{
+            width:40px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:130px;
+            border-style:none;
+            border-radius:4px;
+            
+        }
+        
+        .btnConfirma2{
+            width:70px;
+            height:25px;
+            background-color:#6B0000;
+            color:white;
+            margin-top:15px;
+            margin-left:50px;
+            border-style:none;
+            border-radius:4px;
+            position: absolute;
+        }
+
+        .textoConfirma{
+            margin-left:80px;
+            margin-top:45px;
+            height:10px;
+        }
+
+        select{
+            margin-bottom: 10px;
+            height: 28px;
+            border-radius: 5px;
+            border: 1px solid #333;
+            width: 100%;
+            padding: 5px;
+        }
+
+
     </style>
     <script>
      $(document).ready(function(){
         $('#cpf').mask('000.000.000-00', {reverse: false});
-     });
+
+        $('#cadastrar').on( "click", function(){
+                let cpflet = document.getElementById("cpf").value;
+                let nomelet = document.getElementById("nome").value;
+                let senhalet = document.getElementById("senha").value;
+                let tipolet = document.getElementById("tipo").value;
+                $('#myModalCadastrar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'adicionar_usuario.php',
+                data: {cpf:cpflet, nome: nomelet, senha: senhalet, tipo: tipolet},  
+                success: function(data)  
+                {
+                    alert('Adicionado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+        
+            $('#alterar').on( "click", function(){
+                let cpflet = document.getElementById("cpfA").value;
+                let nomelet = document.getElementById("nomeA").value;
+                let senhalet = document.getElementById("senhaA").value;
+                let tipolet = document.getElementById("tipoA").value;
+                $('#myModalAlterar').modal('hide');
+                $.ajax({
+                type: 'POST',
+                url: 'alterar_usuario.php',
+                data: {cpf:cpflet, nome: nomelet, senha: senhalet, tipo: tipolet},  
+                success: function(data)  
+                {
+                    alert('Alterado com Sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            });
+        });
+        function excluir(id){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+            $(document).ready(function(){
+                $.ajax({
+                type: 'POST',
+                url: 'excluir_usuario.php',
+                data: {cpf: id},
+                success: function(data)
+                {
+                    alert('Excluído com sucesso!');
+                    document.getElementById("pesquisar").click();
+                }
+                });
+            })
+        }
+
+        function confirmaExcluir(id){
+            let local = document.querySelector('.container');
+            let aviso = `<div class="confirma" id="confirma"><p class="textoConfirma">Deseja mesmo excluir?</p><button class="btnConfirma1" onclick="excluir('`+id+`')">Sim</button><button class="btnConfirma2" onclick="deletarConfirma()">cancelar</button></div>`; 
+            local.insertAdjacentHTML('afterbegin', aviso);
+        }
+        
+        function deletarConfirma(){
+            let alerta = document.getElementById("confirma");
+            alerta.remove();
+        }
+
+        function infoAlterar(cpf,nome,senha,tipo){
+            document.getElementById("cpfA").value = cpf;
+            document.getElementById("nomeA").value = nome;
+            document.getElementById("senhaA").value = senha;
+            document.getElementById("tipoA").value = tipo;
+        }
     </script>
 </head>
 
@@ -497,11 +623,18 @@ while ($row = mysql_fetch_array($result)) {
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="adicionar_usuario.php" method="POST">
-                        <input type="text" id="cpf" name="cpf" class="span3" value="" required placeholder="cpf" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="nome" name="nome" class="span3" value="" required placeholder="Nome" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="senha" name="senha" class="span3" value="" required placeholder="senha" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <input type="text" id="tipo" name="tipo" class="span3" value="" required placeholder="tipo" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="submit" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
+                        <label>Cpf:</label>
+                        <input type="text" id="cpf" name="cpf" class="span3" value="" required placeholder="cpf">
+                        <label>Nome:</label>
+                        <input type="text" id="nome" name="nome" class="span3" value="" required placeholder="nome">
+                        <label>Senha:</label>
+                        <input type="text" id="senha" name="senha" class="span3" value="" required placeholder="senha">
+                        <label>Tipo:</label>
+                        <select id="tipo" name="tipo">
+                            <option value="administrador" selected="selected">administrador</option>
+                            <option value="funcionário">funcionário</option>
+                        </select>
+                        <button type="button" id="cadastrar" class="btn btn-success btn-large" name="cadastrar" style="height: 35px">Cadastrar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -522,11 +655,17 @@ while ($row = mysql_fetch_array($result)) {
                 </div>
                 <div class="modal-body">
                     <form class="form-group well" action="alterar_usuario.php" method="POST">
-                        cpf   <input id="cpf" type="text" name="cpf" value="" required>
-                        nome  <input id="nome" type="text" name="nome" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        senha <input id="senha" type="text" name="senha" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;">
-                        tipo <input id="tipo" type="text" name="tipo" class="span3" required value="" style=" margin-bottom: -2px; height: 25px;"><br><br>
-                        <button type="submit" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
+                    <input id="cpfA" type="hidden" name="cpf" value="" required required placeholder="cpf">
+                    <label>Nome:</label>
+                    <input id="nomeA" type="text" name="nome" class="span3" required value="" required placeholder="nome">
+                    <label>Senha:</label>
+                    <input id="senhaA" type="text" name="senha" class="span3" required value="" required placeholder="senha"> 
+                    <label>Tipo:</label>
+                    <select id="tipoA" name="tipo">
+                            <option value="administrador" selected="selected">administrador</option>
+                            <option value="funcionário">funcionário</option>
+                    </select>
+                        <button type="button" id="alterar" class="btn btn-success btn-large" name="alterar" style="height: 35px">Alterar</button>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -564,7 +703,7 @@ while ($row = mysql_fetch_array($result)) {
             <h2>USUÁRIOS </h2><br>
             <form action="main_usuario.php" method="POST">
             <input type="text" name="nome" id="nome" placeholder="Nome ..." class="form-control" style="display: inline-block; width: auto;">
-                <button type="submit" name="pesquisar" class="btnPesquisar">Pesquisar</button>
+                <button type="submit" id="pesquisar" name="pesquisar" class="btnPesquisar">Pesquisar</button>
     
     <div class="divFuncoes">
                     <!-- Botão "Cadastrar" com ícone de mais e margem ajustada -->
@@ -602,7 +741,6 @@ while ($row = mysql_fetch_array($result)) {
 
 					while ($dados = mysql_fetch_array($resultado))
                     {
-						$strdados = $dados['cpf']."*".$dados['nome']."*".$dados['senha']."*".$dados['tipo'];
 				    ?>
                     <tr>
                         <td><?php echo $dados['cpf']; ?></td>
@@ -610,9 +748,9 @@ while ($row = mysql_fetch_array($result)) {
                         <td><?php echo $dados['senha']; ?></td>
                         <td><?php echo $dados['tipo']; ?></td>
                         <td>
-                        <a href="excluir_usuario.php?cpf=<?php echo $dados['cpf']; ?>" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
+                        <button type="button" onclick= "confirmaExcluir('<?php echo $dados['cpf']; ?>')" class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class= "iconeTabela"><path d="M280-120q-33 0-56.5-23.5T200-200v-520h-40v-80h200v-40h240v40h200v80h-40v520q0 33-23.5 56.5T680-120H280Zm400-600H280v520h400v-520ZM360-280h80v-360h-80v360Zm160 0h80v-360h-80v360ZM280-720v520-520Z"/></svg></a>
 
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="obterDadosModal('<?php echo $strdados ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModalAlterar" onclick="infoAlterar('<?php echo $dados['cpf']; ?>','<?php echo $dados['nome']; ?>','<?php echo $dados['senha']; ?>','<?php echo $dados['tipo']; ?>')"><svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#f2f2f2" class="iconeTabela"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg></button>
                         </td>
                     </tr>
                 <?php
