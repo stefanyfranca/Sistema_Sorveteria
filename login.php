@@ -29,7 +29,7 @@ if (isset($_POST['conectar'])) {
         $tipo = $usuario['tipo'];
 
         // Redirecionar com base no tipo de usuário
-        if ($tipo === 'adm') {
+        if ($tipo === 'administrador') {
             header("Location: screens/widgets/widgets.php");
         } else {
             header("Location: funcionarios/processo_fabricacao/main_fabricacao.php");

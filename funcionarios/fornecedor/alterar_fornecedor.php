@@ -16,10 +16,3 @@
     
     $resultado = mysql_query($sql);
 ?>
-
-<script>
-	alert('Alterado com Sucesso!');
-	<?php
-		echo "location.href='main_fornecedor.php'";
-	?>
-</script>

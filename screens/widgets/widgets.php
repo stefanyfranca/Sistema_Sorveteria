@@ -602,7 +602,7 @@ $db = mysql_select_db('frangelato');
               label: 'quantidade utilizada',
               data:quantidadesjs,
               borderWidth: 1,
-              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FEC706', '#3DA11A'],
+              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FF0000', '#3DA11A', '#FF007F', '#00A8FF','#FEC706'  ],
             }]
           },
           options: {
@@ -646,7 +646,7 @@ $db = mysql_select_db('frangelato');
               label: 'quantidade fabricada',
               data:quantidadesjs,
               borderWidth: 1,
-              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FEC706', '#3DA11A'],
+              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FEC706', '#3DA11A', '#FF007F', '#00A8FF'],
             }]
           },
           options: {

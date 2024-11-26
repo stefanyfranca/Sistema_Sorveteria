@@ -892,10 +892,13 @@ while ($row = mysql_fetch_assoc($result)) { // Usando mysql_fetch_assoc()
                          $produtoTabela = $prod['nome'];
                     }
 
+                    $infodata = explode("-", $dados['data_fabricacao']);
+                    $dataDefinitiva = "$infodata[2]/$infodata[1]/$infodata[0]";
+
                     ?>
                     <tr>
                         <td><?php echo $dados['id_processo']; ?></td>
-                        <td><?php echo $dados['data_fabricacao']; ?></td>
+                        <td><?php echo $dataDefinitiva; ?></td>
                         <td><?php echo $dados['sequencia_processo']; ?></td>
                         <td><?php echo $dados['descricao_processo']; ?></td>
                         <td><?php echo $dados['tempo_execucao']; ?></td>

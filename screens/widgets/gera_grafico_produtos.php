@@ -88,7 +88,7 @@ if (($datainicial <> 'null') and ($datafinal == 'null')){
                 }
             }
 
-            $produtosFabricadosA = array_reverse($produtosFabricadosA);
+            //$produtosFabricadosA = array_reverse($produtosFabricadosA);
 
 foreach($produtosA as $id){
     $contador = 0;
