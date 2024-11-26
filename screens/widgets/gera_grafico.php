@@ -148,6 +148,14 @@
                     }
                 }
 
-                $tudo = array($quantidadesA,$datasA,$nomesReal);
+                $novaData = array();
+
+                foreach($datasA as $data){
+                    $infodata = explode("-", $data);
+                    $dataDefinitiva = "$infodata[2]/$infodata[1]/$infodata[0]";
+                    array_push($novaData, $dataDefinitiva);
+                }
+
+                $tudo = array($quantidadesA,$novaData,$nomesReal);
                 echo json_encode($tudo);
 ?>

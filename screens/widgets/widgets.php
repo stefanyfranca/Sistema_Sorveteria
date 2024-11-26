@@ -30,13 +30,18 @@ $db = mysql_select_db('frangelato');
 
         .container {
             padding: 20px;
-            width:80%;
-            margin-left:240px;
+            height: 800px;
+            width:1230px;
+            margin-left:210px;
+            position:absolute;
         }
 
         h2 {
             color: #6B0000;
             margin-bottom: 20px;
+            position: absolute;
+            width:200px;
+            z-index: 120;
         }
 
         .btn {
@@ -260,19 +265,59 @@ $db = mysql_select_db('frangelato');
             margin-left: 3px;
         }
         .graficoF{
-            width: 400px;
+            width: 600px;
             height: 300px;
-            margin-left:20%;
-            margin-top:10%;
+            margin-left:23%;
+            margin-top:40%;
             position: absolute;
+
+        }
+
+        .Fdiv{
+            width: 1110px;
+            height: 400px;
+            background-color:#F4F4F4;
+            border-radius:5px;
+            position: absolute;
+            margin-left:0.3%;
+            margin-top:33%;
         }
 
         .graficoI{
-            width: 200px;
-            height: 200px;
-            margin-left:70%;
-            margin-top:10%;
+            width: 280px;
+            height: 280px;
+            margin-left:57%;
+            margin-top:6%;
             position: absolute;
+            z-index:120;
+        }
+
+        .Idiv{
+            width: 549px;
+            height: 400px;
+            background-color:#F4F4F4;
+            border-radius:5px;
+            position: absolute;
+            margin-left:0.3%;
+            margin-top:-0.5%;
+        }
+
+        .graficoP{
+            width: 280px;
+            height: 280px;
+            margin-left:11%;
+            margin-top:6%;
+            position: absolute;
+        }
+
+        .Pdiv{
+            width: 549px;
+            height: 400px;
+            background-color:#F4F4F4;
+            border-radius:5px;
+            position: absolute;
+            margin-left:45.9%;
+            margin-top:-0.5%;
         }
 
         select{
@@ -280,8 +325,9 @@ $db = mysql_select_db('frangelato');
             height: 28px;
             width: 100px;
             border-radius: 5px;
-            border: 1px solid #333;
+            border: 1px solid gray;
             padding: 5px;
+            color:gray;
         }
 
         .date{
@@ -289,30 +335,75 @@ $db = mysql_select_db('frangelato');
             height: 28px;
             width: 112px;
             border-radius: 5px;
-            border: 1px solid #333;
+            border: 1px solid gray;
             padding: 5px;
+            color:gray;
         }
 
         .geradorgraficodiv{
-            margin-top:3%;
-            margin-left:20.2%;
-            width:490px;
+            margin-top:36%;
+            margin-left:26.2%;
+            width:500px;
             height:28px;
             position: absolute;
             color:#6B0000;
+            z-index:100;
+            
         }
 
         .geradorgraficodiv2{
-            margin-top:3%;
-            margin-left:60%;
+            margin-top:0.5%;
+            margin-left:62.6%;
             width:490px;
             height:28px;
             position: absolute;
             color:#6B0000;
+            z-index:100;
+        }
+
+        .geradorgraficodiv3{
+            margin-top:0.5%;
+            margin-left:17%;
+            width:490px;
+            height:28px;
+            position: absolute;
+            color:#6B0000;
+            z-index:100;
+        }
+
+        .Hprodutos{
+            color: #6B0000;
+            margin-top:0.5%;
+            margin-left:1%;
+            position: absolute;
+            width:200px;
+            z-index: 120;
+        }
+
+        .Hfabricacao{
+            color: #6B0000;
+            margin-top:34.3%;
+            margin-left:1%;
+            position: absolute;
+            width:200px;
+            z-index: 120;
+        }
+
+        .Hinsumos{
+            color: #6B0000;
+            margin-top:0.5%;
+            margin-left:46.5%;
+            position: absolute;
+            width:200px;
+            z-index: 120;
         }
 
         .btngerar{
-
+            border-radius: 5px;
+            border: 1px solid #6B0000;
+            height: 28px;
+            background-color:#6B0000;
+            color:white;
         }
     </style>
     
@@ -373,22 +464,36 @@ $db = mysql_select_db('frangelato');
                         let infoArray = JSON.parse(info);
                         nomesinsumosjs = infoArray[0];
                         quantidadesinsumosjs = infoArray[1];
-                        console.log(nomesinsumosjs);
-                        console.log(quantidadesinsumosjs);
                         grafico_insumos.config.data.labels = nomesinsumosjs;
                         grafico_insumos.config.data.datasets[0].data = quantidadesinsumosjs;
 
-                        let corFatias = [];
-                        for (i = 0; i < nomesinsumosjs.length; i++){
-                            const r = Math.floor(Math.random() * 255);
-                            const g = Math.floor(Math.random() * 255);
-                            const b = Math.floor(Math.random() * 255);
-                            corFatias.push('rgba('+r+', '+g+', '+b+', 1)');
-                        }
-
-                        grafico_insumos.config.data.datasets[0].backgroundColor = corFatias;
                        
                         grafico_insumos.update();
+                    }
+                });
+            });
+
+            $('#gerar3').on( "click", function(){
+                let datainicial = document.getElementById("data5").value;
+                let datafinal = document.getElementById("data6").value;
+
+                $.ajax({
+                    type: 'POST',
+                    url: 'gera_grafico_produtos.php',
+                    data: {datainicial: datainicial, datafinal: datafinal},  
+                    success: function(info)  
+                    {
+                        console.log(info);
+                        let infoArray = JSON.parse(info);
+                        nomesprodutosjs = infoArray[0];
+                        quantidadesprodutosjs = infoArray[1];
+                        console.log(nomesprodutosjs);
+                        console.log(quantidadesprodutosjs);
+                        grafico_produtos.config.data.labels = nomesprodutosjs;
+                        grafico_produtos.config.data.datasets[0].data = quantidadesprodutosjs;
+
+                       
+                        grafico_produtos.update();
                     }
                 });
             });
@@ -398,6 +503,7 @@ $db = mysql_select_db('frangelato');
 </head>
 
 <body>
+    <div class="container">
     <div class="geradorgraficodiv">
     <form name="geradorgrafico" method="post" action="widgets.php">
     <label for="">Produto: </label>
@@ -426,9 +532,12 @@ $db = mysql_select_db('frangelato');
     </form>
         </div>
     <!-- Grafico fabricação -->
+    <h3 class="Hfabricacao">FABRICAÇÃO:</h3>
+     <div class="Fdiv"></div>
     <div class="graficoF">
         <canvas id="graficoFabricacao"></canvas>
     </div>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
       <script>
         const ctx = document.getElementById('graficoFabricacao');
@@ -478,6 +587,8 @@ $db = mysql_select_db('frangelato');
 
 
       <!-- Grafico insumos -->
+    <h3 class="Hinsumos">INSUMOS:</h3>
+    <div class="Idiv"></div>
     <div class="graficoI">
         <canvas id="graficoInsumos"></canvas>
     </div>
@@ -491,20 +602,75 @@ $db = mysql_select_db('frangelato');
               label: 'quantidade utilizada',
               data:quantidadesjs,
               borderWidth: 1,
-              backgroundColor: '#6B0000',
+              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FEC706', '#3DA11A'],
             }]
           },
-          options: {}
+          options: {
+            plugins:{
+                legend:{
+                    display: false
+                }
+            }
+          }
         });
     </script>
     
+    <div class="geradorgraficodiv3">
+    <form name="geradorgrafico3" method="post" action="widgets.php">
+
+    <label for="">De: </label>
+            <input type="date" name="datainicio" class="date" id="data5">
+    <label for="">A: </label>
+            <input type="date" name="datafim" class="date" id="data6">
+
+    <input  type="button" name="Gerar"  id="gerar3" value="gerar" class="btngerar">
+
+
+    </form>
+        </div>
+
+
+      <!-- Grafico insumos -->
+    <h3 class="Hprodutos">PRODUTOS:</h3>
+    <div class="Pdiv"></div>
+    <div class="graficoP">
+        <canvas id="graficoProdutos"></canvas>
+    </div>
+      <script>
+        const ctz = document.getElementById('graficoProdutos');
+        const grafico_produtos = new Chart(ctz, {
+          type: 'pie',
+          data: {
+            labels:datasjs,
+            datasets: [{
+              label: 'quantidade fabricada',
+              data:quantidadesjs,
+              borderWidth: 1,
+              backgroundColor: ['#6F25CC', '#8E43EE', '#FF6B00', '#FEC706', '#3DA11A'],
+            }]
+          },
+          options: {
+            plugins:{
+                legend:{
+                    display: false
+                }
+            }
+          }
+        });
+    </script>
+
+
+
+
+
     <script>
         $(document).ready(function(){
             document.getElementById("gerar1").click();
             document.getElementById("gerar2").click();
+            document.getElementById("gerar3").click();
         });
     </script>
-    
+    </div>
 <div class="lateral">
 <p class="txtfrangelato">FRANGELATO</p> 
 
